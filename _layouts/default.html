@@ -7,12 +7,6 @@
 <link rel="icon" href="{{ site.baseurl }}/assets/images/logo.png">
 
 <title>{{ page.title }} | {{site.name}}</title>
-	
-<style>
-    .img-container {
-        text-align: center;
-    }
-</style>
 
 {% seo %}
     
@@ -38,11 +32,11 @@ ga('send', 'pageview');
 
 {% capture layout %}{% if page.layout %}layout-{{ page.layout }}{% endif %}{% endcapture %}
 <body>
-	<!-- defer loading of font and font awesome -->
-	<noscript id="deferred-styles">
+	<!-- defer loading of font and font awesome
+	<noscript id="deferred-styles"> -->
 		<link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-	</noscript>
+	<!--</noscript>-->
 
 <!-- Begin Sidebar Navigation
 ================================================== -->
@@ -56,10 +50,10 @@ ga('send', 'pageview');
 <nav id="menu">
     <ul>
         <h3>John Fissel</h3>
-        <li><a href="{{ site.baseurl }}/">Home</a></li>
+        <li><a href="{{ site.baseurl }}/">Blog</a></li>
         <!--<li><a href="{{ site.baseurl }}/archive">Archive</a></li>-->  
 	    <li><a href="{{ site.baseurl }}/about">About</a></li>       
-        <li><a href="{{ site.baseurl }}/portfolio">Portfolio<span class="badge badge-primary">Coming Soon</span></a></li>
+        <li><a href="{{ site.baseurl }}/portfolio">Portfolio <span class="badge badge-primary">Coming Soon</span></a></li>
         <li><a href="{{ site.baseurl }}/contact">Contact</a></li>       
     </ul>   
 </nav>
@@ -79,17 +73,12 @@ ga('send', 'pageview');
     <div class="img-container">
         <a class="navbar-brand" href="{{ site.baseurl }}/">
             <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
-        </a>  
-    </div>
-	
-    <!-- Header
-    ================================================== -->
-    <div>       
-	<h1 class="card-title" style="text-align:center;">
-	    <a class="text-dark" href="{{ site.baseurl }}/">John Fissel</a>
+        </a>   
+	    <h1 class="name">
+	        <a href="{{ site.baseurl }}/">John Fissel</a>
         </h1> 
-	<p style="margin-top: -15px; text-align:center; margin-bottom: 10px;">Welcome to my blog!</p>
-	<hr>
+	    <p class="subtitle">Welcome to my blog!</p>
+	    <hr>
     </div>
 
     <!-- Site Tag
@@ -128,10 +117,10 @@ ga('send', 'pageview');
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-12 text-center text-lg-left">
-                Copyright © {{ site.time | date: "%Y" }} {{ site.name }} 
+                   
             </div>
             <div class="col-md-6 col-sm-12 text-center text-lg-right">    
-                <a target="_blank" href="https://www.wowthemes.net/memoirs-free-jekyll-theme/">Memoirs Jekyll Theme</a> by WowThemes.net
+                Copyright © {{ site.time | date: "%Y" }} {{ site.name }}
             </div>
         </div>
     </div>

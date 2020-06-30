@@ -3,11 +3,11 @@
 ---
 
 $brown: #B59F62;
-$teal: #40FFDC;
+$red: #c61d20;
 $black: #111;
-$primary: $teal;
+$primary: $red;
 $dark:    $black;
-$enable-rounded: false;
+$enable-rounded: true;
 
 @import "bootstrap/functions";
 @import 'bootstrap/variables';
@@ -18,7 +18,7 @@ $enable-rounded: false;
 
 // general
 body, input, button, select, optgroup, textarea {   
-    font-family:Sen;
+    font-family:'Sen',Sans-Serif;
 }
 body {
     line-height:1.7;
@@ -112,13 +112,28 @@ img, img:hover {
 .featured-image, .firstpage .blog-grid-item:nth-child(1), .firstpage .blog-grid-item:nth-child(2), .firstpage .blog-grid-item:nth-child(3) {
     animation: fade-up 0.7s ease-out forwards running;
 }
-// menu
-.navbar-brand img {
-    max-height:120px;
-    //margin-bottom:10px;
-    //margin-top:5px;
-    border-radius: 50%;
+// header
+.img-container {
+    text-align: center;
+    .navbar-brand img {
+        max-height:120px;
+        border-radius: 50%;
+    }
+    a { 
+        color:$dark;
+        cursor:pointer;
+        &:hover {
+            color:$primary;
+            text-decoration:none;
+        }
+    }
+    .subtitle {
+        margin-top: -15px; 
+        text-align:center; 
+        margin-bottom: 10px;
+    }
 }
+// menu
 .sidebar {
     position: fixed;
     left: 0px;
@@ -151,7 +166,7 @@ img, img:hover {
             position: absolute;
             width: 18px;
             height: 2px;
-            background: #292C30;
+            background: $dark;
             border-radius: 1px;
         }
         &:before {
@@ -222,6 +237,10 @@ img, img:hover {
                 font-weight: 400;
                 font-size: 18px;
                 position: relative;
+                cursor:pointer;
+                &:hover {
+                    color:$primary;
+                }
             }
         }
     }
@@ -287,6 +306,8 @@ img, img:hover {
     }
     .post-date {
         float:right;
+        font-weight:700;
+        color:$primary;
         margin-top: 10px;
     }
     .img-thumb {
@@ -338,11 +359,11 @@ img, img:hover {
 .pagination {
     justify-content:center;
     a {
-        background: rgba(0,0,0,0.05);
         color:#000;
         cursor:pointer;
         &:hover {
             background: $primary;
+            color:#fff;
             text-decoration:none;
         }
     }
@@ -356,6 +377,10 @@ img, img:hover {
     }
     span {
         border:0;
+    }
+    .active {
+        background: $primary;
+        color:#fff;
     }
 }
 
@@ -405,6 +430,9 @@ img, img:hover {
     font-size:50px;
     font-weight:700;
     line-height:1.2;
+}
+.boldauthor {
+    font-weight:700;
 }
 .entry-featured-image {  
     width:940px;  
@@ -511,8 +539,8 @@ img, img:hover {
     }
 }
 .related-posts {
-    h2 {
-    }
+    //h2 {
+    //}
     margin-top:120px;
     .badge {
         font-size: 15px;
@@ -533,6 +561,9 @@ img, img:hover {
             margin:15px 0;
             a {
                 color:$dark;
+                &:hover {
+                    color: $primary;
+                }
             }
         }
     }
@@ -541,8 +572,9 @@ img, img:hover {
 //search
 .show-search {
     cursor:pointer;
+    color: $dark;
     &:hover {
-        color: darken($primary,20%);
+        color: $primary;
     }
 }
 .bd-search {
