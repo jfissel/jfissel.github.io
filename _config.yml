@@ -17,7 +17,7 @@ authors:
   sal:
     name: Sal
     display_name: Sal
-    gravatar: e56154546cf4be74e393c62d1ae9f9d4
+    # gravatar: e56154546cf4be74e393c62d1ae9f9d4
     email: wowthemesnet@gmail.com
     web: https://www.wowthemes.net/donate/
     twitter: https://twitter.com/wowthemesnet
@@ -25,8 +25,8 @@ authors:
   john:
     name: John
     display_name: John    
-    avatar: 'assets/images/avatar.png'
-    gravatar: b1cc14991db7a456fcd761680bbc8f81
+    # avatar: 'assets/images/avatar.png'
+    # gravatar: b1cc14991db7a456fcd761680bbc8f81
     email: wowthemesnet@gmail.com
     web: https://www.wowthemes.net
     twitter: https://twitter.com/wowthemesnet
@@ -71,7 +71,7 @@ adsense-data-ad-slot: "1363087678"
 lazyimages: "enabled"
 
 # Post Author Box ("enabled" or "disabled")
-authorbox: "enabled"
+authorbox: "disabled"
 
 # Sass
 sass:
