@@ -7,6 +7,12 @@
 <link rel="icon" href="{{ site.baseurl }}/assets/images/logo.png">
 
 <title>{{ page.title }} | {{site.name}}</title>
+	
+<style>
+    .img-container {
+        text-align: center;
+    }
+</style>
 
 {% seo %}
     
@@ -69,11 +75,11 @@ ga('send', 'pageview');
 
     <!-- Site Logo/Name
     ================================================== -->
-   
-    <a class="navbar-brand" href="{{ site.baseurl }}/">
-        <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
-    </a>  
-   
+   <div class="img-container">
+        <a class="navbar-brand" href="{{ site.baseurl }}/">
+            <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
+        </a>  
+    </div>
 
     <!-- Site Tag
     ==================================================
