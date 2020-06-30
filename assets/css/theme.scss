@@ -36,7 +36,7 @@ h1,h2,h3,h4,h5,h6 {
     font-weight:700;
 }
 .site-content {
-    padding-top:50px;
+    padding-top:30px;
 }
 .sitetag {
     font-weight:700;    
@@ -127,7 +127,8 @@ img, img:hover {
     height: 100%;
     border-right: solid rgba(0, 0, 0, 0.07) 1px;
     z-index: 1022;
-    background:#fff;
+    background:#f4f4f4;
+    //background:#fff;
 }
 .nav-icon {
     position: fixed;
