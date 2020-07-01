@@ -83,9 +83,6 @@ $(document).ready(function(){
 	$(".nav-icon").click(function(){
 		$("body").toggleClass('active-side');
 	});
-	$("#menu").ontouchend = (e) => {
-		e.preventDefault();
-	};
 });
 
 // Close navigation when clicked .blackover (Black background)
