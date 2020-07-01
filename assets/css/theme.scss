@@ -578,7 +578,7 @@ img, img:hover {
             a {
                 color:$primary;
                 &:hover {
-                    color: darken($primary,5%);
+                    color: darken($primary,10%);
                 }
             }
         }
