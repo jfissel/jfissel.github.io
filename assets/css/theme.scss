@@ -169,10 +169,6 @@ img, img:hover {
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 1px;
-        //&:hover:before, &:hover:after {
-        //    background:$primary;
-        //}
-
         &:before, &:after {
             content: '';
             position: absolute;
@@ -640,6 +636,7 @@ img, img:hover {
     }
 }
 body.active-side {
+    overflow: hidden;
     .bd-search {
         visibility: visible;
         opacity: 1;
