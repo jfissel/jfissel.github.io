@@ -48,13 +48,13 @@
 
 
    /* pretty print
-    * -------------------------------------------------- */
+    * -------------------------------------------------- 
     const ssPrettyPrint = function() {
         $('pre').addClass('prettyprint');
         $( document ).ready(function() {
             prettyPrint();
         });
-    };
+    }; */
 
 
 
@@ -319,7 +319,7 @@
     (function ssInit() {
 
         ssPreloader();
-        ssPrettyPrint();
+        //ssPrettyPrint();
         ssMoveHeader();
         ssMobileMenu();
         ssAccordion();
