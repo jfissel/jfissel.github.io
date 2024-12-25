@@ -1,6 +1,5 @@
 /* ===================================================================
  * Ethos 1.0.0 - Main JS
- *
  * ------------------------------------------------------------------- */
 
 (function($) {
@@ -9,17 +8,13 @@
     
     const cfg = {
                 scrollDuration : 800, // smoothscroll duration
-                mailChimpURL   : ''   // mailchimp url
                 };
     const $WIN = $(window);
-
 
     // Add the User Agent to the <html>
     // will be used for IE10/IE11 detection (Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; rv:11.0))
     const doc = document.documentElement;
     doc.setAttribute('data-useragent', navigator.userAgent);
-
-
 
    /* preloader
     * -------------------------------------------------- */
@@ -35,7 +30,7 @@
             // will first fade out the loading animation 
             $("#loader").fadeOut("slow", function() {
                 // will fade out the whole DIV that covers the website.
-                $("#preloader").delay(300).fadeOut("slow");
+                $("#preloader").fadeOut("slow");
             }); 
             
             // for hero content animations 
@@ -45,20 +40,7 @@
         });
     };
 
-
-
-   /* pretty print
-    * -------------------------------------------------- */
-    const ssPrettyPrint = function() {
-        $('pre').addClass('prettyprint');
-        $( document ).ready(function() {
-            prettyPrint();
-        });
-    };
-
-
-
-   /* move header
+   /* move header - control header as you scroll down
     * -------------------------------------------------- */
     const ssMoveHeader = function () {
 
@@ -92,8 +74,6 @@
         });
 
     };
-
-
 
    /* mobile menu
     * ---------------------------------------------------- */ 
@@ -129,7 +109,6 @@
 
     };
 
-
    /* accordion
     * ------------------------------------------------------ */
     const ssAccordion = function() {
@@ -156,94 +135,6 @@
         });
     };
 
-
-
-   /* photoswipe
-    * ----------------------------------------------------- */
-    const ssPhotoswipe = function() {
-        const items = [],
-            $pswp = $('.pswp')[0],
-            $folioItems = $('.folio-item');
-
-        // get items
-        $folioItems.each( function(i) {
-
-            let $folio = $(this),
-                $thumbLink =  $folio.find('.folio-item__thumb-link'),
-                $title = $folio.find('.folio-item__title'),
-                $caption = $folio.find('.folio-item__caption'),
-                $titleText = '<h4>' + $.trim($title.html()) + '</h4>',
-                $captionText = $.trim($caption.html()),
-                $href = $thumbLink.attr('href'),
-                $size = $thumbLink.data('size').split('x'),
-                $width  = $size[0],
-                $height = $size[1];
-        
-            let item = {
-                src  : $href,
-                w    : $width,
-                h    : $height
-            }
-
-            if ($caption.length > 0) {
-                item.title = $.trim($titleText + $captionText);
-            }
-
-            items.push(item);
-        });
-
-        // bind click event
-        $folioItems.each(function(i) {
-
-            $(this).find('.folio-item__thumb-link').on('click', function(e) {
-                e.preventDefault();
-                let options = {
-                    index: i,
-                    showHideOpacity: true
-                }
-
-                // initialize PhotoSwipe
-                let lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-                lightBox.init();
-            });
-
-        });
-    };
-
-
-
-   /* slick slider
-    * ------------------------------------------------------ */
-    const ssSlickSlider = function() {
-            
-        $('.testimonial-slider').slick({
-            arrows: false,
-            dots: true,
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            pauseOnFocus: false,
-            autoplaySpeed: 1500,
-            responsive: [
-                {
-                    breakpoint: 1080,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1
-                    }
-                },
-                {
-                    breakpoint: 800,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    }
-                }
-            ]
-        });
-    };
-
-
    /* Animate On Scroll
     * ------------------------------------------------------ */
     const ssAOS = function() {
@@ -258,19 +149,6 @@
         });
 
     };
-
-
-
-   /* alert boxes
-    * ------------------------------------------------------ */
-    const ssAlertBoxes = function() {
-
-        $('.alert-box').on('click', '.alert-box__close', function() {
-            $(this).parent().fadeOut(500);
-        }); 
-
-    };
-
     
    /* smooth scrolling
     * ------------------------------------------------------ */
@@ -292,7 +170,6 @@
 
     };
 
-
    /* back to top
     * ------------------------------------------------------ */
     const ssBackToTop = function() {
@@ -312,21 +189,15 @@
         });
     };
 
-
-
    /* initialize
     * ------------------------------------------------------ */
     (function ssInit() {
 
         ssPreloader();
-        ssPrettyPrint();
         ssMoveHeader();
         ssMobileMenu();
         ssAccordion();
-        ssPhotoswipe();
-        ssSlickSlider();
         ssAOS();
-        ssAlertBoxes();
         ssSmoothScroll();
         ssBackToTop();
 
