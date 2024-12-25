@@ -2451,8 +2451,8 @@ html.no-csstransitions .hero-content {
 }
 
 .s-about__section--profile {
-  padding-top: 28rem;
-  padding-bottom: 4rem;
+  padding-top: 14rem;
+  padding-bottom: 6rem;
   min-height: 108rem;
   position: relative;
 }
@@ -2607,8 +2607,8 @@ html.no-csstransitions .hero-content {
  *
  * ------------------------------------------------------------------- */
 .s-services {
-  padding-top: 24rem;
-  padding-bottom: 20rem;
+  padding-top: 14rem;
+  padding-bottom: 4rem;
   background-color: #1d1b37;
   position: relative;
 }
@@ -2618,7 +2618,7 @@ html.no-csstransitions .hero-content {
 }
 
 .s-services__leftcol {
-  padding-bottom: 12rem;
+  padding-bottom: 4rem;
 }
 
 .s-services__leftcol p.lead {
@@ -3255,7 +3255,7 @@ html.no-csstransitions .hero-content {
  *
  * ------------------------------------------------------------------- */
 .s-footer {
-  padding-top: 24rem;
+  padding-top: 14rem;
   padding-bottom: 8rem;
   background-color: #0b0a15;
   position: relative;
