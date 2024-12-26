@@ -144,7 +144,7 @@
             duration: 600,
             easing: 'ease-in-out',
             delay: 300,
-            once: true,
+            once: false,
             disable: 'mobile'
         });
 

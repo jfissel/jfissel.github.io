@@ -2570,7 +2570,7 @@ html.no-csstransitions .hero-content {
 
 @media screen and (max-width:800px) {
   .s-about__section--profile {
-    padding-top: 20rem;
+    padding-top: 14rem;
     padding-bottom: 0;
     min-height: 0;
   }
@@ -2770,7 +2770,7 @@ html.no-csstransitions .hero-content {
 
 @media screen and (max-width:800px) {
   .s-services {
-    padding-top: 20rem;
+    padding-top: 14rem;
   }
 
   .s-services__content .s-services__leftcol {
@@ -3442,7 +3442,7 @@ html.no-csstransitions .hero-content {
 
 @media screen and (max-width:800px) {
   .s-footer {
-    padding-top: 20rem;
+    padding-top: 14rem;
   }
 
   .ss-copyright {
