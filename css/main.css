@@ -2668,12 +2668,12 @@ html.no-csstransitions .hero-content {
 .s-services .vert-line {
   width: 2px;
   height: 20rem;
-  background-color: #f9861a;
+  background-color: white;
   -webkit-transform: translate3d(50%, 0, 0);
   transform: translate3d(50%, 0, 0);
   position: absolute;
-  bottom: -20rem;
-  left: 20px;
+  bottom: -10rem;
+  right: 11.2rem;
 }
 
 /* ------------------------------------------------------------------- 
@@ -2774,12 +2774,15 @@ html.no-csstransitions .hero-content {
     padding-left: 10px;
   }
 
+  .s-services .vert-line {
+    right: 9rem;
+  }
+
 }
 
 @media screen and (max-width:1040px) {
   .s-services .vert-line {
     height: 12rem;
-    left: 16px;
   }
 
   .s-services__content .column {
@@ -2820,11 +2823,15 @@ html.no-csstransitions .hero-content {
     max-width: 100%;
   }
 
+  .s-services .vert-line {
+    right: 6.2rem;
+  }
+
 }
 
 @media screen and (max-width:600px) {
   .s-services .vert-line {
-    left: 34px;
+    right: 5rem;
   }
 
   .services-list__item-header h5 {
@@ -3487,10 +3494,6 @@ html.no-csstransitions .hero-content {
     /* Add space between the contact items */
     .footer-contacts .footer-contact-block {
         margin-bottom: 3.2rem; /* Or adjust as needed */
-    }
-
-    .right-vert-line {
-      display: none; /* Hide the vertical line */
     }
 
 }
