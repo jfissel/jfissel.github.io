@@ -43,70 +43,91 @@
    /* move header - control header as you scroll down
     * -------------------------------------------------- */
     const ssMoveHeader = function () {
+        const $hero = $('.s-hero');
+        const $hdr = $('.s-header');
+        const heroHeight = $hero.outerHeight();
 
-        const $hero = $('.s-hero'),
-              $hdr = $('.s-header'),
-              triggerHeight = $hero.outerHeight() - 170;
+        // Define thresholds and corresponding classes
+        const headerStates = [
+            { threshold: heroHeight - 170, className: 'sticky' },
+            { threshold: heroHeight - 150, className: 'offset' },
+            { threshold: heroHeight - 20, className: 'scrolling' },
+        ];
 
+        // Function to update header classes based on scroll position
+        const updateHeaderClasses = () => {
+            const scrollPosition = window.scrollY;
 
-        $WIN.on('scroll', function () {
-
-            let loc = $WIN.scrollTop();
-
-            if (loc > triggerHeight) {
-                $hdr.addClass('sticky');
-            } else {
-                $hdr.removeClass('sticky');
+            // loop through states in reverse order to remove classes first
+            for (let i = headerStates.length -1; i>=0; i--) {
+                const { threshold, className } = headerStates[i];
+                if (scrollPosition > threshold) {
+                    $hdr.addClass(className);
+                } else {
+                    $hdr.removeClass(className);
+                }
             }
+            
+        };
 
-            if (loc > triggerHeight + 20) {
-                $hdr.addClass('offset');
-            } else {
-                $hdr.removeClass('offset');
-            }
+        // Initial check on load
+        updateHeaderClasses();
 
-            if (loc > triggerHeight + 150) {
-                $hdr.addClass('scrolling');
-            } else {
-                $hdr.removeClass('scrolling');
-            }
-
-        });
-
+        // Update classes on scroll
+        window.addEventListener('scroll', updateHeaderClasses);
     };
 
-   /* mobile menu
-    * ---------------------------------------------------- */ 
+    /* mobile menu
+    * ---------------------------------------------------- */
     const ssMobileMenu = function() {
-
         const $toggleButton = $('.header-menu-toggle');
         const $headerContent = $('.header-content');
         const $siteBody = $("body");
+        const mediaQuery = window.matchMedia('(max-width: 900px)');
+        const mediaQueryLarge = window.matchMedia('(min-width: 901px)');
 
-        $toggleButton.on('click', function(event){
-            event.preventDefault();
+        // Create and append the overlay element
+        const $overlay = $('<div class="menu-overlay"></div>');
+        $siteBody.append($overlay);
+
+        // Function to handle menu toggle
+        const toggleMenu = () => {
             $toggleButton.toggleClass('is-clicked');
             $siteBody.toggleClass('menu-is-open');
+            // Prevent body scroll when menu is open
+            $siteBody.css("overflow", $siteBody.hasClass("menu-is-open") ? "hidden" : "");
+
+        };
+
+        // Toggle menu on button click
+        $toggleButton.on('click', function(event){
+            event.preventDefault();
+            toggleMenu();
         });
 
+        // Close menu on header link click (if media query is met)
         $headerContent.find('.header-nav a, .btn').on("click", function() {
-
-            // at 900px and below
-            if (window.matchMedia('(max-width: 900px)').matches) {
-                $toggleButton.toggleClass('is-clicked');
-                $siteBody.toggleClass('menu-is-open');
+            if (mediaQuery.matches) {
+                toggleMenu();
             }
         });
 
-        $WIN.on('resize', function() {
-
-            // above 900px
-            if (window.matchMedia('(min-width: 901px)').matches) {
-                if ($siteBody.hasClass("menu-is-open")) $siteBody.removeClass("menu-is-open");
-                if ($toggleButton.hasClass("is-clicked")) $toggleButton.removeClass("is-clicked");
+        // Function to close the menu if the window is resized above the breakpoint
+        const closeMenuOnResize = () => {
+            if (mediaQueryLarge.matches) {
+                if ($siteBody.hasClass("menu-is-open")) {
+                    $siteBody.removeClass("menu-is-open");
+                    $toggleButton.removeClass("is-clicked");
+                    $siteBody.css("overflow", ""); // Reset overflow
+                }
             }
-        });
+        };
 
+        // Close menu on resize
+        window.addEventListener('resize', closeMenuOnResize);
+        
+        // Initial check on load, in case of resize during load
+        closeMenuOnResize();
     };
 
    /* accordion
