@@ -3414,7 +3414,7 @@ html.no-csstransitions .hero-content {
   -webkit-transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   position: fixed;
-  bottom: 8.4rem;
+  bottom: 4.4rem;
   right: 8rem;
 }
 
