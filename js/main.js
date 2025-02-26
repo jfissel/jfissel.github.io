@@ -111,23 +111,27 @@
 
    /* accordion
     * ------------------------------------------------------ */
-    const ssAccordion = function() {
-
+   const ssAccordion = function() {
+        
         const $allItems = $('.services-list__item');
         const $allPanels = $allItems.children('.services-list__item-body');
+        const $allHeaders = $allItems.children('.services-list__item-header');
 
         $allPanels.slice(1).hide();
 
-        $allItems.on('click', '.services-list__item-header', function() {
+        $allHeaders.on('click', function() {
 
             const $this = $(this),
-                  $curItem = $this.parent(),
-                  $curPanel =  $this.next();
-
-            if(!$curItem.hasClass('is-active')){
+                $curItem = $this.parent(),
+                $curPanel =  $this.next();
+            
+            if ($curItem.hasClass('is-active')) {
+                $curPanel.slideUp();
+                $curItem.removeClass('is-active');
+            } else {
                 $allPanels.slideUp();
-                $curPanel.slideDown();
                 $allItems.removeClass('is-active');
+                $curPanel.slideDown();
                 $curItem.addClass('is-active');
             }
             
