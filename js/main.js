@@ -82,53 +82,59 @@
     const ssMobileMenu = function() {
         const $toggleButton = $('.header-menu-toggle');
         const $headerContent = $('.header-content');
-        const $siteBody = $("body");
+        const $siteBody = $('body');
+        const $overlay = $('<div class="menu-overlay"></div>');
         const mediaQuery = window.matchMedia('(max-width: 900px)');
         const mediaQueryLarge = window.matchMedia('(min-width: 901px)');
 
-        // Create and append the overlay element
-        const $overlay = $('<div class="menu-overlay"></div>');
-        $siteBody.append($overlay);
-
         // Function to handle menu toggle
         const toggleMenu = () => {
-            $toggleButton.toggleClass('is-clicked');
-            $siteBody.toggleClass('menu-is-open');
-            // Prevent body scroll when menu is open
-            $siteBody.css("overflow", $siteBody.hasClass("menu-is-open") ? "hidden" : "");
-
+            const isOpen = $siteBody.hasClass('menu-is-open');
+            $toggleButton.toggleClass('is-clicked', !isOpen);
+            $siteBody.toggleClass('menu-is-open', !isOpen);
+            $siteBody.css('overflow', isOpen ? '' : 'hidden'); // Toggle overflow based on menu state
         };
 
+        // Close menu if open
+        const closeMenu = () => {
+            if ($siteBody.hasClass("menu-is-open")) {
+                toggleMenu();
+            }
+        };
+        
+        // Close menu on resize
+        const closeMenuOnResize = () => {
+            if (mediaQueryLarge.matches) {
+                closeMenu();
+            }
+        };
+
+        // Append overlay
+        $siteBody.append($overlay);
+
         // Toggle menu on button click
-        $toggleButton.on('click', function(event){
+        $toggleButton.on('click', (event) => {
             event.preventDefault();
             toggleMenu();
         });
 
         // Close menu on header link click (if media query is met)
-        $headerContent.find('.header-nav a, .btn').on("click", function() {
+        $headerContent.find('.header-nav a, .btn').on('click', () => {
             if (mediaQuery.matches) {
-                toggleMenu();
+                closeMenu();
             }
         });
 
-        // Function to close the menu if the window is resized above the breakpoint
-        const closeMenuOnResize = () => {
-            if (mediaQueryLarge.matches) {
-                if ($siteBody.hasClass("menu-is-open")) {
-                    $siteBody.removeClass("menu-is-open");
-                    $toggleButton.removeClass("is-clicked");
-                    $siteBody.css("overflow", ""); // Reset overflow
-                }
-            }
-        };
+        // Close menu on overlay click
+        $overlay.on('click', closeMenu);
 
         // Close menu on resize
         window.addEventListener('resize', closeMenuOnResize);
-        
+
         // Initial check on load, in case of resize during load
         closeMenuOnResize();
     };
+
 
    /* accordion
     * ------------------------------------------------------ */
