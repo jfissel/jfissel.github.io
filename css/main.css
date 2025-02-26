@@ -1922,7 +1922,7 @@ input::-moz-focus-inner {
     background-color: #050505;
     height: auto;
     width: 100%;
-    padding: 16rem 6rem 8rem;
+    padding: 10rem 6rem 6rem;
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
     position: absolute;
@@ -2020,7 +2020,7 @@ input::-moz-focus-inner {
   }
 
   .header-content {
-    padding: 16rem 4rem 8rem;
+    padding: 10rem 4rem 4rem;
   }
 
   .header-content .btn {
@@ -2042,23 +2042,34 @@ input::-moz-focus-inner {
   overflow: hidden;
   background-color: transparent;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .s-hero::before {
   display: block;
   content: "";
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: -webkit-gradient(linear, left top, right top, color-stop(10%, black), to(rgba(0, 0, 0, 0)));
   background: linear-gradient(90deg, black 10%, rgba(0, 0, 0, 0) 100%);
-  opacity: .25;
+  opacity: .90;
+  background-image: url("/images/hero-bg-3000.webp");
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  pointer-events: none;
 }
 
-.no-js .s-hero {
-  background: #ffffff;
+/* Disable parallax effect on mobile */
+@media screen and (max-width: 900px) {
+  .s-hero::before {
+    position: absolute;
+    background-attachment: scroll;
+  }
 }
 
 .hero-content {
@@ -3466,6 +3477,21 @@ html.no-csstransitions .hero-content {
     flex: 0 0 100%;
     max-width: 100%;
   }
+    .s-footer__main {
+    padding-bottom: 4.8rem; /* Adjusted padding-bottom */
+  }
+    .s-footer__main .section-intro {
+    margin-bottom: 4.8rem; /* Adjusted margin-bottom */
+  }
+
+    /* Add space between the contact items */
+    .footer-contacts .footer-contact-block {
+        margin-bottom: 3.2rem; /* Or adjust as needed */
+    }
+
+    .right-vert-line {
+      display: none; /* Hide the vertical line */
+    }
 
 }
 
