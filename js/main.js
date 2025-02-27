@@ -135,44 +135,55 @@
         closeMenuOnResize();
     };
 
-
    /* accordion
     * ------------------------------------------------------ */
    const ssAccordion = function() {
         const $allItems = $('.services-list__item');
         const $allPanels = $allItems.children('.services-list__item-body');
         const $allHeaders = $allItems.children('.services-list__item-header');
+        const animationDuration = 400;
+        const scrollOffset = 90;
 
         $allPanels.slice(1).hide();
 
-        $allHeaders.on('click', function() {
-            const $curItem = $(this).parent();
+        $allHeaders.on('click', function(event) {
+            event.preventDefault();
+
+            const $curHeader = $(this);
+            const $curItem = $curHeader.parent();
             const $curPanel = $curItem.children('.services-list__item-body');
             const $activeItem = $allItems.filter('.is-active');
 
-            const closePanel = (item) => {
-                item.children('.services-list__item-body').slideUp(400, function(){
-                    item.removeClass('is-active');
+            const closePanel = ($item) => {
+                $item.children('.services-list__item-body').slideUp(animationDuration, function() {
+                    $item.removeClass('is-active');
                 });
             };
 
             const openPanel = () => {
-                $curPanel.slideDown(400);
+                $curPanel.slideDown(animationDuration, function() {
+                    const panelTop = $curItem.offset().top;
+                    const viewportTop = $WIN.scrollTop();
+
+                    if (panelTop < viewportTop) {
+                        $('html, body').animate({
+                            scrollTop: panelTop - scrollOffset
+                        }, animationDuration);
+                    }
+                });
                 $curItem.addClass('is-active');
             };
 
             if ($curItem.hasClass('is-active')) {
                 closePanel($curItem);
-            } else if ($activeItem.length) {
-                closePanel($activeItem);
-                openPanel();
             } else {
+                 if ($activeItem.length) {
+                    closePanel($activeItem);
+                 }
                 openPanel();
             }
-
-            return false;
         });
-   };
+    };
 
    /* Animate On Scroll
     * ------------------------------------------------------ */
