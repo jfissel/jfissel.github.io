@@ -6,6 +6,8 @@
 
     "use strict";
     
+    $("html").removeClass('no-js').addClass('js');
+
     const cfg = {
                 scrollDuration : 800, // smoothscroll duration
                 };

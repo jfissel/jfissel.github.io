@@ -3,6 +3,22 @@
  * =================================================================== */
 
 /* ===================================================================
+ * # Animate On Scroll - No-JS Fallback
+ * ------------------------------------------------------------------- */
+ .no-js [data-aos^=fade][data-aos^=fade],
+ .no-js [data-aos^=zoom][data-aos^=zoom],
+ .no-js [data-aos^=slide][data-aos^=slide],
+ .no-js [data-aos^=flip][data-aos^=flip] {
+   opacity: 1;
+   -webkit-transform: none;
+   transform: none;
+     /*also make sure backface is visible*/
+   -webkit-backface-visibility: visible;
+   backface-visibility: visible;
+   
+ }
+
+/* ===================================================================
  * # Animate On Scroll 
  * https://michalsnik.github.io/aos/
  * ------------------------------------------------------------------- */
