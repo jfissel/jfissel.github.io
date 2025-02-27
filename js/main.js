@@ -158,7 +158,11 @@
             } else {
                 $allPanels.slideUp();
                 $allItems.removeClass('is-active');
-                $curPanel.slideDown();
+                $curPanel.slideDown(400, function() {
+                $('html, body').animate({
+                    scrollTop: $curItem.offset().top - 100
+                    }, 500);
+                });
                 $curItem.addClass('is-active');
             }
             
