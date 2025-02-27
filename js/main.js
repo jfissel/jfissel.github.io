@@ -180,7 +180,6 @@
             easing: 'ease-in-out',
             delay: 300,
             once: false,
-            disable: 'mobile'
         });
 
     };
