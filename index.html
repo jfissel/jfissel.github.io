@@ -3,15 +3,34 @@
 <head>
     <!-- Basic Page Needs -->
     <meta charset="utf-8">
-    <title>John Fissel</title>
-    <meta name="description" content="John Fissel, a business professional in Cleveland, OH.">
-    <meta name="author" content="">
+    <title>John Fissel | CPA in Cleveland, OH</title>
+    <meta name="description" content="John Fissel, a certified public accountant and business professional in Cleveland, OH specializing in data analytics, automation, and accounting technology.">
+    <meta name="author" content="John Fissel">
     <meta name="theme-color" content="#050504">
 
     <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="apple-mobile-web-app-status-bar-style" content="#050504">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="John Fissel | CPA in Cleveland, OH">
+    <meta property="og:description" content="John Fissel, a certified public accountant and business professional in Cleveland, OH specializing in data analytics, automation, and accounting technology.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://johnfissel.com">
+    <meta property="og:image" content="https://johnfissel.com/images/profile-pic.webp">
+    
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="John Fissel | CPA in Cleveland, OH">
+    <meta name="twitter:description" content="John Fissel, a certified public accountant and business professional in Cleveland, OH specializing in data analytics, automation, and accounting technology.">
+    <meta name="twitter:image" content="https://johnfissel.com/images/profile-pic.webp">
+
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/main.css">
@@ -22,11 +41,32 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "John Fissel",
+      "jobTitle": "Certified Public Accountant",
+      "url": "https://johnfissel.com",
+      "sameAs": [
+        "https://www.linkedin.com/in/johnfissel/",
+        "https://twitter.com/johnfissel",
+        "https://medium.com/@johnfissel"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Cleveland",
+        "addressRegion": "OH"
+      }
+    }
+    </script>
 </head>
 
 <body id="top">
     <!-- Preloader -->
-    <div id="preloader">
+    <div id="preloader" aria-hidden="true">
         <div id="loader" class="dots-fade">
             <div></div>
             <div></div>
@@ -35,9 +75,9 @@
     </div>
 
     <!-- Header -->
-    <header class="s-header">
+    <header class="s-header" role="banner">
         <div class="header-content">
-            <nav class="row header-nav-wrap">
+            <nav class="row header-nav-wrap" role="navigation" aria-label="Main Navigation">
                 <ul class="header-nav">
                     <li><a class="smoothscroll" href="#home" title="Intro">Home</a></li>
                     <li><a class="smoothscroll" href="#about" title="About">About</a></li>
@@ -47,7 +87,7 @@
             </nav>
         </div> <!-- end header-content -->
 
-        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+        <a class="header-menu-toggle" href="#0" aria-label="Toggle Menu"><span>Menu</span></a>
     </header>
 
     <!-- Home -->
@@ -60,26 +100,26 @@
                     in Cleveland, OH <br>
                 </h1>
 
-                <ul class="hero-social">
+                <ul class="hero-social" aria-label="Social Links">
                     <li>
-                        <a href="https://www.linkedin.com/in/johnfissel/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="https://www.linkedin.com/in/johnfissel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">LinkedIn</a>
                     </li>
                     <li>
-                        <a href="https://twitter.com/johnfissel" target="_blank" rel="noopener noreferrer">X</a>
+                        <a href="https://twitter.com/johnfissel" target="_blank" rel="noopener noreferrer" aria-label="X Profile">X</a>
                     </li>
                     <li>
-                        <a href="https://medium.com/@johnfissel" target="_blank" rel="noopener noreferrer">Medium</a>
+                        <a href="https://medium.com/@johnfissel" target="_blank" rel="noopener noreferrer" aria-label="Medium Profile">Medium</a>
                     </li>
                     <li>
-                        <a href="mailto:contact@johnfissel.com">Email</a>
+                        <a href="mailto:contact@johnfissel.com" aria-label="Email Contact">Email</a>
                     </li>
                 </ul> <!-- end hero-social -->
             </div>
         </div> <!-- end hero-content -->
 
         <div class="hero-scroll">
-            <a href="#about" title="About" class="scroll-link smoothscroll">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <a href="#about" title="About" class="scroll-link smoothscroll" aria-label="Scroll to About section">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 24l-8-9h6v-15h4v15h6z"/>
                 </svg>
             </a>
@@ -193,7 +233,7 @@
     </section> <!-- end s-services -->
 
     <!-- Contact -->
-    <footer id="contact" class="s-footer h-dark-bg">
+    <footer id="contact" class="s-footer h-dark-bg" role="contentinfo">
         <div class="right-vert-line"></div>
         <div class="row s-footer__main">
             <div class="column large-6">
@@ -212,7 +252,7 @@
                             Email
                         </h5>
                         <p class="footer-contact-block__content">
-                            <a href="mailto:contact@johnfissel.com">contact@johnfissel.com</a>
+                            <a href="mailto:contact@johnfissel.com" aria-label="Send email to contact@johnfissel.com">contact@johnfissel.com</a>
                         </p>
                     </div> <!-- end footer-contact-block -->
                     <div class="footer-contact-block">
@@ -220,7 +260,7 @@
                             Phone
                         </h5>
                         <p class="footer-contact-block__content">
-                            <a href="tel:+12169788976">+1 216 978 8976</a>
+                            <a href="tel:+12169788976" aria-label="Call +1 216 978 8976">+1 216 978 8976</a>
                         </p>
                     </div> <!-- end footer-contact-block -->
                     <div class="footer-contact-block">
@@ -228,9 +268,9 @@
                             Social
                         </h5>
                         <ul class="footer-contact-block__list">
-                            <li><a href="https://www.linkedin.com/in/johnfissel/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                            <li><a href="https://twitter.com/johnfissel" target="_blank" rel="noopener noreferrer">X</a></li>
-                            <li><a href="https://medium.com/@johnfissel" target="_blank" rel="noopener noreferrer">Medium</a></li>
+                            <li><a href="https://www.linkedin.com/in/johnfissel/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">LinkedIn</a></li>
+                            <li><a href="https://twitter.com/johnfissel" target="_blank" rel="noopener noreferrer" aria-label="X Profile">X</a></li>
+                            <li><a href="https://medium.com/@johnfissel" target="_blank" rel="noopener noreferrer" aria-label="Medium Profile">Medium</a></li>
                         </ul>
                     </div> <!-- end footer-contact-block -->
                 </div>
@@ -239,12 +279,12 @@
 
         <div class="row s-footer__bottom">
             <div class="column large-full ss-copyright">
-                <span>© Copyright 2025 John Fissel</span>
+                <span>© Copyright <script>document.write(new Date().getFullYear())</script> John Fissel</span>
             </div> <!-- end ss-copyright -->
 
             <div class="ss-go-top">
-                <a class="smoothscroll" title="Back to Top" href="#top">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <a class="smoothscroll" title="Back to Top" href="#top" aria-label="Back to Top">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M12 0l8 9h-6v15h-4v-15h-6z"/>
                     </svg>
                 </a>
@@ -255,5 +295,20 @@
     <!-- JavaScript -->
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
