@@ -78,14 +78,27 @@
             const loader = document.getElementById("loader");
             const preloader = document.getElementById("preloader");
             
-            fadeOut(loader, "slow", function() {
-                // will fade out the whole DIV that covers the website.
-                fadeOut(preloader, "slow");
-            });
-            
-            // for hero content animations 
-            document.documentElement.classList.remove('ss-preload');
-            document.documentElement.classList.add('ss-loaded');
+            // Ensure preloader exists before trying to fade it out
+            if (loader && preloader) {
+                // Add ss-loaded class immediately to start content animation
+                document.documentElement.classList.remove('ss-preload');
+                document.documentElement.classList.add('ss-loaded');
+                
+                // Then fade out the preloader
+                fadeOut(loader, "slow", function() {
+                    // will fade out the whole DIV that covers the website.
+                    fadeOut(preloader, "slow", function() {
+                        // Remove preloader from DOM after fade out is complete
+                        if (preloader.parentNode) {
+                            preloader.parentNode.removeChild(preloader);
+                        }
+                    });
+                });
+            } else {
+                // If preloader elements don't exist, still add the loaded class
+                document.documentElement.classList.remove('ss-preload');
+                document.documentElement.classList.add('ss-loaded');
+            }
         });
     };
 
@@ -98,16 +111,17 @@
         element.style.opacity = initialOpacity;
         
         let opacity = initialOpacity;
-        const step = 0.1;
-        const interval = speed === "slow" ? 50 : 10;
+        const step = 0.05; // Smaller steps for smoother fade
+        const interval = speed === "slow" ? 30 : 10; // Adjusted interval
         
         const timer = setInterval(function() {
             opacity -= step;
             
-            if (opacity <= 0.1) {
+            if (opacity <= 0.05) {
                 clearInterval(timer);
                 element.style.opacity = 0;
                 element.style.display = 'none';
+                element.style.visibility = 'hidden'; // Add visibility hidden for better accessibility
                 if (callback) {
                     callback();
                 }
@@ -433,9 +447,11 @@
    /* initialize
     * ------------------------------------------------------ */
     (function ssInit() {
-        // Use requestAnimationFrame for initialization to ensure DOM is ready
+        // Initialize preloader immediately
+        ssPreloader();
+        
+        // Use requestAnimationFrame for other initializations to ensure DOM is ready
         requestAnimationFrame(() => {
-            ssPreloader();
             ssMoveHeader();
             ssMobileMenu();
             ssAccordion();

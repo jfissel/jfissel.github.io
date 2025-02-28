@@ -578,11 +578,17 @@ form,
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  visibility: visible; /* Explicitly set visibility */
+  opacity: 1; /* Explicitly set opacity */
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out; /* Smoother transition */
 }
 
 .no-js #preloader,
-.oldie #preloader {
+.oldie #preloader,
+.ss-loaded #preloader {
   display: none;
+  visibility: hidden;
+  opacity: 0;
 }
 
 #loader {
@@ -2222,10 +2228,10 @@ html.ss-preload .hero-content {
 html.ss-loaded .hero-content {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
-  -webkit-animation-duration: 3s;
-  animation-duration: 3s;
-  -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -2240,37 +2246,35 @@ html.no-csstransitions .hero-content {
 
 /* fade in */
 @-webkit-keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
     visibility: hidden;
-    -webkit-transform: translate3d(0, 100%, 0);
-    transform: translate3d(0, 100%, 0);
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
   }
 
-  to {
+  100% {
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-
 }
 
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
     visibility: hidden;
-    -webkit-transform: translate3d(0, 100%, 0);
-    transform: translate3d(0, 100%, 0);
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
   }
 
-  to {
+  100% {
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
-
 }
 
 /* fade in left */
