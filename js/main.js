@@ -18,11 +18,30 @@
     const doc = document.documentElement;
     doc.setAttribute('data-useragent', navigator.userAgent);
 
+    // Utility functions
+    // Debounce function to limit how often a function can run
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    }
+
     // Helper function for smooth scrolling with controlled duration
     function smoothScroll(targetPosition, duration, callback) {
         const startPosition = window.scrollY;
         const distance = targetPosition - startPosition;
         let start = null;
+
+        // Don't animate for very small distances
+        if (Math.abs(distance) < 5) {
+            window.scrollTo(0, targetPosition);
+            if (callback) callback();
+            return;
+        }
 
         function step(timestamp) {
             if (!start) start = timestamp;
@@ -70,20 +89,32 @@
         });
     };
 
-    // Helper function to fade out elements (replacement for jQuery fadeOut)
+    // Helper function to fade out elements (optimized version)
     function fadeOut(element, speed, callback) {
-        let opacity = 1;
+        if (!element) return;
+        
+        // Cache initial opacity
+        const initialOpacity = parseFloat(window.getComputedStyle(element).opacity);
+        element.style.opacity = initialOpacity;
+        
+        let opacity = initialOpacity;
+        const step = 0.1;
+        const interval = speed === "slow" ? 50 : 10;
+        
         const timer = setInterval(function() {
+            opacity -= step;
+            
             if (opacity <= 0.1) {
                 clearInterval(timer);
+                element.style.opacity = 0;
                 element.style.display = 'none';
                 if (callback) {
                     callback();
                 }
+            } else {
+                element.style.opacity = opacity;
             }
-            element.style.opacity = opacity;
-            opacity -= 0.1;
-        }, speed === "slow" ? 50 : 10);
+        }, interval);
     }
 
    /* move header - control header as you scroll down
@@ -91,6 +122,9 @@
     const ssMoveHeader = function() {
         const hero = document.querySelector('.s-hero');
         const hdr = document.querySelector('.s-header');
+        
+        if (!hero || !hdr) return;
+        
         const heroHeight = hero.offsetHeight;
 
         // Define thresholds and corresponding classes
@@ -104,22 +138,17 @@
         const updateHeaderClasses = () => {
             const scrollPosition = window.scrollY;
 
-            // loop through states in reverse order to remove classes first
-            for (let i = headerStates.length - 1; i >= 0; i--) {
-                const { threshold, className } = headerStates[i];
-                if (scrollPosition > threshold) {
-                    hdr.classList.add(className);
-                } else {
-                    hdr.classList.remove(className);
-                }
-            }
+            // Use a single classList operation with toggle
+            headerStates.forEach(({ threshold, className }) => {
+                hdr.classList.toggle(className, scrollPosition > threshold);
+            });
         };
 
         // Initial check on load
         updateHeaderClasses();
 
-        // Update classes on scroll
-        window.addEventListener('scroll', updateHeaderClasses);
+        // Update classes on scroll with debounce for better performance
+        window.addEventListener('scroll', debounce(updateHeaderClasses, 10));
     };
 
     /* mobile menu
@@ -128,8 +157,13 @@
         const toggleButton = document.querySelector('.header-menu-toggle');
         const headerContent = document.querySelector('.header-content');
         const siteBody = document.body;
+        
+        if (!toggleButton || !headerContent) return;
+        
+        // Create overlay once and cache it
         const overlay = document.createElement('div');
         overlay.className = 'menu-overlay';
+        
         const mediaQuery = window.matchMedia('(max-width: 900px)');
         const mediaQueryLarge = window.matchMedia('(min-width: 901px)');
 
@@ -137,15 +171,9 @@
         const toggleMenu = () => {
             const isOpen = siteBody.classList.contains('menu-is-open');
             
-            if (isOpen) {
-                toggleButton.classList.remove('is-clicked');
-                siteBody.classList.remove('menu-is-open');
-                siteBody.style.overflow = '';
-            } else {
-                toggleButton.classList.add('is-clicked');
-                siteBody.classList.add('menu-is-open');
-                siteBody.style.overflow = 'hidden';
-            }
+            toggleButton.classList.toggle('is-clicked', !isOpen);
+            siteBody.classList.toggle('menu-is-open', !isOpen);
+            siteBody.style.overflow = isOpen ? '' : 'hidden';
         };
 
         // Close menu if open
@@ -156,11 +184,11 @@
         };
         
         // Close menu on resize
-        const closeMenuOnResize = () => {
+        const closeMenuOnResize = debounce(() => {
             if (mediaQueryLarge.matches) {
                 closeMenu();
             }
-        };
+        }, 100);
 
         // Append overlay
         siteBody.appendChild(overlay);
@@ -172,13 +200,11 @@
         });
 
         // Close menu on header link click (if media query is met)
-        const headerLinks = headerContent.querySelectorAll('.header-nav a, .btn');
-        headerLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (mediaQuery.matches) {
-                    closeMenu();
-                }
-            });
+        headerContent.addEventListener('click', (event) => {
+            const target = event.target;
+            if ((target.tagName === 'A' || target.classList.contains('btn')) && mediaQuery.matches) {
+                closeMenu();
+            }
         });
 
         // Close menu on overlay click
@@ -195,6 +221,9 @@
     * ------------------------------------------------------ */
    const ssAccordion = function() {
         const allItems = document.querySelectorAll('.services-list__item');
+        
+        if (!allItems.length) return;
+        
         const allPanels = document.querySelectorAll('.services-list__item-body');
         const allHeaders = document.querySelectorAll('.services-list__item-header');
         const animationDuration = 400;
@@ -207,15 +236,21 @@
             }
         });
 
-        allHeaders.forEach(header => {
-            header.addEventListener('click', function(event) {
+        // Use event delegation for better performance
+        const servicesList = document.querySelector('.services-list');
+        if (servicesList) {
+            servicesList.addEventListener('click', function(event) {
+                const header = event.target.closest('.services-list__item-header');
+                if (!header) return;
+                
                 event.preventDefault();
 
-                const curItem = this.parentElement;
+                const curItem = header.parentElement;
                 const curPanel = curItem.querySelector('.services-list__item-body');
                 const activeItem = document.querySelector('.services-list__item.is-active');
 
                 const closePanel = (item) => {
+                    if (!item) return;
                     const panel = item.querySelector('.services-list__item-body');
                     slideUp(panel, animationDuration, function() {
                         item.classList.remove('is-active');
@@ -244,24 +279,32 @@
                     openPanel();
                 }
             });
-        });
+        }
     };
 
-    // Helper function to slide up elements (replacement for jQuery slideUp)
+    // Helper function to slide up elements (optimized version)
     function slideUp(element, duration, callback) {
-        element.style.height = element.offsetHeight + 'px';
+        if (!element) return;
+        
+        const height = element.offsetHeight;
+        element.style.height = height + 'px';
         element.style.transitionProperty = 'height, margin, padding';
         element.style.transitionDuration = duration + 'ms';
-        element.offsetHeight; // Force repaint
         element.style.overflow = 'hidden';
-        element.style.height = 0;
-        element.style.paddingTop = 0;
-        element.style.paddingBottom = 0;
-        element.style.marginTop = 0;
-        element.style.marginBottom = 0;
+        
+        // Trigger reflow
+        element.offsetHeight;
+        
+        // Set all values at once
+        element.style.height = '0';
+        element.style.paddingTop = '0';
+        element.style.paddingBottom = '0';
+        element.style.marginTop = '0';
+        element.style.marginBottom = '0';
         
         setTimeout(() => {
             element.style.display = 'none';
+            // Remove all properties at once
             element.style.removeProperty('height');
             element.style.removeProperty('padding-top');
             element.style.removeProperty('padding-bottom');
@@ -274,24 +317,34 @@
         }, duration);
     }
 
-    // Helper function to slide down elements (replacement for jQuery slideDown)
+    // Helper function to slide down elements (optimized version)
     function slideDown(element, duration, callback) {
+        if (!element) return;
+        
+        // Reset display
         element.style.removeProperty('display');
         let display = window.getComputedStyle(element).display;
         if (display === 'none') display = 'block';
         element.style.display = display;
         
         const height = element.offsetHeight;
-        element.style.overflow = 'hidden';
-        element.style.height = 0;
-        element.style.paddingTop = 0;
-        element.style.paddingBottom = 0;
-        element.style.marginTop = 0;
-        element.style.marginBottom = 0;
-        element.offsetHeight; // Force repaint
         
+        // Set initial state
+        element.style.overflow = 'hidden';
+        element.style.height = '0';
+        element.style.paddingTop = '0';
+        element.style.paddingBottom = '0';
+        element.style.marginTop = '0';
+        element.style.marginBottom = '0';
+        
+        // Trigger reflow
+        element.offsetHeight;
+        
+        // Set transition
         element.style.transitionProperty = 'height, margin, padding';
         element.style.transitionDuration = duration + 'ms';
+        
+        // Set target height and remove padding/margin restrictions
         element.style.height = height + 'px';
         element.style.removeProperty('padding-top');
         element.style.removeProperty('padding-bottom');
@@ -299,6 +352,7 @@
         element.style.removeProperty('margin-bottom');
         
         setTimeout(() => {
+            // Clean up all properties
             element.style.removeProperty('height');
             element.style.removeProperty('overflow');
             element.style.removeProperty('transition-duration');
@@ -311,35 +365,40 @@
     * ------------------------------------------------------ */
     const ssAOS = function() {
         // AOS is a separate library, so we keep this as is
-        AOS.init({
-            offset: 100,
-            duration: 600,
-            easing: 'ease-in-out',
-            delay: 300,
-            once: false,
-        });
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                offset: 100,
+                duration: 600,
+                easing: 'ease-in-out',
+                delay: 300,
+                once: false,
+            });
+        }
     };
     
    /* smooth scrolling
     * ------------------------------------------------------ */
     const ssSmoothScroll = function() {
-        const smoothScrollLinks = document.querySelectorAll('.smoothscroll');
-        
-        smoothScrollLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const target = this.getAttribute('href');
-                const targetElement = document.querySelector(target);
-                
-                e.preventDefault();
-                e.stopPropagation();
+        // Use event delegation for better performance
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('.smoothscroll');
+            if (!target) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const href = target.getAttribute('href');
+            if (!href) return;
+            
+            const targetElement = document.querySelector(href);
+            if (!targetElement) return;
 
-                // Get target position and scroll to it
-                const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-                
-                // Scroll to target with callback to update URL hash
-                smoothScroll(targetPosition, cfg.scrollDuration, function() {
-                    window.location.hash = target;
-                });
+            // Get target position and scroll to it
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+            
+            // Scroll to target with callback to update URL hash
+            smoothScroll(targetPosition, cfg.scrollDuration, function() {
+                window.location.hash = href;
             });
         });
     };
@@ -349,22 +408,16 @@
     const ssBackToTop = function() {
         const pxShow = 800;
         const goTopButton = document.querySelector(".ss-go-top");
+        
+        if (!goTopButton) return;
 
         // Show or hide the button initially
-        if (window.scrollY >= pxShow) {
-            goTopButton.classList.add('link-is-visible');
-        }
+        goTopButton.classList.toggle('link-is-visible', window.scrollY >= pxShow);
 
-        // Show or hide the button on scroll
-        window.addEventListener('scroll', function() {
-            if (window.scrollY >= pxShow) {
-                if (!goTopButton.classList.contains('link-is-visible')) {
-                    goTopButton.classList.add('link-is-visible');
-                }
-            } else {
-                goTopButton.classList.remove('link-is-visible');
-            }
-        });
+        // Show or hide the button on scroll with debounce
+        window.addEventListener('scroll', debounce(function() {
+            goTopButton.classList.toggle('link-is-visible', window.scrollY >= pxShow);
+        }, 100));
 
         // Add smooth scrolling to top when clicked
         goTopButton.addEventListener('click', function(e) {
@@ -380,13 +433,16 @@
    /* initialize
     * ------------------------------------------------------ */
     (function ssInit() {
-        ssPreloader();
-        ssMoveHeader();
-        ssMobileMenu();
-        ssAccordion();
-        ssAOS();
-        ssSmoothScroll();
-        ssBackToTop();
+        // Use requestAnimationFrame for initialization to ensure DOM is ready
+        requestAnimationFrame(() => {
+            ssPreloader();
+            ssMoveHeader();
+            ssMobileMenu();
+            ssAccordion();
+            ssAOS();
+            ssSmoothScroll();
+            ssBackToTop();
+        });
     })();
 
 })();
