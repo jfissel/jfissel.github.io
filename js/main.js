@@ -68,15 +68,23 @@
    /* preloader
     * -------------------------------------------------- */
     const ssPreloader = function() {
-        // Remove preloader class as it's no longer needed
-        // document.documentElement.classList.add('ss-preload');
+        document.documentElement.classList.add('ss-preload');
 
         window.addEventListener('load', function() {
             // force page scroll position to top at page refresh
             smoothScroll(0, 400);
+
+            // will first fade out the loading animation 
+            const loader = document.getElementById("loader");
+            const preloader = document.getElementById("preloader");
+            
+            fadeOut(loader, "slow", function() {
+                // will fade out the whole DIV that covers the website.
+                fadeOut(preloader, "slow");
+            });
             
             // for hero content animations 
-            // document.documentElement.classList.remove('ss-preload');
+            document.documentElement.classList.remove('ss-preload');
             document.documentElement.classList.add('ss-loaded');
         });
     };
