@@ -1661,6 +1661,9 @@ input::-moz-focus-inner {
   visibility: hidden;
   transform: translateY(-100%);
   z-index: 500;
+  transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+              visibility 0s linear 0.5s,
+              transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .s-header.sticky.scrolling {
@@ -1668,7 +1671,7 @@ input::-moz-focus-inner {
   visibility: visible;
   transform: translateY(0);
   transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-              visibility 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+              visibility 0s linear 0s,
               transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
