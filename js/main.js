@@ -139,30 +139,48 @@
         
         if (!hero || !hdr) return;
         
-        const heroHeight = hero.offsetHeight;
-
-        // Define thresholds and corresponding classes
-        const headerStates = [
-            { threshold: heroHeight - 170, className: 'sticky' },
-            { threshold: heroHeight - 150, className: 'offset' },
-            { threshold: heroHeight - 20, className: 'scrolling' },
-        ];
-
-        // Function to update header classes based on scroll position
+        // Match the back-to-top button's trigger point
+        const pxShow = 800;
+        
+        // Function to update header appearance based on scroll position
         const updateHeaderClasses = () => {
             const scrollPosition = window.scrollY;
-
-            // Use a single classList operation with toggle
-            headerStates.forEach(({ threshold, className }) => {
-                hdr.classList.toggle(className, scrollPosition > threshold);
-            });
+            
+            // When very close to the top of the page, ensure original header is visible
+            if (scrollPosition <= 50) {
+                hdr.classList.remove('sticky');
+                hdr.classList.remove('scrolling');
+                return;
+            }
+            
+            // Show sticky header when past trigger point (same as back-to-top button)
+            if (scrollPosition >= pxShow) {
+                if (!hdr.classList.contains('sticky')) {
+                    hdr.classList.add('sticky');
+                    // Small delay to ensure the browser recognizes the sticky class first
+                    setTimeout(() => {
+                        hdr.classList.add('scrolling');
+                    }, 10);
+                }
+            } else {
+                // Hide sticky header when above trigger point
+                if (hdr.classList.contains('scrolling')) {
+                    hdr.classList.remove('scrolling');
+                    // Wait for fade-out animation to complete before removing sticky
+                    setTimeout(() => {
+                        if (scrollPosition < pxShow) {
+                            hdr.classList.remove('sticky');
+                        }
+                    }, 500);
+                }
+            }
         };
 
         // Initial check on load
         updateHeaderClasses();
 
-        // Update classes on scroll with debounce for better performance
-        window.addEventListener('scroll', debounce(updateHeaderClasses, 10));
+        // Same event handler as the back-to-top button
+        window.addEventListener('scroll', updateHeaderClasses);
     };
 
     /* mobile menu
