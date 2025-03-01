@@ -428,10 +428,10 @@
         // Show or hide the button initially
         goTopButton.classList.toggle('link-is-visible', window.scrollY >= pxShow);
 
-        // Show or hide the button on scroll with debounce
-        window.addEventListener('scroll', debounce(function() {
+        // Show or hide the button on scroll immediately without debounce
+        window.addEventListener('scroll', function() {
             goTopButton.classList.toggle('link-is-visible', window.scrollY >= pxShow);
-        }, 100));
+        });
 
         // Add smooth scrolling to top when clicked
         goTopButton.addEventListener('click', function(e) {
