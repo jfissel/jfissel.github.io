@@ -1758,6 +1758,26 @@ input::-moz-focus-inner {
   margin: 0 1rem;
 }
 
+/* Active navigation link */
+.header-nav a.current {
+  color: #ffffff;
+  position: relative;
+}
+
+.s-header.sticky .header-nav a.current {
+  color: #ffffff;
+}
+
+.s-header.sticky .header-nav a.current::after {
+  background-color: #111111;
+}
+
+.header-nav li {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 0.8rem;
+}
+
 /* ------------------------------------------------------------------- 
  * ## mobile menu toggle
  * ------------------------------------------------------------------- */
@@ -1934,7 +1954,7 @@ input::-moz-focus-inner {
 
   .header-content {
     display: block;
-    background-color: #050505;
+    background-color: #111111;
     height: auto;
     width: 100%;
     padding: 10rem 6rem 6rem;
