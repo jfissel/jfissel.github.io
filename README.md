@@ -1,6 +1,6 @@
 # John Fissel Personal Website
 
-This repository contains the source code for John Fissel's personal website, a certified public accountant based in Cleveland, OH.
+This repository contains the source code for John Fissel's personal website, a certified public accountant based in Austin, TX.
 
 ## Features
 
