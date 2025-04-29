@@ -66,8 +66,8 @@ self.addEventListener("fetch", (event) => {
         const responseToCache = response.clone();
 
         caches.open(CACHE_NAME).then((cache) => {
-          // Don't cache if it's an API call or external resource
-          if (event.request.url.indexOf("http") === 0) {
+          // Only cache same-origin resources
+          if (event.request.url.startsWith(self.location.origin)) {
             cache.put(event.request, responseToCache);
           }
         });
