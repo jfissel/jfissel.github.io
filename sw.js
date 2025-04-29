@@ -8,6 +8,7 @@ const urlsToCache = [
   "/js/main.js",
   "/js/plugins.js",
   "/images/profile-pic.webp",
+  "/images/profile-pic@2x.webp",
   "/favicon.ico",
   "/apple-touch-icon.png",
   "/favicon-32x32.png",
