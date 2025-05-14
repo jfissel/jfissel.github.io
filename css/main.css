@@ -1648,19 +1648,25 @@ input::-moz-focus-inner {
   background-color: #111111;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-100%);
+  transform: translate3d(0, -100%, 0); /* Use translate3d */
+  height: 8.8rem; /* Ensure consistent height */
   z-index: 500;
-  transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-    visibility 0s linear 0.5s,
-    transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  /* Transition for when .scrolling is removed (header hides) */
+  transition-property: transform, opacity, visibility;
+  transition-duration: 0.5s, 0.01s, 0.01s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1), linear, linear;
+  transition-delay: 0s, 0.49s, 0.49s;
 }
 
 .s-header.sticky.scrolling {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-    visibility 0s linear 0s, transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translate3d(0, 0, 0); /* Use translate3d */
+  /* Transition for when .scrolling is added (header appears) */
+  transition-property: transform, opacity, visibility;
+  transition-duration: 0.5s, 0.5s, 0.01s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1), cubic-bezier(0.215, 0.61, 0.355, 1), linear;
+  transition-delay: 0s, 0s, 0s;
 }
 
 .s-header.sticky .header-logo img {
