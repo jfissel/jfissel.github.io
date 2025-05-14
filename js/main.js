@@ -449,7 +449,7 @@
   /* back to top
    * ------------------------------------------------------ */
   const ssBackToTop = function () {
-    const pxShow = 900;
+    const pxShow = 800;
     const goTopButton = document.querySelector(".ss-go-top");
 
     if (!goTopButton) return;
