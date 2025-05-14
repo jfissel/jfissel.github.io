@@ -28,80 +28,60 @@
 
     const currentScrollY = window.scrollY;
 
-    // 1. At the very top of the page (hero section fully visible or page top)
-    if (currentScrollY <= 10) { // Small buffer for being at the absolute top
+    // 1. At the very top of the page
+    if (currentScrollY <= 10) {
       hdr.classList.remove("sticky", "scrolling");
       if (stickyRemovalTimeoutId) {
         clearTimeout(stickyRemovalTimeoutId);
         stickyRemovalTimeoutId = null;
       }
-      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY; // Reset lastScrollY here
       return;
     }
 
     const isScrollingDown =
-      currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2; // Added a small delta to ensure actual scroll
-    const isScrollingUp =
-      currentScrollY < lastScrollY && lastScrollY - currentScrollY > 2; // Added a small delta
+      currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2;
 
-    // 2. Past the hero threshold (e.g., 900px)
+    // 2. Below or at the HERO_THRESHOLD (e.g., 800px from the top)
     if (currentScrollY >= HERO_THRESHOLD) {
-      // Clear any pending sticky removal if we scroll back down past threshold
-      if (stickyRemovalTimeoutId) {
+      if (stickyRemovalTimeoutId) { // Clear any pending hide if we scroll back down
         clearTimeout(stickyRemovalTimeoutId);
         stickyRemovalTimeoutId = null;
       }
 
-      // Add base sticky class if not already present.
-      // This class handles the 'position: fixed' and other base sticky styles.
       if (!hdr.classList.contains("sticky")) {
         hdr.classList.add("sticky");
-        // If we are adding 'sticky' for the first time AND scrolling down,
-        // also add 'scrolling' to make it appear animated.
+        // Animate appearance only if actively scrolling down when it becomes sticky.
+        // Otherwise (e.g., page load/jump below threshold), just make it visible.
         if (isScrollingDown) {
-          // Force a reflow/repaint to ensure 'sticky' styles (initial animation state) are applied
-          void hdr.offsetHeight;
-          // Add 'scrolling' class in the next available frame to trigger the animation
+          void hdr.offsetHeight; // Force reflow/repaint
           requestAnimationFrame(() => {
             hdr.classList.add("scrolling");
           });
+        } else {
+          hdr.classList.add("scrolling"); // Make visible directly
         }
-        // If 'sticky' is added while scrolling up (e.g., page jump),
-        // it will not have 'scrolling' initially, thus remaining hidden.
       } else {
-        // If 'sticky' is already present
-        if (isScrollingDown) {
-          // Scrolling Down: Make header visible (animate in)
-          // Add 'scrolling' class if not already present (e.g., if it was hidden while sticky)
-          if (!hdr.classList.contains("scrolling")) {
-            hdr.classList.add("scrolling");
-          }
-        } else if (isScrollingUp) {
-          // Scrolling Up (but still past threshold): Make header disappear (animate out)
-          hdr.classList.remove("scrolling");
+        // If already sticky, ensure it is visible (scrolling)
+        if (!hdr.classList.contains("scrolling")) {
+          hdr.classList.add("scrolling");
         }
       }
-      // If stationary or scroll delta is too small, current 'scrolling' state persists.
-      // This behavior is important for link clicks: if a smooth scroll operation
-      // ends in this zone, the header's visibility (due to 'scrolling' class)
-      // will be determined by the final direction of that scroll.
-    } else {
-      // 3. Above the hero threshold (but not at the very top)
-      // Header should not be visible as a *sticky* element here.
-      // If it was sticky, it should animate out, then the 'sticky' class should be removed.
-      if (hdr.classList.contains("sticky")) {
-        hdr.classList.remove("scrolling"); // Start fade-out animation
+    }
+    // 3. Inside the Hero section (currentScrollY < HERO_THRESHOLD and currentScrollY > 10)
+    else {
+      if (hdr.classList.contains("sticky")) { // Only act if it was previously sticky
+        hdr.classList.remove("scrolling"); // Start hide animation (slide up)
 
-        // Schedule removal of 'sticky' class after CSS transition, if not already scheduled.
-        // This allows the fade-out animation (controlled by removing 'scrolling') to complete.
+        // Schedule removal of 'sticky' class after CSS transition completes
         if (!stickyRemovalTimeoutId) {
           stickyRemovalTimeoutId = setTimeout(() => {
-            // Double-check: only remove 'sticky' if still above the threshold
+            // Double-check: only remove 'sticky' if still above the threshold after animation
             if (window.scrollY < HERO_THRESHOLD) {
               hdr.classList.remove("sticky");
             }
             stickyRemovalTimeoutId = null; // Clear the timeout ID
-          }, 500); // This duration should roughly match your CSS transition time for the header.
+          }, 500); // This duration should match your CSS transition time for the header hide.
         }
       }
     }
