@@ -17,71 +17,66 @@
   const doc = document.documentElement;
   doc.setAttribute("data-useragent", navigator.userAgent);
 
-  // Header-related variables and functions moved to IIFE scope for broader access
+  // Header-related variables and functions
   const hdr = document.querySelector(".s-header");
-  const HERO_THRESHOLD = 800; // Sync with back-to-top button's appearance
+  const HERO_THRESHOLD = 800;
   let lastScrollY = window.scrollY;
   let stickyRemovalTimeoutId = null;
 
   const updateHeaderState = () => {
-    if (!hdr) return; // Exit if header element doesn't exist
+    if (!hdr) return;
 
     const currentScrollY = window.scrollY;
 
-    // 1. At the very top of the page
+    // At the very top of the page
     if (currentScrollY <= 10) {
       hdr.classList.remove("sticky", "scrolling");
       if (stickyRemovalTimeoutId) {
         clearTimeout(stickyRemovalTimeoutId);
         stickyRemovalTimeoutId = null;
       }
-      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY; // Reset lastScrollY here
+      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
       return;
     }
 
     const isScrollingDown =
       currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2;
 
-    // 2. Below or at the HERO_THRESHOLD (e.g., 800px from the top)
+    // Below or at the HERO_THRESHOLD
     if (currentScrollY >= HERO_THRESHOLD) {
-      if (stickyRemovalTimeoutId) { // Clear any pending hide if we scroll back down
+      if (stickyRemovalTimeoutId) {
         clearTimeout(stickyRemovalTimeoutId);
         stickyRemovalTimeoutId = null;
       }
 
       if (!hdr.classList.contains("sticky")) {
         hdr.classList.add("sticky");
-        // Animate appearance only if actively scrolling down when it becomes sticky.
-        // Otherwise (e.g., page load/jump below threshold), just make it visible.
         if (isScrollingDown) {
-          void hdr.offsetHeight; // Force reflow/repaint
+          void hdr.offsetHeight; // Force reflow for animation
           requestAnimationFrame(() => {
             hdr.classList.add("scrolling");
           });
         } else {
-          hdr.classList.add("scrolling"); // Make visible directly
+          hdr.classList.add("scrolling");
         }
       } else {
-        // If already sticky, ensure it is visible (scrolling)
         if (!hdr.classList.contains("scrolling")) {
           hdr.classList.add("scrolling");
         }
       }
     }
-    // 3. Inside the Hero section (currentScrollY < HERO_THRESHOLD and currentScrollY > 10)
+    // Inside the Hero section
     else {
-      if (hdr.classList.contains("sticky")) { // Only act if it was previously sticky
-        hdr.classList.remove("scrolling"); // Start hide animation (slide up)
+      if (hdr.classList.contains("sticky")) {
+        hdr.classList.remove("scrolling");
 
-        // Schedule removal of 'sticky' class after CSS transition completes
         if (!stickyRemovalTimeoutId) {
           stickyRemovalTimeoutId = setTimeout(() => {
-            // Double-check: only remove 'sticky' if still above the threshold after animation
             if (window.scrollY < HERO_THRESHOLD) {
               hdr.classList.remove("sticky");
             }
-            stickyRemovalTimeoutId = null; // Clear the timeout ID
-          }, 500); // This duration should match your CSS transition time for the header hide.
+            stickyRemovalTimeoutId = null;
+          }, 500); // Should match CSS transition time
         }
       }
     }
@@ -89,7 +84,7 @@
   };
 
   // Utility functions
-  // Debounce function to limit how often a function can run
+  // Debounce function
   function debounce(func, wait) {
     let timeout;
     return function () {
@@ -100,13 +95,12 @@
     };
   }
 
-  // Helper function for smooth scrolling with controlled duration
+  // Helper function for smooth scrolling
   function smoothScroll(targetPosition, duration, callback) {
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
     let start = null;
 
-    // Don't animate for very small distances
     if (Math.abs(distance) < 5) {
       window.scrollTo(0, targetPosition);
       if (callback) callback();
@@ -142,48 +136,39 @@
     document.documentElement.classList.add("ss-preload");
 
     window.addEventListener("load", function () {
-      // force page scroll position to top at page refresh
       smoothScroll(0, 400);
 
-      // will first fade out the loading animation
       const loader = document.getElementById("loader");
       const preloader = document.getElementById("preloader");
 
-      // Ensure preloader exists before trying to fade it out
       if (loader && preloader) {
-        // Add ss-loaded class immediately to start content animation
         document.documentElement.classList.remove("ss-preload");
         document.documentElement.classList.add("ss-loaded");
 
-        // Then fade out the preloader
         fadeOut(loader, "slow", function () {
-          // will fade out the whole DIV that covers the website.
           fadeOut(preloader, "slow", function () {
-            // Remove preloader from DOM after fade out is complete
             if (preloader.parentNode) {
               preloader.parentNode.removeChild(preloader);
             }
           });
         });
       } else {
-        // If preloader elements don't exist, still add the loaded class
         document.documentElement.classList.remove("ss-preload");
         document.documentElement.classList.add("ss-loaded");
       }
     });
   };
 
-  // Helper function to fade out elements (optimized version)
+  // Helper function to fade out elements
   function fadeOut(element, speed, callback) {
     if (!element) return;
 
-    // Cache initial opacity
     const initialOpacity = parseFloat(window.getComputedStyle(element).opacity);
     element.style.opacity = initialOpacity;
 
     let opacity = initialOpacity;
-    const step = 0.05; // Smaller steps for smoother fade
-    const interval = speed === "slow" ? 30 : 10; // Adjusted interval
+    const step = 0.05;
+    const interval = speed === "slow" ? 30 : 10;
 
     const timer = setInterval(function () {
       opacity -= step;
@@ -192,7 +177,7 @@
         clearInterval(timer);
         element.style.opacity = 0;
         element.style.display = "none";
-        element.style.visibility = "hidden"; // Add visibility hidden for better accessibility
+        element.style.visibility = "hidden";
         if (callback) {
           callback();
         }
@@ -202,16 +187,12 @@
     }, interval);
   }
 
-  /* move header - control header as you scroll down
+  /* move header
    * -------------------------------------------------- */
   const ssMoveHeader = function () {
-    // If header doesn't exist, nothing to do.
     if (!hdr) return;
 
-    // Initial check on page load
     updateHeaderState();
-
-    // Listen to scroll events to update header state
     window.addEventListener("scroll", updateHeaderState);
   };
 
@@ -352,7 +333,7 @@
     }
   };
 
-  // Helper function to slide up elements (optimized version)
+  // Helper function to slide up elements
   function slideUp(element, duration, callback) {
     if (!element) return;
 
@@ -362,10 +343,8 @@
     element.style.transitionDuration = duration + "ms";
     element.style.overflow = "hidden";
 
-    // Trigger reflow
-    element.offsetHeight;
+    element.offsetHeight; // Trigger reflow
 
-    // Set all values at once
     element.style.height = "0";
     element.style.paddingTop = "0";
     element.style.paddingBottom = "0";
@@ -374,7 +353,6 @@
 
     setTimeout(() => {
       element.style.display = "none";
-      // Remove all properties at once
       element.style.removeProperty("height");
       element.style.removeProperty("padding-top");
       element.style.removeProperty("padding-bottom");
@@ -387,11 +365,10 @@
     }, duration);
   }
 
-  // Helper function to slide down elements (optimized version)
+  // Helper function to slide down elements
   function slideDown(element, duration, callback) {
     if (!element) return;
 
-    // Reset display
     element.style.removeProperty("display");
     let display = window.getComputedStyle(element).display;
     if (display === "none") display = "block";
@@ -399,7 +376,6 @@
 
     const height = element.offsetHeight;
 
-    // Set initial state
     element.style.overflow = "hidden";
     element.style.height = "0";
     element.style.paddingTop = "0";
@@ -407,14 +383,11 @@
     element.style.marginTop = "0";
     element.style.marginBottom = "0";
 
-    // Trigger reflow
-    element.offsetHeight;
+    element.offsetHeight; // Trigger reflow
 
-    // Set transition
     element.style.transitionProperty = "height, margin, padding";
     element.style.transitionDuration = duration + "ms";
 
-    // Set target height and remove padding/margin restrictions
     element.style.height = height + "px";
     element.style.removeProperty("padding-top");
     element.style.removeProperty("padding-bottom");
@@ -422,7 +395,6 @@
     element.style.removeProperty("margin-bottom");
 
     setTimeout(() => {
-      // Clean up all properties
       element.style.removeProperty("height");
       element.style.removeProperty("overflow");
       element.style.removeProperty("transition-duration");
@@ -434,7 +406,6 @@
   /* Animate On Scroll
    * ------------------------------------------------------ */
   const ssAOS = function () {
-    // AOS is a separate library, so we keep this as is
     if (typeof AOS !== "undefined") {
       AOS.init({
         offset: 100,
@@ -470,7 +441,7 @@
       // Scroll to target with callback to update URL hash and header state
       smoothScroll(targetPosition, cfg.scrollDuration, function () {
         window.location.hash = href;
-        updateHeaderState(); // Explicitly update header state after smooth scroll
+        updateHeaderState();
       });
     });
   };
@@ -544,7 +515,7 @@
 
         // Find the current section
         sections.forEach((section) => {
-          const sectionTop = section.offsetTop - 100; // Offset for better UX
+          const sectionTop = section.offsetTop - 100;
           const sectionHeight = section.offsetHeight;
 
           if (
@@ -579,10 +550,8 @@
   /* initialize
    * ------------------------------------------------------ */
   (function ssInit() {
-    // Initialize preloader immediately
     ssPreloader();
 
-    // Use requestAnimationFrame for other initializations to ensure DOM is ready
     requestAnimationFrame(() => {
       ssMoveHeader();
       ssMobileMenu();
