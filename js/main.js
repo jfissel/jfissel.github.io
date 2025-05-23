@@ -19,68 +19,51 @@
 
   // Header-related variables and functions
   const hdr = document.querySelector(".s-header");
-  const HERO_THRESHOLD = 800;
+  const HERO_THRESHOLD = 100;
   let lastScrollY = window.scrollY;
-  let stickyRemovalTimeoutId = null;
+  let ticking = false;
 
   const updateHeaderState = () => {
     if (!hdr) return;
 
     const currentScrollY = window.scrollY;
+    const isScrollingDown = currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2;
 
     // At the very top of the page
     if (currentScrollY <= 10) {
       hdr.classList.remove("sticky", "scrolling");
-      if (stickyRemovalTimeoutId) {
-        clearTimeout(stickyRemovalTimeoutId);
-        stickyRemovalTimeoutId = null;
-      }
-      lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+      lastScrollY = currentScrollY;
       return;
     }
 
-    const isScrollingDown =
-      currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2;
-
-    // Below or at the HERO_THRESHOLD
+    // Below the hero section
     if (currentScrollY >= HERO_THRESHOLD) {
-      if (stickyRemovalTimeoutId) {
-        clearTimeout(stickyRemovalTimeoutId);
-        stickyRemovalTimeoutId = null;
-      }
-
       if (!hdr.classList.contains("sticky")) {
         hdr.classList.add("sticky");
         if (isScrollingDown) {
-          void hdr.offsetHeight; // Force reflow for animation
           requestAnimationFrame(() => {
             hdr.classList.add("scrolling");
           });
         } else {
           hdr.classList.add("scrolling");
         }
-      } else {
-        if (!hdr.classList.contains("scrolling")) {
-          hdr.classList.add("scrolling");
-        }
       }
+    } else {
+      hdr.classList.remove("sticky", "scrolling");
     }
-    // Inside the Hero section
-    else {
-      if (hdr.classList.contains("sticky")) {
-        hdr.classList.remove("scrolling");
 
-        if (!stickyRemovalTimeoutId) {
-          stickyRemovalTimeoutId = setTimeout(() => {
-            if (window.scrollY < HERO_THRESHOLD) {
-              hdr.classList.remove("sticky");
-            }
-            stickyRemovalTimeoutId = null;
-          }, 500); // Should match CSS transition time
-        }
-      }
+    lastScrollY = currentScrollY;
+  };
+
+  // Optimize scroll performance with requestAnimationFrame
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateHeaderState();
+        ticking = false;
+      });
+      ticking = true;
     }
-    lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
   };
 
   // Utility functions
@@ -478,73 +461,33 @@
     const sections = document.querySelectorAll(".target-section");
     const navLinks = document.querySelectorAll(".header-nav a");
 
-    // Exit if no sections or nav links found
     if (!sections.length || !navLinks.length) return;
 
-    // Add scroll event listener
-    window.addEventListener(
-      "scroll",
-      debounce(function () {
-        // Get current scroll position
-        const currentPos = window.scrollY;
+    const observerOptions = {
+      root: null,
+      rootMargin: "-50% 0px",
+      threshold: 0
+    };
 
-        // Get document height and viewport height to detect bottom of page
-        const docHeight = Math.max(
-          document.body.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.clientHeight,
-          document.documentElement.scrollHeight,
-          document.documentElement.offsetHeight
-        );
-        const windowHeight = window.innerHeight;
-        const scrollPercent = (currentPos + windowHeight) / docHeight;
-
-        // Check if we're at the bottom of the page (for contact section)
-        if (scrollPercent > 0.95) {
-          // We're at the bottom - highlight the contact link
-          navLinks.forEach((link) => link.classList.remove("current"));
-          const contactLink = document.querySelector(
-            '.header-nav a[href="#contact"]'
-          );
-          if (contactLink) contactLink.classList.add("current");
-          return;
-        }
-
-        // Otherwise check each section normally
-        let currentSection = null;
-
-        // Find the current section
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop - 100;
-          const sectionHeight = section.offsetHeight;
-
-          if (
-            currentPos >= sectionTop &&
-            currentPos < sectionTop + sectionHeight
-          ) {
-            currentSection = section;
-          }
-        });
-
-        // If we found a current section, highlight its link
-        if (currentSection) {
-          const sectionId = currentSection.getAttribute("id");
-
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute("id");
+          
           // Remove active class from all links
-          navLinks.forEach((link) => {
-            link.classList.remove("current");
-          });
-
+          navLinks.forEach(link => link.classList.remove("current"));
+          
           // Add active class to current section link
-          const activeLink = document.querySelector(
-            `.header-nav a[href="#${sectionId}"]`
-          );
+          const activeLink = document.querySelector(`.header-nav a[href="#${sectionId}"]`);
           if (activeLink) {
             activeLink.classList.add("current");
           }
         }
-      }, 30)
-    );
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    sections.forEach(section => observer.observe(section));
   };
 
   /* initialize
@@ -561,5 +504,8 @@
       ssBackToTop();
       ssHighlightActiveLink();
     });
+
+    // Add scroll event listener
+    window.addEventListener("scroll", onScroll, { passive: true });
   })();
 })();

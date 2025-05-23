@@ -1624,21 +1624,12 @@ input::-moz-focus-inner {
   z-index: 100;
   width: 100%;
   height: 8.8rem;
-  position: absolute;
-  top: 4rem;
+  position: fixed;
+  top: 0;
   left: 0;
-}
-
-.s-header.offset {
-  -webkit-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
-}
-
-.s-header.scrolling {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+  background-color: transparent;
+  transition: all 0.3s ease;
+  padding: 2rem 0;
 }
 
 .s-header.sticky {
@@ -1648,25 +1639,88 @@ input::-moz-focus-inner {
   background-color: #111111;
   opacity: 0;
   visibility: hidden;
-  transform: translate3d(0, -100%, 0); /* Use translate3d */
-  height: 8.8rem; /* Ensure consistent height */
+  transform: translate3d(0, -100%, 0);
+  height: 8.8rem;
   z-index: 500;
-  /* Transition for when .scrolling is removed (header hides) */
-  transition-property: transform, opacity, visibility;
-  transition-duration: 0.5s, 0.01s, 0.01s;
-  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1), linear, linear;
-  transition-delay: 0s, 0.49s, 0.49s;
+  padding: 0;
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+              opacity 0.5s ease,
+              visibility 0.5s ease,
+              background-color 0.3s ease,
+              padding 0.3s ease;
 }
 
 .s-header.sticky.scrolling {
   opacity: 1;
   visibility: visible;
-  transform: translate3d(0, 0, 0); /* Use translate3d */
-  /* Transition for when .scrolling is added (header appears) */
-  transition-property: transform, opacity, visibility;
-  transition-duration: 0.5s, 0.5s, 0.01s;
-  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1), cubic-bezier(0.215, 0.61, 0.355, 1), linear;
-  transition-delay: 0s, 0s, 0s;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Mobile menu styles */
+@media screen and (max-width: 900px) {
+  .s-header {
+    background-color: transparent;
+  }
+
+  .s-header.sticky {
+    background-color: #111111;
+  }
+
+  .header-content {
+    display: block;
+    background-color: #111111;
+    height: auto;
+    width: 100%;
+    padding: 10rem 6rem 6rem;
+    transform: translate3d(0, -100%, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .menu-is-open .header-content {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .menu-is-open .header-nav {
+    display: block;
+  }
+
+  .header-menu-toggle {
+    display: block;
+  }
+}
+
+/* Active link styles */
+.header-nav a.current {
+  color: #ffffff;
+}
+
+/* Remove the underline styles */
+.header-nav a.current::after,
+.header-nav a:not(.current)::after {
+  display: none;
+}
+
+.header-nav a:not(.current)::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #f9861a;
+  transition: transform 0.3s ease;
+  transform: scaleX(0);
+}
+
+.header-nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .s-header.sticky .header-logo img {
@@ -1739,6 +1793,7 @@ input::-moz-focus-inner {
 
 .header-nav a {
   color: rgba(255, 255, 255, 0.4);
+  transition: color 0.3s ease;
 }
 
 .header-nav a:hover,
@@ -1746,30 +1801,14 @@ input::-moz-focus-inner {
   color: #ffffff !important;
 }
 
+.header-nav a.current {
+  color: #ffffff !important;
+}
+
 .header-nav li {
   display: inline-block;
   padding-left: 0;
   margin: 0 1rem;
-}
-
-/* Active navigation link */
-.header-nav a.current {
-  color: #ffffff;
-  position: relative;
-}
-
-.s-header.sticky .header-nav a.current {
-  color: #ffffff;
-}
-
-.s-header.sticky .header-nav a.current::after {
-  background-color: #111111;
-}
-
-.header-nav li {
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0 0.8rem;
 }
 
 /* ------------------------------------------------------------------- 
