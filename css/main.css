@@ -1628,7 +1628,7 @@ input::-moz-focus-inner {
   top: 0;
   left: 0;
   background-color: transparent;
-  transition: background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   padding: 2rem 0;
 }
 
@@ -1654,22 +1654,18 @@ input::-moz-focus-inner {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0);
+  background-color: #111111;
 }
 
 /* Mobile menu styles */
 @media screen and (max-width: 900px) {
   .s-header {
     background-color: transparent;
-    transition: none;
+    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .s-header.sticky {
     background-color: #111111;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-                opacity 0.5s ease,
-                visibility 0.5s ease,
-                background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-                padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .header-content {
@@ -1843,16 +1839,11 @@ input::-moz-focus-inner {
 @media screen and (max-width: 900px) {
   .s-header {
     background-color: transparent;
-    transition: none;
+    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .s-header.sticky {
     background-color: #111111;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-                opacity 0.5s ease,
-                visibility 0.5s ease,
-                background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-                padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .s-header.sticky .header-menu-toggle {
