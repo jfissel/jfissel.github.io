@@ -1628,7 +1628,7 @@ input::-moz-focus-inner {
   top: 0;
   left: 0;
   background-color: transparent;
-  transition: all 0.3s ease;
+  transition: background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   padding: 2rem 0;
 }
 
@@ -1646,8 +1646,8 @@ input::-moz-focus-inner {
   transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
               opacity 0.5s ease,
               visibility 0.5s ease,
-              background-color 0.3s ease,
-              padding 0.3s ease;
+              background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+              padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .s-header.sticky.scrolling {
@@ -1660,15 +1660,21 @@ input::-moz-focus-inner {
 @media screen and (max-width: 900px) {
   .s-header {
     background-color: transparent;
+    transition: none;
   }
 
   .s-header.sticky {
     background-color: #111111;
+    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+                opacity 0.5s ease,
+                visibility 0.5s ease,
+                background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+                padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .header-content {
     display: block;
-    background-color: #111111;
+    background-color: transparent;
     height: auto;
     width: 100%;
     padding: 10rem 6rem 6rem;
@@ -1681,6 +1687,7 @@ input::-moz-focus-inner {
 
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
+    background-color: #111111;
   }
 
   .header-nav {
@@ -1826,11 +1833,62 @@ input::-moz-focus-inner {
   letter-spacing: 0.2rem;
   color: #ffffff;
   outline: none;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   position: absolute;
   right: 5.2rem;
-  top: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media screen and (max-width: 900px) {
+  .s-header {
+    background-color: transparent;
+    transition: none;
+  }
+
+  .s-header.sticky {
+    background-color: #111111;
+    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+                opacity 0.5s ease,
+                visibility 0.5s ease,
+                background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+                padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .s-header.sticky .header-menu-toggle {
+    top: 1.6rem;
+    transform: none;
+  }
+
+  .header-content {
+    display: block;
+    background-color: transparent;
+    height: auto;
+    width: 100%;
+    padding: 10rem 6rem 6rem;
+    transform: translate3d(0, -100%, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .menu-is-open .header-content {
+    transform: translate3d(0, 0, 0);
+    background-color: #111111;
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .menu-is-open .header-nav {
+    display: block;
+  }
+
+  .header-menu-toggle {
+    display: block;
+  }
 }
 
 .header-menu-toggle:hover,
@@ -1985,7 +2043,7 @@ input::-moz-focus-inner {
 
   .header-content {
     display: block;
-    background-color: #111111;
+    background-color: transparent;
     height: auto;
     width: 100%;
     padding: 10rem 6rem 6rem;
@@ -1994,6 +2052,12 @@ input::-moz-focus-inner {
     position: absolute;
     top: -2rem;
     left: 0;
+    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .menu-is-open .header-content {
+    transform: translate3d(0, 0, 0);
+    background-color: #111111;
   }
 
   .header-content .btn {
@@ -2035,17 +2099,6 @@ input::-moz-focus-inner {
 
   .header-menu-toggle {
     display: block;
-  }
-
-  .menu-is-open .header-content {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    -webkit-transition: -webkit-transform 0.5s
-      cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: -webkit-transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-      -webkit-transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .menu-is-open .header-content .btn {
