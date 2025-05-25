@@ -1551,15 +1551,19 @@ input[type="button"]:focus-visible {
 .section-intro {
   position: relative;
   margin-bottom: 12rem;
+  padding: 0 2rem;
 }
 
 .section-intro .display-1 {
   margin-top: 0;
+  position: relative;
+  z-index: 2;
 }
 
-.section-intro .subhead,
-.section-intro .display-1 {
+.section-intro .subhead {
   position: relative;
+  z-index: 2;
+  margin-bottom: 3rem;
 }
 
 .section-intro::before {
@@ -1569,14 +1573,82 @@ input[type="button"]:focus-visible {
   font-size: 30rem;
   line-height: 1;
   letter-spacing: -0.045em;
-  color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.08);
   position: absolute;
   top: -0.25em;
-  left: 4.4rem;
+  left: 0;
+  z-index: 1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
 }
 
+.section-intro:hover::before {
+  opacity: 0.7;
+}
+
+/* Card styles */
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 4rem;
+  margin-bottom: 3rem;
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card__title {
+  font-family: "Gothic A1", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.card__content {
+  color: var(--color-gray);
+  font-size: 1.6rem;
+  line-height: 1.7;
+}
+
+/* Dark background sections */
 .h-dark-bg {
   color: #ffffff;
+  background: var(--color-primary);
+  position: relative;
+}
+
+.h-dark-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(84, 77, 157, 0.1) 0%, rgba(11, 10, 21, 0) 100%);
+  pointer-events: none;
 }
 
 .h-dark-bg .section-intro .display-1 {
@@ -1588,7 +1660,143 @@ input[type="button"]:focus-visible {
 }
 
 .h-dark-bg p.lead {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Section spacing */
+.section {
+  padding: 12rem 0;
+  position: relative;
+}
+
+.section--light {
+  background: #ffffff;
+}
+
+.section--dark {
+  background: var(--color-primary);
   color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+  .section-intro::before {
+    font-size: 24rem;
+  }
+  
+  .card {
+    padding: 3.2rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .section {
+    padding: 8rem 0;
+  }
+  
+  .section-intro {
+    margin-bottom: 8rem;
+  }
+  
+  .section-intro::before {
+    font-size: 20rem;
+  }
+  
+  .card {
+    padding: 2.4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section {
+    padding: 6rem 0;
+  }
+  
+  .section-intro {
+    margin-bottom: 6rem;
+  }
+  
+  .section-intro::before {
+    font-size: 16rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+}
+
+.h-dark-bg .section-intro .display-1 {
+  color: #ffffff;
+}
+
+.h-dark-bg .section-intro::before {
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.h-dark-bg p.lead {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Section spacing */
+.section {
+  padding: 12rem 0;
+  position: relative;
+}
+
+.section--light {
+  background: #ffffff;
+}
+
+.section--dark {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+  .section-intro::before {
+    font-size: 24rem;
+  }
+  
+  .card {
+    padding: 3.2rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .section {
+    padding: 8rem 0;
+  }
+  
+  .section-intro {
+    margin-bottom: 8rem;
+  }
+  
+  .section-intro::before {
+    font-size: 20rem;
+  }
+  
+  .card {
+    padding: 2.4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section {
+    padding: 6rem 0;
+  }
+  
+  .section-intro {
+    margin-bottom: 6rem;
+  }
+  
+  .section-intro::before {
+    font-size: 16rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
 }
 
 .right-vert-line {
@@ -2851,6 +3059,36 @@ html.no-csstransitions .hero-content {
 
 .s-services__leftcol p.lead {
   max-width: 90%;
+  font-size: 2.2rem;  /* Set to midpoint between 2.4rem and 2rem */
+  line-height: 1.6;
+}
+
+@media screen and (max-width: 800px) {
+  .s-services__leftcol p.lead {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .s-services__leftcol p.lead {
+    font-size: 1.8rem;
+  }
+}
+
+.s-services .section-intro .display-1 {
+  font-size: 4.0rem;
+}
+
+@media screen and (max-width: 800px) {
+  .s-services .section-intro .display-1 {
+    font-size: 3.6rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .s-services .section-intro .display-1 {
+    font-size: 3.2rem;
+  }
 }
 
 .s-services .vert-line {
