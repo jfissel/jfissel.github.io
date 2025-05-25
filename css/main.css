@@ -75,6 +75,20 @@
  * # base style overrides
  *
  * ------------------------------------------------------------------- */
+:root {
+  --color-primary: #0b0a15;
+  --color-primary-light: #1a1925;
+  --color-accent: #f9861a;
+  --color-accent-hover: #e67a17;
+  --color-secondary: #544d9d;
+  --color-secondary-light: #6a63b3;
+  --color-text: #000000;
+  --color-text-light: #ffffff;
+  --color-gray: #7e7e7e;
+  --color-gray-light: #efefef;
+  --color-gray-dark: #333333;
+}
+
 html {
   font-size: 10px;
 }
@@ -91,13 +105,13 @@ body {
 }
 
 body {
-  background: #0b0a15;
+  background: var(--color-primary);
   font-family: "Martel", serif;
   font-size: 1.8rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.778;
-  color: #000000;
+  color: var(--color-text);
   margin: 0;
   padding: 0;
   position: relative;
@@ -112,7 +126,7 @@ body.menu-is-open {
  * ## links
  * ------------------------------------------------------------------- */
 a {
-  color: #f9861a;
+  color: var(--color-accent);
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
@@ -120,7 +134,7 @@ a {
 a:hover,
 a:focus,
 a:active {
-  color: #544d9d;
+  color: var(--color-secondary);
 }
 
 a:hover,
@@ -970,17 +984,17 @@ input[type="button"] {
   line-height: 5.6rem;
   padding: 0 3.2rem;
   margin: 0 0.4rem 1.6rem 0;
-  color: #000000;
+  color: var(--color-text-light);
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #d3d3d3;
-  border: 0.2rem solid #d3d3d3;
+  background-color: var(--color-accent);
+  border: 0.2rem solid var(--color-accent);
 }
 
 .btn:hover,
@@ -993,9 +1007,9 @@ button:focus,
 input[type="submit"]:focus,
 input[type="reset"]:focus,
 input[type="button"]:focus {
-  background-color: #000000;
-  border-color: #000000;
-  color: #ffffff;
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-text-light);
   outline: 0;
 }
 
@@ -1006,9 +1020,9 @@ button.btn--primary,
 input[type="submit"].btn--primary,
 input[type="reset"].btn--primary,
 input[type="button"].btn--primary {
-  background: #f9861a;
-  border-color: #f9861a;
-  color: #ffffff;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-light);
 }
 
 .btn.btn--primary:hover,
@@ -1021,8 +1035,8 @@ button.btn--primary:focus,
 input[type="submit"].btn--primary:focus,
 input[type="reset"].btn--primary:focus,
 input[type="button"].btn--primary:focus {
-  background: #000000;
-  border-color: #000000;
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 /* button modifiers
@@ -1053,16 +1067,16 @@ button.btn--large {
 
 .btn--stroke,
 button.btn--stroke {
-  background: transparent !important;
-  border: 0.2rem solid #000000;
-  color: #000000;
+  background-color: transparent;
+  border: 0.2rem solid var(--color-text);
+  color: var(--color-text);
 }
 
 .btn--stroke:hover,
 button.btn--stroke:hover {
-  background: #000000 !important;
-  border: 0.2rem solid #000000;
-  color: #ffffff;
+  background-color: var(--color-text) !important;
+  border: 0.2rem solid var(--color-text);
+  color: var(--color-text-light);
 }
 
 .btn--pill,
@@ -2144,31 +2158,38 @@ input::-moz-focus-inner {
  *
  * ------------------------------------------------------------------- */
 .s-hero {
-  width: 100%;
-  height: 100vh;
-  min-height: 82rem;
-  overflow: hidden;
-  background-color: transparent;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
   position: relative;
+  height: 100vh;
+  min-height: 800px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
 }
 
 .s-hero::before {
-  display: block;
   content: "";
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, black 10%, rgba(0, 0, 0, 0) 100%);
-  opacity: 0.9;
-  background-image: url("/images/hero-bg-3000.webp");
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 10%, rgba(0, 0, 0, 0) 100%),
+              url("/images/hero-bg-3000.webp");
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  pointer-events: none;
+}
+
+.s-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(84, 77, 157, 0.05) 0%, rgba(11, 10, 21, 0) 70%);
   pointer-events: none;
 }
 
