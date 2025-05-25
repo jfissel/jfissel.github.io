@@ -87,10 +87,26 @@
   --color-gray: #7e7e7e;
   --color-gray-light: #efefef;
   --color-gray-dark: #333333;
+  
+  /* Add common spacing variables */
+  --spacing-xs: 0.8rem;
+  --spacing-sm: 1.6rem;
+  --spacing-md: 2.4rem;
+  --spacing-lg: 3.2rem;
+  --spacing-xl: 4.8rem;
+  
+  /* Add common transition variables */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
 }
 
+/* Optimize base styles */
 html {
-  font-size: 10px;
+  font-size: 62.5%; /* 10px base */
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media screen and (max-width: 400px) {
@@ -108,13 +124,12 @@ body {
   background: var(--color-primary);
   font-family: "Martel", serif;
   font-size: 1.8rem;
-  font-style: normal;
-  font-weight: normal;
   line-height: 1.778;
   color: var(--color-text);
   margin: 0;
   padding: 0;
   position: relative;
+  overflow-x: hidden;
 }
 
 /* Prevent body scroll when mobile menu is open */
@@ -4207,5 +4222,153 @@ html.no-csstransitions .hero-content {
 
   .ss-custom-select::after {
     right: 1.6rem;
+  }
+}
+
+/* Optimize animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Use hardware acceleration for animations */
+.hero-content,
+.hero-social,
+.hero-scroll,
+.folio-item,
+.services-list__item {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimize transitions */
+.btn,
+.header-nav a,
+.hero-social a,
+.footer-contact-block a,
+.folio-item__thumb a,
+.services-list__item-header {
+  transition: all var(--transition-normal);
+  will-change: transform, opacity;
+}
+
+/* Optimize hover effects */
+.btn:hover,
+.header-nav a:hover,
+.hero-social a:hover,
+.footer-contact-block a:hover {
+  transform: translateY(-2px);
+}
+
+/* Optimize loading animations */
+html.ss-preload .hero-content {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+html.ss-loaded .hero-content {
+  animation: fadeIn 0.8s var(--transition-normal) forwards;
+}
+
+/* ===================================================================
+ * # responsive breakpoints
+ *
+ * ------------------------------------------------------------------- */
+/* Large screens */
+@media screen and (min-width: 1201px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* Medium screens */
+@media screen and (max-width: 1200px) {
+  :root {
+    --spacing-xl: 4rem;
+    --spacing-lg: 2.8rem;
+  }
+  
+  .container {
+    max-width: 960px;
+    padding: 0 var(--spacing-md);
+  }
+  
+  .section {
+    padding: var(--spacing-xl) 0;
+  }
+}
+
+/* Tablets */
+@media screen and (max-width: 800px) {
+  :root {
+    --spacing-xl: 3.6rem;
+    --spacing-lg: 2.4rem;
+    --spacing-md: 2rem;
+  }
+  
+  .container {
+    max-width: 720px;
+  }
+  
+  .section {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+  :root {
+    --spacing-xl: 3.2rem;
+    --spacing-lg: 2rem;
+    --spacing-md: 1.6rem;
+  }
+  
+  .container {
+    max-width: 100%;
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .section {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Small mobile */
+@media screen and (max-width: 400px) {
+  :root {
+    --spacing-xl: 2.8rem;
+    --spacing-lg: 1.8rem;
+    --spacing-md: 1.4rem;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-xs);
   }
 }
