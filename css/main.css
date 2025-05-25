@@ -87,14 +87,14 @@
   --color-gray: #7e7e7e;
   --color-gray-light: #efefef;
   --color-gray-dark: #333333;
-  
+
   /* Add common spacing variables */
   --spacing-xs: 0.8rem;
   --spacing-sm: 1.6rem;
   --spacing-md: 2.4rem;
   --spacing-lg: 3.2rem;
   --spacing-xl: 4.8rem;
-  
+
   /* Add common transition variables */
   --transition-fast: 0.2s ease-in-out;
   --transition-normal: 0.3s ease-in-out;
@@ -1019,7 +1019,7 @@ button::before,
 input[type="submit"]::before,
 input[type="reset"]::before,
 input[type="button"]::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1613,7 +1613,7 @@ input[type="button"]:focus-visible {
 }
 
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1656,13 +1656,17 @@ input[type="button"]:focus-visible {
 }
 
 .h-dark-bg::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(84, 77, 157, 0.1) 0%, rgba(11, 10, 21, 0) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(84, 77, 157, 0.1) 0%,
+    rgba(11, 10, 21, 0) 100%
+  );
   pointer-events: none;
 }
 
@@ -1698,7 +1702,7 @@ input[type="button"]:focus-visible {
   .section-intro::before {
     font-size: 24rem;
   }
-  
+
   .card {
     padding: 3.2rem;
   }
@@ -1708,15 +1712,15 @@ input[type="button"]:focus-visible {
   .section {
     padding: 8rem 0;
   }
-  
+
   .section-intro {
     margin-bottom: 8rem;
   }
-  
+
   .section-intro::before {
     font-size: 20rem;
   }
-  
+
   .card {
     padding: 2.4rem;
   }
@@ -1726,15 +1730,15 @@ input[type="button"]:focus-visible {
   .section {
     padding: 6rem 0;
   }
-  
+
   .section-intro {
     margin-bottom: 6rem;
   }
-  
+
   .section-intro::before {
     font-size: 16rem;
   }
-  
+
   .card {
     padding: 2rem;
   }
@@ -1772,7 +1776,7 @@ input[type="button"]:focus-visible {
   .section-intro::before {
     font-size: 24rem;
   }
-  
+
   .card {
     padding: 3.2rem;
   }
@@ -1782,15 +1786,15 @@ input[type="button"]:focus-visible {
   .section {
     padding: 8rem 0;
   }
-  
+
   .section-intro {
     margin-bottom: 8rem;
   }
-  
+
   .section-intro::before {
     font-size: 20rem;
   }
-  
+
   .card {
     padding: 2.4rem;
   }
@@ -1800,15 +1804,15 @@ input[type="button"]:focus-visible {
   .section {
     padding: 6rem 0;
   }
-  
+
   .section-intro {
     margin-bottom: 6rem;
   }
-  
+
   .section-intro::before {
     font-size: 16rem;
   }
-  
+
   .card {
     padding: 2rem;
   }
@@ -1919,10 +1923,9 @@ input[type="button"]:focus-visible {
   z-index: 500;
   padding: 0;
   transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-              opacity 0.5s ease,
-              visibility 0.5s ease,
-              background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
-              padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity 0.5s ease, visibility 0.5s ease,
+    background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+    padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .s-header.sticky.scrolling {
@@ -1986,7 +1989,7 @@ input[type="button"]:focus-visible {
 }
 
 .header-nav a:not(.current)::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: 0;
@@ -2086,7 +2089,7 @@ input[type="button"]:focus-visible {
 }
 
 .header-nav a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -2466,7 +2469,11 @@ input[type="button"]:focus-visible {
  *
  * ------------------------------------------------------------------- */
 .s-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
   position: relative;
   height: 100vh;
   min-height: 800px;
@@ -2483,8 +2490,12 @@ input[type="button"]:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 10%, rgba(0, 0, 0, 0) 100%),
-              url("/images/hero-bg-3000.webp");
+  background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.6) 10%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    url("/images/hero-bg-3000.webp");
   background-size: cover;
   background-position: center;
   pointer-events: none;
@@ -2497,7 +2508,11 @@ input[type="button"]:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(84, 77, 157, 0.05) 0%, rgba(11, 10, 21, 0) 70%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(84, 77, 157, 0.05) 0%,
+    rgba(11, 10, 21, 0) 70%
+  );
   pointer-events: none;
 }
 
@@ -3087,7 +3102,7 @@ html.no-csstransitions .hero-content {
 }
 
 .s-services .section-intro .display-1 {
-  font-size: 4.0rem;
+  font-size: 4rem;
 }
 
 @media screen and (max-width: 800px) {
@@ -4128,15 +4143,18 @@ html.no-csstransitions .hero-content {
   }
 
   /* Improve mobile typography */
-  h1, .h1 {
+  h1,
+  .h1 {
     font-size: 3.2rem;
   }
 
-  h2, .h2 {
+  h2,
+  .h2 {
     font-size: 2.8rem;
   }
 
-  h3, .h3 {
+  h3,
+  .h3 {
     font-size: 2.2rem;
   }
 
@@ -4306,12 +4324,12 @@ html.ss-loaded .hero-content {
     --spacing-xl: 4rem;
     --spacing-lg: 2.8rem;
   }
-  
+
   .container {
     max-width: 960px;
     padding: 0 var(--spacing-md);
   }
-  
+
   .section {
     padding: var(--spacing-xl) 0;
   }
@@ -4324,15 +4342,15 @@ html.ss-loaded .hero-content {
     --spacing-lg: 2.4rem;
     --spacing-md: 2rem;
   }
-  
+
   .container {
     max-width: 720px;
   }
-  
+
   .section {
     padding: var(--spacing-lg) 0;
   }
-  
+
   .hide-on-tablet {
     display: none !important;
   }
@@ -4345,16 +4363,16 @@ html.ss-loaded .hero-content {
     --spacing-lg: 2rem;
     --spacing-md: 1.6rem;
   }
-  
+
   .container {
     max-width: 100%;
     padding: 0 var(--spacing-sm);
   }
-  
+
   .section {
     padding: var(--spacing-md) 0;
   }
-  
+
   .hide-on-mobile {
     display: none !important;
   }
@@ -4367,7 +4385,7 @@ html.ss-loaded .hero-content {
     --spacing-lg: 1.8rem;
     --spacing-md: 1.4rem;
   }
-  
+
   .container {
     padding: 0 var(--spacing-xs);
   }
