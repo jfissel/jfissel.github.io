@@ -989,12 +989,44 @@ input[type="button"] {
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-accent);
   border: 0.2rem solid var(--color-accent);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before,
+button::before,
+input[type="submit"]::before,
+input[type="reset"]::before,
+input[type="button"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-accent-hover);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: -1;
+}
+
+.btn:hover::before,
+button:hover::before,
+input[type="submit"]:hover::before,
+input[type="reset"]:hover::before,
+input[type="button"]:hover::before,
+.btn:focus::before,
+button:focus::before,
+input[type="submit"]:focus::before,
+input[type="reset"]:focus::before,
+input[type="button"]:focus::before {
+  transform: translateX(0);
 }
 
 .btn:hover,
@@ -1007,10 +1039,10 @@ button:focus,
 input[type="submit"]:focus,
 input[type="reset"]:focus,
 input[type="button"]:focus {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
   color: var(--color-text-light);
   outline: 0;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(249, 134, 26, 0.3);
 }
 
 /* button primary
@@ -1025,20 +1057,6 @@ input[type="button"].btn--primary {
   color: var(--color-text-light);
 }
 
-.btn.btn--primary:hover,
-button.btn--primary:hover,
-input[type="submit"].btn--primary:hover,
-input[type="reset"].btn--primary:hover,
-input[type="button"].btn--primary:hover,
-.btn.btn--primary:focus,
-button.btn--primary:focus,
-input[type="submit"].btn--primary:focus,
-input[type="reset"].btn--primary:focus,
-input[type="button"].btn--primary:focus {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-}
-
 /* button modifiers
  * ------------------------------------------------- */
 .btn.h-full-width,
@@ -1051,18 +1069,22 @@ button.h-full-width {
 button.btn--small {
   height: 5.6rem !important;
   line-height: 5.2rem !important;
+  font-size: 1.2rem;
+  letter-spacing: 0.4rem;
 }
 
 .btn--medium,
 button.btn--medium {
   height: 6.4rem !important;
   line-height: 6rem !important;
+  font-size: 1.4rem;
 }
 
 .btn--large,
 button.btn--large {
   height: 6.8rem !important;
   line-height: 6.4rem !important;
+  font-size: 1.5rem;
 }
 
 .btn--stroke,
@@ -1072,10 +1094,12 @@ button.btn--stroke {
   color: var(--color-text);
 }
 
+.btn--stroke::before {
+  background-color: var(--color-text);
+}
+
 .btn--stroke:hover,
 button.btn--stroke:hover {
-  background-color: var(--color-text) !important;
-  border: 0.2rem solid var(--color-text);
   color: var(--color-text-light);
 }
 
@@ -1086,10 +1110,24 @@ button.btn--pill {
   border-radius: 1000px !important;
 }
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
+/* Add active state for buttons */
+.btn:active,
+button:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+input[type="button"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(249, 134, 26, 0.2);
+}
+
+/* Add focus styles for accessibility */
+.btn:focus-visible,
+button:focus-visible,
+input[type="submit"]:focus-visible,
+input[type="reset"]:focus-visible,
+input[type="button"]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* =================================================================== 
