@@ -2208,7 +2208,7 @@ input::-moz-focus-inner {
   -webkit-box-align: end;
   align-items: flex-end;
   padding-top: 20vh;
-  padding-bottom: 14vh;
+  padding-bottom: 2vh;
   position: relative;
 }
 
