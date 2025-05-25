@@ -3053,25 +3053,21 @@ html.no-csstransitions .hero-content {
   position: relative;
 }
 
-.s-services__leftcol {
-  padding-bottom: 4rem;
-}
-
 .s-services__leftcol p.lead {
   max-width: 90%;
-  font-size: 2.2rem;  /* Set to midpoint between 2.4rem and 2rem */
+  font-size: 2.2rem;
   line-height: 1.6;
 }
 
 @media screen and (max-width: 800px) {
   .s-services__leftcol p.lead {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 }
 
 @media screen and (max-width: 600px) {
   .s-services__leftcol p.lead {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 }
 
