@@ -3707,6 +3707,7 @@ html.no-csstransitions .hero-content {
   padding-bottom: 8rem;
   background-color: #0b0a15;
   position: relative;
+  scroll-margin-top: 0;
 }
 
 .s-footer__main {
@@ -3717,9 +3718,36 @@ html.no-csstransitions .hero-content {
   margin-bottom: 4.8rem;
 }
 
-.footer-contacts {
+.s-footer .footer-contacts {
   margin-top: 7.2rem;
   margin-left: 8.33333%;
+}
+
+@media screen and (max-width: 900px) {
+  .s-footer {
+    padding-top: 12rem;
+  }
+
+  .s-footer .footer-contacts {
+    margin-left: 0;
+    padding-left: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .s-footer {
+    padding-top: 10rem;
+  }
+
+  .s-footer .footer-contacts {
+    padding-left: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .s-footer .footer-contacts {
+    padding-left: 1.2rem;
+  }
 }
 
 .footer-contact-block {
