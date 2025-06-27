@@ -1,394 +1,354 @@
 /* ===================================================================
- * Ethos 1.0.0 - Main JS (Vanilla JavaScript Version)
+ * Ethos 1.0.0 - Main JS (Optimized Performance Version)
  * ------------------------------------------------------------------- */
 
 (function () {
   "use strict";
 
-  document.documentElement.classList.remove("no-js");
-  document.documentElement.classList.add("js");
-
-  const cfg = {
-    scrollDuration: 800, // smoothscroll duration
+  // Cache DOM elements at module level
+  const DOM = {
+    html: document.documentElement,
+    body: document.body,
+    hdr: null,
+    toggleButton: null,
+    headerContent: null,
+    servicesList: null,
+    goTopButton: null,
+    sections: null,
+    navLinks: null
   };
 
-  // Add the User Agent to the <html>
-  // will be used for IE10/IE11 detection (Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; rv:11.0))
-  const doc = document.documentElement;
-  doc.setAttribute("data-useragent", navigator.userAgent);
+  // Initialize DOM cache
+  const initDOMCache = () => {
+    DOM.hdr = document.querySelector(".s-header");
+    DOM.toggleButton = document.querySelector(".header-menu-toggle");
+    DOM.headerContent = document.querySelector(".header-content");
+    DOM.servicesList = document.querySelector(".services-list");
+    DOM.goTopButton = document.querySelector(".ss-go-top");
+    DOM.sections = document.querySelectorAll(".target-section");
+    DOM.navLinks = document.querySelectorAll(".header-nav a");
+  };
 
-  // Header-related variables and functions
-  const hdr = document.querySelector(".s-header");
-  const HERO_THRESHOLD = 100;
+  DOM.html.classList.remove("no-js");
+  DOM.html.classList.add("js");
+
+  const cfg = {
+    scrollDuration: 800,
+    HERO_THRESHOLD: 100,
+    BACK_TO_TOP_THRESHOLD: 800,
+    ACCORDION_DURATION: 400,
+    SCROLL_OFFSET: 90
+  };
+
+  // Add User Agent (cached)
+  DOM.html.setAttribute("data-useragent", navigator.userAgent);
+
+  // Performance optimized scroll handler
   let lastScrollY = window.scrollY;
   let ticking = false;
+  let isHeaderSticky = false;
+  let isHeaderScrolling = false;
+  let isBackToTopVisible = false;
 
   const updateHeaderState = () => {
-    if (!hdr) return;
+    if (!DOM.hdr) return;
 
     const currentScrollY = window.scrollY;
-    const isScrollingDown = currentScrollY > lastScrollY && currentScrollY - lastScrollY > 2;
+    const scrollDelta = currentScrollY - lastScrollY;
+    const isScrollingDown = scrollDelta > 2;
 
-    // At the very top of the page
+    // At the very top
     if (currentScrollY <= 10) {
-      hdr.classList.remove("sticky", "scrolling");
+      if (isHeaderSticky || isHeaderScrolling) {
+        DOM.hdr.classList.remove("sticky", "scrolling");
+        isHeaderSticky = false;
+        isHeaderScrolling = false;
+      }
       lastScrollY = currentScrollY;
       return;
     }
 
-    // Below the hero section
-    if (currentScrollY >= HERO_THRESHOLD) {
-      if (!hdr.classList.contains("sticky")) {
-        hdr.classList.add("sticky");
-        if (isScrollingDown) {
-          requestAnimationFrame(() => {
-            hdr.classList.add("scrolling");
-          });
-        } else {
-          hdr.classList.add("scrolling");
-        }
+    // Below hero threshold
+    if (currentScrollY >= cfg.HERO_THRESHOLD) {
+      if (!isHeaderSticky) {
+        DOM.hdr.classList.add("sticky");
+        isHeaderSticky = true;
       }
-    } else {
-      hdr.classList.remove("sticky", "scrolling");
+      
+      const shouldScroll = isScrollingDown ? true : !isHeaderScrolling;
+      if (shouldScroll && !isHeaderScrolling) {
+        requestAnimationFrame(() => {
+          DOM.hdr.classList.add("scrolling");
+          isHeaderScrolling = true;
+        });
+      }
+    } else if (isHeaderSticky || isHeaderScrolling) {
+      DOM.hdr.classList.remove("sticky", "scrolling");
+      isHeaderSticky = false;
+      isHeaderScrolling = false;
     }
 
     lastScrollY = currentScrollY;
   };
 
-  // Optimize scroll performance with requestAnimationFrame
+  // Update back to top button visibility
+  const updateBackToTop = () => {
+    if (!DOM.goTopButton) return;
+    
+    const shouldShow = window.scrollY >= cfg.BACK_TO_TOP_THRESHOLD;
+    if (shouldShow !== isBackToTopVisible) {
+      DOM.goTopButton.classList.toggle("link-is-visible", shouldShow);
+      isBackToTopVisible = shouldShow;
+    }
+  };
+
+  // Combined scroll handler for better performance
   const onScroll = () => {
     if (!ticking) {
-      window.requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         updateHeaderState();
+        updateBackToTop();
         ticking = false;
       });
       ticking = true;
     }
   };
 
-  // Utility functions
-  // Debounce function
-  function debounce(func, wait) {
+  // Optimized debounce with immediate execution option
+  const debounce = (func, wait, immediate = false) => {
     let timeout;
-    return function () {
-      const context = this;
-      const args = arguments;
+    return function executedFunction(...args) {
+      const later = () => {
+        timeout = null;
+        if (!immediate) func.apply(this, args);
+      };
+      const callNow = immediate && !timeout;
       clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), wait);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(this, args);
     };
-  }
+  };
 
-  // Helper function for smooth scrolling
-  function smoothScroll(targetPosition, duration, callback) {
+  // Optimized smooth scroll with better easing
+  const smoothScroll = (targetPosition, duration = cfg.scrollDuration, callback) => {
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
-    let start = null;
-
+    
     if (Math.abs(distance) < 5) {
       window.scrollTo(0, targetPosition);
-      if (callback) callback();
+      callback?.();
       return;
     }
 
-    function step(timestamp) {
-      if (!start) start = timestamp;
-      const progress = timestamp - start;
-      const percentage = Math.min(progress / duration, 1);
+    let start = null;
+    const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-      // Easing function - easeInOutQuad
-      const easing =
-        percentage < 0.5
-          ? 2 * percentage * percentage
-          : 1 - Math.pow(-2 * percentage + 2, 2) / 2;
-
+    const step = (timestamp) => {
+      start ??= timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const easing = easeInOutCubic(progress);
+      
       window.scrollTo(0, startPosition + distance * easing);
 
-      if (progress < duration) {
-        window.requestAnimationFrame(step);
-      } else if (callback) {
-        callback();
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        callback?.();
       }
-    }
+    };
 
-    window.requestAnimationFrame(step);
-  }
+    requestAnimationFrame(step);
+  };
 
-  /* preloader
+  /* Preloader with optimized fade effect
    * -------------------------------------------------- */
-  const ssPreloader = function () {
-    document.documentElement.classList.add("ss-preload");
+  const ssPreloader = () => {
+    DOM.html.classList.add("ss-preload");
 
-    window.addEventListener("load", function () {
+    const handleLoad = () => {
       smoothScroll(0, 400);
 
       const loader = document.getElementById("loader");
       const preloader = document.getElementById("preloader");
 
+      DOM.html.classList.remove("ss-preload");
+      DOM.html.classList.add("ss-loaded");
+
       if (loader && preloader) {
-        document.documentElement.classList.remove("ss-preload");
-        document.documentElement.classList.add("ss-loaded");
-
-        fadeOut(loader, "slow", function () {
-          fadeOut(preloader, "slow", function () {
-            if (preloader.parentNode) {
-              preloader.parentNode.removeChild(preloader);
-            }
-          });
-        });
-      } else {
-        document.documentElement.classList.remove("ss-preload");
-        document.documentElement.classList.add("ss-loaded");
+        // Use CSS transitions instead of manual animation
+        loader.style.transition = "opacity 0.6s ease-out";
+        loader.style.opacity = "0";
+        
+        setTimeout(() => {
+          preloader.style.transition = "opacity 0.6s ease-out";
+          preloader.style.opacity = "0";
+          
+          setTimeout(() => {
+            preloader.remove();
+          }, 600);
+        }, 600);
       }
-    });
-  };
-
-  // Helper function to fade out elements
-  function fadeOut(element, speed, callback) {
-    if (!element) return;
-
-    const initialOpacity = parseFloat(window.getComputedStyle(element).opacity);
-    element.style.opacity = initialOpacity;
-
-    let opacity = initialOpacity;
-    const step = 0.05;
-    const interval = speed === "slow" ? 30 : 10;
-
-    const timer = setInterval(function () {
-      opacity -= step;
-
-      if (opacity <= 0.05) {
-        clearInterval(timer);
-        element.style.opacity = 0;
-        element.style.display = "none";
-        element.style.visibility = "hidden";
-        if (callback) {
-          callback();
-        }
-      } else {
-        element.style.opacity = opacity;
-      }
-    }, interval);
-  }
-
-  /* move header
-   * -------------------------------------------------- */
-  const ssMoveHeader = function () {
-    if (!hdr) return;
-
-    updateHeaderState();
-    window.addEventListener("scroll", updateHeaderState);
-  };
-
-  /* mobile menu
-   * ---------------------------------------------------- */
-  const ssMobileMenu = function () {
-    const toggleButton = document.querySelector(".header-menu-toggle");
-    const headerContent = document.querySelector(".header-content");
-    const siteBody = document.body;
-
-    if (!toggleButton || !headerContent) return;
-
-    // Create overlay once and cache it
-    const overlay = document.createElement("div");
-    overlay.className = "menu-overlay";
-
-    const mediaQuery = window.matchMedia("(max-width: 900px)");
-    const mediaQueryLarge = window.matchMedia("(min-width: 901px)");
-
-    // Function to handle menu toggle
-    const toggleMenu = () => {
-      const isOpen = siteBody.classList.contains("menu-is-open");
-
-      toggleButton.classList.toggle("is-clicked", !isOpen);
-      siteBody.classList.toggle("menu-is-open", !isOpen);
-      siteBody.style.overflow = isOpen ? "" : "hidden";
     };
 
-    // Close menu if open
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad, { once: true });
+    }
+  };
+
+  /* Mobile menu with optimized event handling
+   * ---------------------------------------------------- */
+  const ssMobileMenu = () => {
+    if (!DOM.toggleButton || !DOM.headerContent) return;
+
+    // Create and cache overlay
+    const overlay = document.createElement("div");
+    overlay.className = "menu-overlay";
+    DOM.body.appendChild(overlay);
+
+    const mediaQuery = matchMedia("(max-width: 900px)");
+    const mediaQueryLarge = matchMedia("(min-width: 901px)");
+
+    let isMenuOpen = false;
+
+    const toggleMenu = () => {
+      isMenuOpen = !isMenuOpen;
+      
+      DOM.toggleButton.classList.toggle("is-clicked", isMenuOpen);
+      DOM.body.classList.toggle("menu-is-open", isMenuOpen);
+      DOM.body.style.overflow = isMenuOpen ? "hidden" : "";
+    };
+
     const closeMenu = () => {
-      if (siteBody.classList.contains("menu-is-open")) {
+      if (isMenuOpen) {
         toggleMenu();
       }
     };
 
-    // Close menu on resize
-    const closeMenuOnResize = debounce(() => {
-      if (mediaQueryLarge.matches) {
+    // Optimized resize handler
+    const handleResize = debounce(() => {
+      if (mediaQueryLarge.matches && isMenuOpen) {
         closeMenu();
       }
-    }, 100);
+    }, 150);
 
-    // Append overlay
-    siteBody.appendChild(overlay);
-
-    // Toggle menu on button click
-    toggleButton.addEventListener("click", (event) => {
-      event.preventDefault();
+    // Event listeners with passive option where appropriate
+    DOM.toggleButton.addEventListener("click", (e) => {
+      e.preventDefault();
       toggleMenu();
     });
 
-    // Close menu on header link click (if media query is met)
-    headerContent.addEventListener("click", (event) => {
-      const target = event.target;
-      if (
-        (target.tagName === "A" || target.classList.contains("btn")) &&
-        mediaQuery.matches
-      ) {
+    // Optimized click delegation
+    DOM.headerContent.addEventListener("click", (e) => {
+      if (mediaQuery.matches && (e.target.tagName === "A" || e.target.classList.contains("btn"))) {
         closeMenu();
       }
     });
 
-    // Close menu on overlay click
     overlay.addEventListener("click", closeMenu);
-
-    // Close menu on resize
-    window.addEventListener("resize", closeMenuOnResize);
-
-    // Initial check on load, in case of resize during load
-    closeMenuOnResize();
+    window.addEventListener("resize", handleResize, { passive: true });
   };
 
-  /* accordion
+  /* Optimized accordion with better animations
    * ------------------------------------------------------ */
-  const ssAccordion = function () {
-    const allItems = document.querySelectorAll(".services-list__item");
+  const ssAccordion = () => {
+    if (!DOM.servicesList) return;
 
-    if (!allItems.length) return;
-
-    const allPanels = document.querySelectorAll(".services-list__item-body");
-    const allHeaders = document.querySelectorAll(".services-list__item-header");
-    const animationDuration = 400;
-    const scrollOffset = 90;
-
-    // Hide all panels except the first one
+    const allPanels = DOM.servicesList.querySelectorAll(".services-list__item-body");
+    
+    // Hide all panels except first using CSS
     allPanels.forEach((panel, index) => {
       if (index > 0) {
         panel.style.display = "none";
       }
     });
 
-    // Use event delegation for better performance
-    const servicesList = document.querySelector(".services-list");
-    if (servicesList) {
-      servicesList.addEventListener("click", function (event) {
-        const header = event.target.closest(".services-list__item-header");
-        if (!header) return;
+    // Use single event listener with delegation
+    DOM.servicesList.addEventListener("click", (e) => {
+      const header = e.target.closest(".services-list__item-header");
+      if (!header) return;
 
-        event.preventDefault();
+      e.preventDefault();
 
-        const curItem = header.parentElement;
-        const curPanel = curItem.querySelector(".services-list__item-body");
-        const activeItem = document.querySelector(
-          ".services-list__item.is-active"
-        );
+      const curItem = header.parentElement;
+      const curPanel = curItem.querySelector(".services-list__item-body");
+      const activeItem = DOM.servicesList.querySelector(".services-list__item.is-active");
 
-        const closePanel = (item) => {
-          if (!item) return;
-          const panel = item.querySelector(".services-list__item-body");
-          slideUp(panel, animationDuration, function () {
-            item.classList.remove("is-active");
-          });
-        };
-
-        const openPanel = () => {
-          slideDown(curPanel, animationDuration, function () {
-            const panelTop =
-              curItem.getBoundingClientRect().top + window.scrollY;
-            const viewportTop = window.scrollY;
-
-            if (panelTop < viewportTop) {
-              // Scroll to the panel
-              smoothScroll(panelTop - scrollOffset, animationDuration);
-            }
-          });
-          curItem.classList.add("is-active");
-        };
-
-        if (curItem.classList.contains("is-active")) {
-          closePanel(curItem);
-        } else {
-          if (activeItem) {
-            closePanel(activeItem);
-          }
-          openPanel();
+      if (curItem === activeItem) {
+        // Close current panel
+        slideUp(curPanel, cfg.ACCORDION_DURATION);
+        curItem.classList.remove("is-active");
+      } else {
+        // Close active panel and open new one
+        if (activeItem) {
+          const activePanel = activeItem.querySelector(".services-list__item-body");
+          slideUp(activePanel, cfg.ACCORDION_DURATION);
+          activeItem.classList.remove("is-active");
         }
-      });
-    }
+        
+        slideDown(curPanel, cfg.ACCORDION_DURATION, () => {
+          const panelTop = curItem.getBoundingClientRect().top + window.scrollY;
+          if (panelTop < window.scrollY) {
+            smoothScroll(panelTop - cfg.SCROLL_OFFSET, cfg.ACCORDION_DURATION);
+          }
+        });
+        curItem.classList.add("is-active");
+      }
+    });
   };
 
-  // Helper function to slide up elements
-  function slideUp(element, duration, callback) {
+  // Optimized slide animations using CSS transitions
+  const slideUp = (element, duration, callback) => {
     if (!element) return;
 
-    const height = element.offsetHeight;
+    const height = element.scrollHeight;
     element.style.height = height + "px";
-    element.style.transitionProperty = "height, margin, padding";
-    element.style.transitionDuration = duration + "ms";
+    element.style.transition = `height ${duration}ms ease-out`;
     element.style.overflow = "hidden";
 
-    element.offsetHeight; // Trigger reflow
+    requestAnimationFrame(() => {
+      element.style.height = "0px";
+    });
 
-    element.style.height = "0";
-    element.style.paddingTop = "0";
-    element.style.paddingBottom = "0";
-    element.style.marginTop = "0";
-    element.style.marginBottom = "0";
-
-    setTimeout(() => {
+    const cleanup = () => {
       element.style.display = "none";
       element.style.removeProperty("height");
-      element.style.removeProperty("padding-top");
-      element.style.removeProperty("padding-bottom");
-      element.style.removeProperty("margin-top");
-      element.style.removeProperty("margin-bottom");
+      element.style.removeProperty("transition");
       element.style.removeProperty("overflow");
-      element.style.removeProperty("transition-duration");
-      element.style.removeProperty("transition-property");
-      if (callback) callback();
-    }, duration);
-  }
+      callback?.();
+    };
 
-  // Helper function to slide down elements
-  function slideDown(element, duration, callback) {
+    element.addEventListener("transitionend", cleanup, { once: true });
+  };
+
+  const slideDown = (element, duration, callback) => {
     if (!element) return;
 
-    element.style.removeProperty("display");
-    let display = window.getComputedStyle(element).display;
-    if (display === "none") display = "block";
-    element.style.display = display;
-
-    const height = element.offsetHeight;
-
+    element.style.display = "block";
+    const height = element.scrollHeight;
+    
+    element.style.height = "0px";
     element.style.overflow = "hidden";
-    element.style.height = "0";
-    element.style.paddingTop = "0";
-    element.style.paddingBottom = "0";
-    element.style.marginTop = "0";
-    element.style.marginBottom = "0";
+    element.style.transition = `height ${duration}ms ease-out`;
 
-    element.offsetHeight; // Trigger reflow
+    requestAnimationFrame(() => {
+      element.style.height = height + "px";
+    });
 
-    element.style.transitionProperty = "height, margin, padding";
-    element.style.transitionDuration = duration + "ms";
-
-    element.style.height = height + "px";
-    element.style.removeProperty("padding-top");
-    element.style.removeProperty("padding-bottom");
-    element.style.removeProperty("margin-top");
-    element.style.removeProperty("margin-bottom");
-
-    setTimeout(() => {
+    const cleanup = () => {
       element.style.removeProperty("height");
+      element.style.removeProperty("transition");
       element.style.removeProperty("overflow");
-      element.style.removeProperty("transition-duration");
-      element.style.removeProperty("transition-property");
-      if (callback) callback();
-    }, duration);
-  }
+      callback?.();
+    };
 
-  /* Animate On Scroll
+    element.addEventListener("transitionend", cleanup, { once: true });
+  };
+
+  /* AOS initialization
    * ------------------------------------------------------ */
-  const ssAOS = function () {
+  const ssAOS = () => {
     if (typeof AOS !== "undefined") {
       AOS.init({
         offset: 100,
@@ -400,11 +360,10 @@
     }
   };
 
-  /* smooth scrolling
+  /* Optimized smooth scrolling with event delegation
    * ------------------------------------------------------ */
-  const ssSmoothScroll = function () {
-    // Use event delegation for better performance
-    document.addEventListener("click", function (e) {
+  const ssSmoothScroll = () => {
+    document.addEventListener("click", (e) => {
       const target = e.target.closest(".smoothscroll");
       if (!target) return;
 
@@ -412,56 +371,41 @@
       e.stopPropagation();
 
       const href = target.getAttribute("href");
-      if (!href) return;
+      if (!href || !href.startsWith("#")) return;
 
       const targetElement = document.querySelector(href);
       if (!targetElement) return;
 
-      // Get target position and scroll to it
-      const targetPosition =
-        targetElement.getBoundingClientRect().top + window.scrollY;
+      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
 
-      // Scroll to target with callback to update URL hash and header state
-      smoothScroll(targetPosition, cfg.scrollDuration, function () {
-        window.location.hash = href;
+      smoothScroll(targetPosition, cfg.scrollDuration, () => {
+        // Use replaceState instead of hash to avoid triggering scroll events
+        history.replaceState(null, null, href);
         updateHeaderState();
       });
     });
   };
 
-  /* back to top
+  /* Back to top (handled in scroll event)
    * ------------------------------------------------------ */
-  const ssBackToTop = function () {
-    const pxShow = 800;
-    const goTopButton = document.querySelector(".ss-go-top");
+  const ssBackToTop = () => {
+    if (!DOM.goTopButton) return;
 
-    if (!goTopButton) return;
+    // Initial state
+    updateBackToTop();
 
-    // Show or hide the button initially
-    goTopButton.classList.toggle("link-is-visible", window.scrollY >= pxShow);
-
-    // Show or hide the button on scroll immediately without debounce
-    window.addEventListener("scroll", function () {
-      goTopButton.classList.toggle("link-is-visible", window.scrollY >= pxShow);
-    });
-
-    // Add smooth scrolling to top when clicked
-    goTopButton.addEventListener("click", function (e) {
+    DOM.goTopButton.addEventListener("click", (e) => {
       e.preventDefault();
-
-      // Scroll to top and update hash
-      smoothScroll(0, cfg.scrollDuration, function () {
-        window.location.hash = "#top";
+      smoothScroll(0, cfg.scrollDuration, () => {
+        history.replaceState(null, null, "#top");
       });
     });
   };
 
-  // Highlight active menu link on page scroll
-  const ssHighlightActiveLink = function () {
-    const sections = document.querySelectorAll(".target-section");
-    const navLinks = document.querySelectorAll(".header-nav a");
-
-    if (!sections.length || !navLinks.length) return;
+  /* Optimized active link highlighting with Intersection Observer
+   * ------------------------------------------------------ */
+  const ssHighlightActiveLink = () => {
+    if (!DOM.sections.length || !DOM.navLinks.length) return;
 
     const observerOptions = {
       root: null,
@@ -469,16 +413,25 @@
       threshold: 0
     };
 
+    // Create a map for faster lookups
+    const linkMap = new Map();
+    DOM.navLinks.forEach(link => {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        linkMap.set(href.substring(1), link);
+      }
+    });
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const sectionId = entry.target.getAttribute("id");
+          const sectionId = entry.target.id;
           
-          // Remove active class from all links
-          navLinks.forEach(link => link.classList.remove("current"));
+          // Remove active class from all links (more efficient)
+          DOM.navLinks.forEach(link => link.classList.remove("current"));
           
           // Add active class to current section link
-          const activeLink = document.querySelector(`.header-nav a[href="#${sectionId}"]`);
+          const activeLink = linkMap.get(sectionId);
           if (activeLink) {
             activeLink.classList.add("current");
           }
@@ -486,26 +439,42 @@
       });
     }, observerOptions);
 
-    // Observe all sections
-    sections.forEach(section => observer.observe(section));
+    DOM.sections.forEach(section => observer.observe(section));
   };
 
-  /* initialize
+  /* Initialize with performance optimizations
    * ------------------------------------------------------ */
-  (function ssInit() {
+  const ssInit = () => {
+    // Initialize DOM cache first
+    initDOMCache();
+    
+    // Start preloader immediately
     ssPreloader();
 
+    // Use a single RAF for initialization
     requestAnimationFrame(() => {
-      ssMoveHeader();
       ssMobileMenu();
       ssAccordion();
-      ssAOS();
       ssSmoothScroll();
       ssBackToTop();
       ssHighlightActiveLink();
+      
+      // Initialize AOS after other components
+      requestAnimationFrame(ssAOS);
     });
 
-    // Add scroll event listener
+    // Add optimized scroll listener
     window.addEventListener("scroll", onScroll, { passive: true });
-  })();
+    
+    // Initialize header state
+    updateHeaderState();
+  };
+
+  // Initialize when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", ssInit, { once: true });
+  } else {
+    ssInit();
+  }
+
 })();
