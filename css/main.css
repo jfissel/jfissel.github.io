@@ -30,7 +30,7 @@
  *    ## mobile menu toggle
  *    ## download resume button
  *  # hero
- *    ## hero social
+ *    ## hero contact
  *    ## hero scroll
  *    ## animate intro content
  *    ## animations
@@ -2557,9 +2557,9 @@ input[type="button"]:focus-visible {
 }
 
 /* -------------------------------------------------------------------
- * ## hero social
+ * ## hero contact
  * ------------------------------------------------------------------- */
-.hero-social {
+.hero-contact {
   list-style: none;
   display: -ms-flexbox;
   display: -webkit-box;
@@ -2580,28 +2580,28 @@ input[type="button"]:focus-visible {
   position: relative;
 }
 
-.hero-social a {
+.hero-contact a {
   color: #ffffff;
 }
 
-.hero-social a:hover,
-.hero-social a:focus,
-.hero-social a:active {
+.hero-contact a:hover,
+.hero-contact a:focus,
+.hero-contact a:active {
   color: #f9861a;
 }
 
-.hero-social li {
+.hero-contact li {
   padding-left: 0;
 }
 
-.hero-social li::after {
+.hero-contact li::after {
   content: "/";
   color: rgba(255, 255, 255, 0.1);
   margin-left: 0rem;
   margin-right: 1rem;
 }
 
-.hero-social li:last-child::after {
+.hero-contact li:last-child::after {
   display: none;
 }
 
@@ -2849,7 +2849,7 @@ html.no-csstransitions .hero-content {
     font-size: 5.6rem;
   }
 
-  .hero-social {
+  .hero-contact {
     font-size: 1.1rem;
   }
 }
@@ -2859,7 +2859,7 @@ html.no-csstransitions .hero-content {
     font-size: 4.8rem;
   }
 
-  .hero-social {
+  .hero-contact {
     padding-right: 7.2rem;
   }
 
@@ -2882,7 +2882,7 @@ html.no-csstransitions .hero-content {
     display: none;
   }
 
-  .hero-social {
+  .hero-contact {
     font-size: 1rem;
   }
 
@@ -4115,7 +4115,7 @@ html.no-csstransitions .hero-content {
     padding-right: 0;
   }
 
-  .hero-social {
+  .hero-contact {
     margin-top: 6rem;
     font-size: 1.1rem;
   }
@@ -4268,7 +4268,7 @@ html.no-csstransitions .hero-content {
 
 /* Use hardware acceleration for animations */
 .hero-content,
-.hero-social,
+.hero-contact,
 .hero-scroll,
 .folio-item,
 .services-list__item {
@@ -4280,7 +4280,7 @@ html.no-csstransitions .hero-content {
 /* Optimize transitions */
 .btn,
 .header-nav a,
-.hero-social a,
+.hero-contact a,
 .footer-contact-block a,
 .folio-item__thumb a,
 .services-list__item-header {
@@ -4291,7 +4291,7 @@ html.no-csstransitions .hero-content {
 /* Optimize hover effects */
 .btn:hover,
 .header-nav a:hover,
-.hero-social a:hover,
+.hero-contact a:hover,
 .footer-contact-block a:hover {
   transform: translateY(-2px);
 }
