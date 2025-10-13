@@ -1246,7 +1246,7 @@ input[type="button"]:focus-visible {
   background-repeat: no-repeat;
   background: center center;
   background-size: contain;
-  background-image: url(../images/icons/icon-quote.svg);
+  background-image: url(/src/images/icons/icon-quote.svg);
   position: absolute;
   top: 4rem;
   left: 4rem;
@@ -2496,7 +2496,7 @@ input[type="button"]:focus-visible {
       rgba(0, 0, 0, 0.6) 10%,
       rgba(0, 0, 0, 0) 100%
     ),
-    url("/images/hero-bg-3000.webp");
+    url("/src/images/hero-bg-3000.webp");
   background-size: cover;
   background-position: center;
   pointer-events: none;
