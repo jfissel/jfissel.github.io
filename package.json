@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run copy-assets",
+    "build": "vite build && npm run copy-assets && npm run fix-html",
     "copy-assets": "mkdir -p dist/src/js dist/src/css && cp src/js/* dist/src/js/ && cp src/css/* dist/src/css/",
+    "fix-html": "mv dist/src/index.html dist/index.html && node fix-html.js",
     "preview": "vite preview",
     "serve": "vite preview"
   },
