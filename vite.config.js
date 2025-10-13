@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
-  // GitHub Pages configuration
-  base: '/jfissel.github.io/',
+  // Custom domain configuration
+  base: '/',
   
   // Build configuration
   build: {
