@@ -1,7 +1,17 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  plugins: mode === 'analyze' ? [
+    visualizer({
+      filename: './dist/stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+      template: 'treemap' // Options: treemap, sunburst, network
+    })
+  ] : [],
   // Custom domain configuration
   base: '/',
 
@@ -26,7 +36,15 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
         // Minify HTML in the output
-        compact: true
+        compact: true,
+        // Manual chunk splitting for better caching
+        manualChunks(id) {
+          // Split vendor/third-party code into separate chunk
+          // This allows better long-term caching since vendor code changes less frequently
+          if (id.includes('plugins.js')) {
+            return 'vendor'
+          }
+        }
       }
     },
     terserOptions: {
@@ -62,4 +80,4 @@ export default defineConfig({
   optimizeDeps: {
     include: []
   }
-})
+}))
