@@ -5,7 +5,7 @@ export default {
         './index.html',
         './src/**/*.{js,jsx,ts,tsx,html}'
       ],
-      // Safelist classes that are added dynamically
+      // Safelist classes and selectors that are added dynamically
       safelist: {
         standard: [
           'no-js',
@@ -13,13 +13,25 @@ export default {
           'aos-init',
           'aos-animate',
           'menu-is-open',
-          'ss-navicon-close'
+          'ss-navicon-close',
+          'ss-preload',
+          'ss-loaded',
+          'is-clicked',
+          'sticky',
+          'scrolling',
+          'is-active',
+          'link-is-visible'
         ],
         // Keep all data-aos attributes and their variations
-        deep: [/^data-aos/, /^aos-/],
-        greedy: [/^header-/, /^s-/, /^ss-/]
+        deep: [/^aos-/, /^data-aos/],
+        greedy: [/^header-/, /^s-/, /^ss-/, /\[data-aos/]
       },
-      defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
+      // Custom extractor to preserve attribute selectors
+      defaultExtractor: content => {
+        const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
+        const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]/g) || []
+        return broadMatches.concat(innerMatches)
+      }
     },
     cssnano: {
       preset: ['default', {
