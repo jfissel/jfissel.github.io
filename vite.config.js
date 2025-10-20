@@ -5,6 +5,11 @@ export default defineConfig({
   // Custom domain configuration
   base: '/',
 
+  // PostCSS configuration will be loaded from postcss.config.js
+  css: {
+    postcss: './postcss.config.js'
+  },
+
   // Build configuration
   build: {
     outDir: 'dist',
@@ -19,15 +24,23 @@ export default defineConfig({
         // Asset hashing for cache busting
         assetFileNames: 'assets/[name].[hash].[ext]',
         chunkFileNames: 'assets/[name].[hash].js',
-        entryFileNames: 'assets/[name].[hash].js'
+        entryFileNames: 'assets/[name].[hash].js',
+        // Minify HTML in the output
+        compact: true
       }
     },
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        passes: 2
+      },
+      format: {
+        comments: false
       }
-    }
+    },
+    cssCodeSplit: true,
+    reportCompressedSize: true
   },
 
   // Development server
