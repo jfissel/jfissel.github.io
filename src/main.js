@@ -1,8 +1,7 @@
 // Main entry point for Vite build
-// Import all CSS files
+// Import CSS files (vendor.css excluded - loaded directly in HTML to bypass PurgeCSS)
 import './css/base.css'
 import './css/main.css'
-import './css/vendor.css'
 
 // Import all JavaScript modules
 import './js/plugins.js'

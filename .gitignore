@@ -11,6 +11,9 @@ build/
 # Bundle analysis
 stats.html
 
+# Generated files (vendor.css is copied from src to public during build)
+public/css/vendor.css
+
 # Environment variables
 .env
 .env.local
