@@ -4,7 +4,7 @@ import { resolve } from 'path'
 export default defineConfig({
   // Custom domain configuration
   base: '/',
-  
+
   // Build configuration
   build: {
     outDir: 'dist',
@@ -13,7 +13,7 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/index.html')
+        main: resolve(__dirname, 'index.html')
       },
       output: {
         // Asset hashing for cache busting
