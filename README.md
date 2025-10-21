@@ -46,11 +46,6 @@ The website is compatible with:
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
-- Opera (latest)
-
-## License
-
-All rights reserved. This code is not open for reuse without permission.
 
 ## Contact
 
