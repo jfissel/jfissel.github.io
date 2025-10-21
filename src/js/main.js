@@ -351,11 +351,12 @@
   const ssAOS = () => {
     if (typeof AOS !== "undefined") {
       AOS.init({
-        offset: 100,
+        offset: 0,
         duration: 600,
         easing: "ease-in-out",
-        delay: 300,
-        once: false,
+        delay: 0,
+        once: true,
+        anchorPlacement: 'top-bottom',
       });
     }
   };
