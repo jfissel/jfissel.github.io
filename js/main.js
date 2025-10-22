@@ -67,16 +67,10 @@
     // Below hero threshold
     if (currentScrollY >= cfg.HERO_THRESHOLD) {
       if (!isHeaderSticky) {
-        DOM.hdr.classList.add("sticky");
+        // Add both classes simultaneously to prevent jitter
+        DOM.hdr.classList.add("sticky", "scrolling");
         isHeaderSticky = true;
-      }
-      
-      const shouldScroll = isScrollingDown ? true : !isHeaderScrolling;
-      if (shouldScroll && !isHeaderScrolling) {
-        requestAnimationFrame(() => {
-          DOM.hdr.classList.add("scrolling");
-          isHeaderScrolling = true;
-        });
+        isHeaderScrolling = true;
       }
     } else if (isHeaderSticky || isHeaderScrolling) {
       DOM.hdr.classList.remove("sticky", "scrolling");
