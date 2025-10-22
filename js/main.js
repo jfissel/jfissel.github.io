@@ -20,7 +20,7 @@
     DOM.toggleButton = document.querySelector(".header-menu-toggle");
     DOM.headerContent = document.querySelector(".header-content");
     DOM.servicesList = document.querySelector(".services-list");
-    DOM.goTopButton = document.querySelector(".ss-go-top");
+    DOM.goTopButton = document.querySelector(".page-anchor");
     DOM.sections = document.querySelectorAll(".target-section");
     DOM.navLinks = document.querySelectorAll(".header-nav a");
   };
