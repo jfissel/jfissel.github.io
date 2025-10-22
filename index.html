@@ -50,8 +50,8 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/base.css" fetchpriority="high" />
+    <link rel="stylesheet" href="css/main.css" fetchpriority="high" />
     <link rel="stylesheet" href="css/vendor.css" />
 
     <!-- Favicons -->
@@ -290,7 +290,7 @@
           <ul class="services-list" data-aos="fade-up">
             <li class="services-list__item">
               <div class="services-list__item-header">
-                <h5>Artifical Intelligence</h5>
+                <h5>Artificial Intelligence</h5>
               </div>
               <div class="services-list__item-body">
                 <p>
@@ -494,13 +494,7 @@
 
       <div class="row s-footer__bottom">
         <div class="column large-full ss-copyright">
-          <span
-            >© Copyright
-            <script>
-              document.write(new Date().getFullYear());
-            </script>
-            John Fissel</span
-          >
+          <span id="copyright">© Copyright John Fissel</span>
         </div>
         <!-- end ss-copyright -->
 
@@ -534,19 +528,12 @@
 
     <!-- Service Worker Registration -->
     <script>
+      document.getElementById("copyright").textContent =
+        "© Copyright " + new Date().getFullYear() + " John Fissel";
+
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw.js")
-            .then((registration) => {
-              console.log(
-                "ServiceWorker registration successful with scope: ",
-                registration.scope
-              );
-            })
-            .catch((error) => {
-              console.log("ServiceWorker registration failed: ", error);
-            });
+          navigator.serviceWorker.register("/sw.js");
         });
       }
     </script>

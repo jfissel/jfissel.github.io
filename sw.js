@@ -1,4 +1,4 @@
-const CACHE_NAME = "johnfissel-site-cache-v1";
+const CACHE_NAME = "johnfissel-site-cache-v2";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -9,6 +9,9 @@ const urlsToCache = [
   "/js/plugins.js",
   "/images/profile-pic.webp",
   "/images/profile-pic@2x.webp",
+  "/images/hero-bg-3000.webp",
+  "/images/logo.svg",
+  "/images/icons/icon-quote.svg",
   "/favicon.ico",
   "/apple-touch-icon.png",
   "/favicon-32x32.png",
@@ -20,27 +23,27 @@ const urlsToCache = [
 
 // Install event - cache assets
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache");
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
 // Activate event - clean up old caches
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== CACHE_NAME) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      }),
+    ])
   );
 });
 
@@ -48,32 +51,33 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      // Cache hit - return response
       if (response) {
         return response;
       }
 
-      // Clone the request
-      const fetchRequest = event.request.clone();
-
-      return fetch(fetchRequest).then((response) => {
-        // Check if valid response
-        if (!response || response.status !== 200 || response.type !== "basic") {
-          return response;
-        }
-
-        // Clone the response
-        const responseToCache = response.clone();
-
-        caches.open(CACHE_NAME).then((cache) => {
-          // Only cache same-origin resources
-          if (event.request.url.startsWith(self.location.origin)) {
-            cache.put(event.request, responseToCache);
+      return fetch(event.request)
+        .then((response) => {
+          if (
+            !response ||
+            response.status !== 200 ||
+            response.type !== "basic"
+          ) {
+            return response;
           }
-        });
 
-        return response;
-      });
+          const responseToCache = response.clone();
+
+          caches.open(CACHE_NAME).then((cache) => {
+            if (event.request.url.startsWith(self.location.origin)) {
+              cache.put(event.request, responseToCache);
+            }
+          });
+
+          return response;
+        })
+        .catch(() => {
+          return caches.match("/index.html");
+        });
     })
   );
 });
