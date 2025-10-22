@@ -3295,7 +3295,7 @@ html.no-csstransitions .hero-content {
 /* ------------------------------------------------------------------- 
  * ## go top
  * ------------------------------------------------------------------- */
-.back-to-top {
+.page-anchor {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
@@ -3307,7 +3307,7 @@ html.no-csstransitions .hero-content {
   bottom: 4.4rem;
   right: 8rem;
 }
-.back-to-top a {
+.page-anchor a {
   text-decoration: none;
   border: 0 none;
   display: block;
@@ -3319,11 +3319,11 @@ html.no-csstransitions .hero-content {
   transition: all 0.3s;
   position: relative;
 }
-.back-to-top a:hover,
-.back-to-top a:focus {
+.page-anchor a:hover,
+.page-anchor a:focus {
   background-color: #f9861a;
 }
-.back-to-top svg {
+.page-anchor svg {
   height: 1.2rem;
   width: 1.2rem;
   position: absolute;
@@ -3332,10 +3332,10 @@ html.no-csstransitions .hero-content {
   left: 50%;
   top: 50%;
 }
-.back-to-top svg path {
+.page-anchor svg path {
   fill: #ffffff;
 }
-.back-to-top.link-is-visible {
+.page-anchor.link-is-visible {
   opacity: 1;
   visibility: visible;
   -webkit-transform: translate3d(0, 0, 0);
@@ -3346,10 +3346,10 @@ html.no-csstransitions .hero-content {
  * footer
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1200px) {
-  .back-to-top {
+  .page-anchor {
     right: 6rem;
   }
-  .back-to-top a {
+  .page-anchor a {
     height: 6rem;
     width: 6rem;
   }
@@ -3387,10 +3387,10 @@ html.no-csstransitions .hero-content {
   .ss-copyright {
     padding-right: 10rem;
   }
-  .back-to-top {
+  .page-anchor {
     right: 3.6rem;
   }
-  .back-to-top a {
+  .page-anchor a {
     height: 5.2rem;
     width: 5.2rem;
   }
@@ -3405,7 +3405,7 @@ html.no-csstransitions .hero-content {
   .ss-copyright span::after {
     display: none;
   }
-  .back-to-top {
+  .page-anchor {
     right: 2.4rem;
     bottom: 4rem;
   }
