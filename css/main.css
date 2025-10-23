@@ -1576,6 +1576,17 @@ input[type="button"]:focus-visible {
     font-size: 18rem;
   }
 }
+@media screen and (max-width: 320px) {
+  .display-1 {
+    font-size: 3.4rem;
+  }
+  .section-intro {
+    margin-bottom: 8rem;
+  }
+  .section-intro::before {
+    font-size: 14rem;
+  }
+}
 /* ===================================================================
  * # site header
  *
@@ -1772,8 +1783,9 @@ input[type="button"]:focus-visible {
   }
   .header-nav a {
     display: block;
-    padding: 1.5rem 0;
+    padding: 1.6rem 0;
     font-size: 1.6rem;
+    min-height: 4.4rem;
   }
   .header-nav a::after {
     display: none;
@@ -1792,9 +1804,9 @@ input[type="button"]:focus-visible {
 .header-menu-toggle {
   z-index: 101;
   display: none;
-  height: 4.2rem;
-  width: 4.2rem;
-  line-height: 4.2rem;
+  height: 4.8rem;
+  width: 4.8rem;
+  line-height: 4.8rem;
   font-family: "Gothic A1", sans-serif;
   font-size: 1.4rem;
   text-transform: uppercase;
@@ -2061,10 +2073,15 @@ input[type="button"]:focus-visible {
     right: 3.2rem;
   }
   .header-content {
-    padding: 10rem 4rem 4rem;
+    padding: 8rem 4rem 4rem;
   }
   .header-content .btn {
     display: block;
+  }
+}
+@media screen and (max-width: 400px) {
+  .header-content {
+    padding: 7rem 3rem 3rem;
   }
 }
 /* ===================================================================
@@ -2426,6 +2443,9 @@ html.no-csstransitions .hero-content {
   }
 }
 @media screen and (max-width: 600px) {
+  .s-hero {
+    min-height: 600px;
+  }
   .hero-content h1 {
     font-size: 4.6rem;
   }
@@ -2446,6 +2466,9 @@ html.no-csstransitions .hero-content {
   }
 }
 @media screen and (max-width: 400px) {
+  .s-hero {
+    min-height: 500px;
+  }
   .hero-content h1 {
     font-size: 4rem;
   }
