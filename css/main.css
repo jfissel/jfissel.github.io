@@ -3635,10 +3635,7 @@ html.no-csstransitions .hero-content {
   will-change: transform, opacity;
 }
 /* Optimize hover effects */
-.btn:hover,
-.header-nav a:hover,
-.hero-contact a:hover,
-.footer-contact-block a:hover {
+.btn:hover {
   transform: translateY(-2px);
 }
 /* Optimize loading animations */
@@ -3734,14 +3731,13 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
 /* Skills Section Animations */
 /* Hover lift effect for skill cards */
 .services-list__item {
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, padding-left 0.3s ease-in-out;
-  padding-left: 0;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding-left: 1.6rem;
 }
 
 .services-list__item:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  padding-left: 1.6rem;
 }
 
 .services-list__item-header {
@@ -3779,7 +3775,7 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
 
 /* Smooth color transitions on all links */
 a {
-  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
 
 /* Scroll indicator bounce animation */
@@ -3797,8 +3793,8 @@ a {
 }
 
 .hero-scroll .scroll-link:hover {
-  animation: none;
-  transform: translateY(-3px);
+  animation: pulse 1.5s ease-in-out infinite;
+  background-color: var(--color-accent);
 }
 
 /* Back-to-Top Button Animations */
@@ -3813,9 +3809,9 @@ a {
   transform-origin: center;
 }
 
-/* Bounce entrance when visible */
-.page-anchor.link-is-visible a {
-  animation: bounceIn 0.6s ease-in-out;
+/* Bounce entrance when visible - only on first appearance */
+.page-anchor.animate-entrance a {
+  animation: bounceIn 0.6s ease-in-out forwards;
 }
 
 @keyframes bounceIn {
@@ -3837,7 +3833,7 @@ a {
 }
 
 /* Pulse effect on hover to draw attention */
-.page-anchor a:hover {
+.page-anchor.link-is-visible a:hover {
   animation: pulse 1.5s ease-in-out infinite;
   background-color: var(--color-accent);
 }
