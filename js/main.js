@@ -391,6 +391,16 @@
     // Initial state
     updateBackToTop();
 
+    // Remove animation class after animation completes to prevent re-triggering
+    const backToTopLink = DOM.goTopButton.querySelector("a");
+    if (backToTopLink) {
+      backToTopLink.addEventListener("animationend", (e) => {
+        if (e.animationName === "bounceIn") {
+          DOM.goTopButton.classList.remove("animate-entrance");
+        }
+      });
+    }
+
     DOM.goTopButton.addEventListener("click", (e) => {
       e.preventDefault();
       smoothScroll(0, cfg.scrollDuration, () => {
