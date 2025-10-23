@@ -440,7 +440,9 @@
 
     // Get the full text content, preserving line breaks
     const fullText = heading.innerHTML;
-    const lines = fullText.split(/<br\s*\/?>/i).map(line => line.trim()).filter(line => line);
+    const lines = fullText
+    .split(/<br\s*\/?>/i)
+    .filter(line => line.replace(/\s+/g, ''));
 
     // Clear the heading
     heading.innerHTML = "";
