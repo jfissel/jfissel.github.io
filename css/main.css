@@ -3798,7 +3798,6 @@ a {
 }
 
 /* Back-to-Top Button Animations */
-/* Rotate on scroll */
 .page-anchor {
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
@@ -3807,29 +3806,6 @@ a {
   display: block;
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   transform-origin: center;
-}
-
-/* Bounce entrance when visible - only on first appearance */
-.page-anchor.animate-entrance a {
-  animation: bounceIn 0.6s ease-in-out forwards;
-}
-
-@keyframes bounceIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(20px) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05) rotate(0deg);
-  }
-  70% {
-    transform: scale(0.9) rotate(0deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
 }
 
 /* Pulse effect on hover to draw attention */

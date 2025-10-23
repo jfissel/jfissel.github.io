@@ -82,7 +82,6 @@
   };
 
   // Update back to top button visibility
-  let hasAnimatedEntrance = false;
   const updateBackToTop = () => {
     if (!DOM.goTopButton) return;
 
@@ -90,12 +89,6 @@
     if (shouldShow !== isBackToTopVisible) {
       DOM.goTopButton.classList.toggle("link-is-visible", shouldShow);
       isBackToTopVisible = shouldShow;
-
-      // Add entrance animation only on first appearance
-      if (shouldShow && !hasAnimatedEntrance) {
-        DOM.goTopButton.classList.add("animate-entrance");
-        hasAnimatedEntrance = true;
-      }
     }
   };
 
@@ -390,16 +383,6 @@
 
     // Initial state
     updateBackToTop();
-
-    // Remove animation class after animation completes to prevent re-triggering
-    const backToTopLink = DOM.goTopButton.querySelector("a");
-    if (backToTopLink) {
-      backToTopLink.addEventListener("animationend", (e) => {
-        if (e.animationName === "bounceIn") {
-          DOM.goTopButton.classList.remove("animate-entrance");
-        }
-      });
-    }
 
     DOM.goTopButton.addEventListener("click", (e) => {
       e.preventDefault();
