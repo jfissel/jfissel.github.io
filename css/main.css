@@ -3346,6 +3346,10 @@ html.no-csstransitions .hero-content {
 .page-anchor a:focus {
   background-color: #f9861a;
 }
+/* Pulse effect on hover */
+.page-anchor.link-is-visible a:hover {
+  animation: pulse 1.5s ease-in-out infinite;
+}
 .page-anchor svg {
   height: 1.2rem;
   width: 1.2rem;
@@ -3797,23 +3801,7 @@ a {
   background-color: var(--color-accent);
 }
 
-/* Back-to-Top Button Animations */
-.page-anchor {
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-}
-
-.page-anchor a {
-  display: block;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  transform-origin: center;
-}
-
-/* Pulse effect on hover to draw attention */
-.page-anchor.link-is-visible a:hover {
-  animation: pulse 1.5s ease-in-out infinite;
-  background-color: var(--color-accent);
-}
-
+/* Pulse animation for back-to-top and scroll indicator */
 @keyframes pulse {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(249, 134, 26, 0.7);
