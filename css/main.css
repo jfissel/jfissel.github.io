@@ -3710,12 +3710,13 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
 /* Active indicator smooth transition - already implemented in header-nav */
 
 /* Smooth color transition for sticky header */
-.s-header {
-  transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-}
-
-.s-header.sticky {
+.s-header.sticky.scrolling {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 0.5s ease, visibility 0.5s ease,
+    background-color 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+    padding 0.5s cubic-bezier(0.215, 0.61, 0.355, 1),
+    box-shadow 0.5s ease-in-out;
 }
 
 .s-header.sticky .header-nav a {
@@ -3723,34 +3724,6 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
 }
 
 /* Profile Section Animations */
-/* Image reveal animation with sliding mask */
-.profile-pic {
-  position: relative;
-  overflow: hidden;
-}
-
-.profile-pic::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-primary);
-  transform: translateX(-100%);
-  z-index: 1;
-  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.profile-pic.aos-animate::before {
-  transform: translateX(100%);
-}
-
-.profile-pic img {
-  display: block;
-  transition: transform 0.4s ease-in-out;
-}
-
 /* Parallax scroll effect for profile image */
 @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
   .profile-pic img {
@@ -3761,12 +3734,14 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
 /* Skills Section Animations */
 /* Hover lift effect for skill cards */
 .services-list__item {
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, padding-left 0.3s ease-in-out;
+  padding-left: 0;
 }
 
 .services-list__item:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding-left: 1.6rem;
 }
 
 .services-list__item-header {

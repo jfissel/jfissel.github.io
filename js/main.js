@@ -541,38 +541,6 @@
     updateParallax(); // Initial call
   };
 
-  /* Back-to-top button rotate on scroll
-   * ------------------------------------------------------ */
-  const ssRotateBackToTop = () => {
-    const backToTop = document.querySelector(".page-anchor a");
-    if (!backToTop) return;
-
-    let lastRotation = 0;
-    let ticking = false;
-
-    const updateRotation = () => {
-      const scrolled = window.scrollY;
-      const rotation = scrolled * 0.2; // Rotate based on scroll position
-
-      if (Math.abs(rotation - lastRotation) > 5) { // Only update if significant change
-        backToTop.style.transform = `rotate(${rotation}deg)`;
-        lastRotation = rotation;
-      }
-    };
-
-    const onRotateScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateRotation();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onRotateScroll, { passive: true });
-  };
-
   /* Initialize with performance optimizations
    * ------------------------------------------------------ */
   const ssInit = () => {
@@ -591,7 +559,6 @@
       ssHighlightActiveLink();
       ssTypewriter();
       ssParallaxProfile();
-      ssRotateBackToTop();
 
       // Initialize AOS after other components
       requestAnimationFrame(ssAOS);
