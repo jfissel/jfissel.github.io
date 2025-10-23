@@ -84,7 +84,7 @@
   // Update back to top button visibility
   const updateBackToTop = () => {
     if (!DOM.goTopButton) return;
-    
+
     const shouldShow = window.scrollY >= cfg.BACK_TO_TOP_THRESHOLD;
     if (shouldShow !== isBackToTopVisible) {
       DOM.goTopButton.classList.toggle("link-is-visible", shouldShow);
@@ -432,12 +432,121 @@
     DOM.sections.forEach(section => observer.observe(section));
   };
 
+  /* Typewriter effect for hero heading
+   * ------------------------------------------------------ */
+  const ssTypewriter = () => {
+    const heading = document.querySelector(".hero-content h1");
+    if (!heading) return;
+
+    // Get the full text content, preserving line breaks
+    const fullText = heading.innerHTML;
+    const lines = fullText.split(/<br\s*\/?>/i).map(line => line.trim()).filter(line => line);
+
+    // Clear the heading
+    heading.innerHTML = "";
+    heading.style.opacity = "1";
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let currentLine = document.createElement("span");
+    currentLine.style.opacity = "0";
+    heading.appendChild(currentLine);
+
+    const typeNextChar = () => {
+      if (lineIndex >= lines.length) {
+        return;
+      }
+
+      const currentText = lines[lineIndex];
+
+      if (charIndex < currentText.length) {
+        currentLine.textContent += currentText[charIndex];
+        charIndex++;
+        setTimeout(typeNextChar, 40); // 40ms per character for smooth typing
+      } else {
+        // Finished current line
+        lineIndex++;
+        charIndex = 0;
+
+        if (lineIndex < lines.length) {
+          // Add line break and start new line
+          heading.appendChild(document.createElement("br"));
+          currentLine = document.createElement("span");
+          currentLine.style.opacity = "0";
+          heading.appendChild(currentLine);
+
+          // Fade in the new line
+          requestAnimationFrame(() => {
+            currentLine.style.transition = "opacity 0.3s ease-in-out";
+            currentLine.style.opacity = "1";
+          });
+
+          setTimeout(typeNextChar, 150); // Pause between lines
+        }
+      }
+    };
+
+    // Start typing after a short delay
+    setTimeout(() => {
+      currentLine.style.transition = "opacity 0.3s ease-in-out";
+      currentLine.style.opacity = "1";
+      typeNextChar();
+    }, 800);
+  };
+
+  /* Parallax scroll effect for profile image
+   * ------------------------------------------------------ */
+  const ssParallaxProfile = () => {
+    const profilePic = document.querySelector(".profile-pic img");
+    if (!profilePic) return;
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    // Check if on mobile
+    if (window.innerWidth <= 900) return;
+
+    let ticking = false;
+
+    const updateParallax = () => {
+      const scrolled = window.scrollY;
+      const profileSection = profilePic.closest(".s-about");
+
+      if (!profileSection) return;
+
+      const sectionTop = profileSection.offsetTop;
+      const sectionHeight = profileSection.offsetHeight;
+      const windowHeight = window.innerHeight;
+
+      // Check if section is in view
+      if (scrolled + windowHeight > sectionTop && scrolled < sectionTop + sectionHeight) {
+        const relativeScroll = (scrolled + windowHeight - sectionTop) / (sectionHeight + windowHeight);
+        const parallaxOffset = relativeScroll * 30; // Max 30px movement
+        profilePic.style.transform = `translateY(${parallaxOffset}px)`;
+      }
+    };
+
+    const onParallaxScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateParallax();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onParallaxScroll, { passive: true });
+    updateParallax(); // Initial call
+  };
+
   /* Initialize with performance optimizations
    * ------------------------------------------------------ */
   const ssInit = () => {
     // Initialize DOM cache first
     initDOMCache();
-    
+
     // Start preloader immediately
     ssPreloader();
 
@@ -448,14 +557,16 @@
       ssSmoothScroll();
       ssBackToTop();
       ssHighlightActiveLink();
-      
+      ssTypewriter();
+      ssParallaxProfile();
+
       // Initialize AOS after other components
       requestAnimationFrame(ssAOS);
     });
 
     // Add optimized scroll listener
     window.addEventListener("scroll", onScroll, { passive: true });
-    
+
     // Initialize header state
     updateHeaderState();
   };
