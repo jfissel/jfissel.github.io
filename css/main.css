@@ -3797,7 +3797,7 @@ a {
 }
 
 .hero-scroll .scroll-link:hover {
-  animation: pulse 1.5s ease-in-out infinite;
+  animation: scrollBounce 2s ease-in-out infinite paused, pulse 1.5s ease-in-out infinite;
   background-color: var(--color-accent);
 }
 
