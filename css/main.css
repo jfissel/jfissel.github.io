@@ -2146,14 +2146,14 @@ input[type="button"]:focus-visible {
  * ------------------------------------------------------------------- */
 .hero-particle-cluster {
   position: absolute;
-  left: 0;
+  left: -100px;
   top: 50%;
   transform: translateY(-50%);
-  width: 400px;
-  height: 400px;
+  width: 700px;
+  height: 700px;
   z-index: 1;
   pointer-events: all;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 /* Hide on mobile and tablet */
 @media screen and (max-width: 1200px) {
@@ -2162,11 +2162,18 @@ input[type="button"]:focus-visible {
   }
 }
 /* Adjust size on smaller desktop screens */
+@media screen and (max-width: 1600px) {
+  .hero-particle-cluster {
+    width: 600px;
+    height: 600px;
+    left: -75px;
+  }
+}
 @media screen and (max-width: 1400px) {
   .hero-particle-cluster {
-    width: 350px;
-    height: 350px;
-    left: -25px;
+    width: 550px;
+    height: 550px;
+    left: -50px;
   }
 }
 .hero-content {
@@ -2178,6 +2185,7 @@ input[type="button"]:focus-visible {
   padding-top: 20vh;
   padding-bottom: 2vh;
   position: relative;
+  z-index: 2;
 }
 .hero-content h1 {
   font-size: 7rem;
@@ -2248,6 +2256,7 @@ input[type="button"]:focus-visible {
   position: absolute;
   right: 8rem;
   bottom: 10rem;
+  z-index: 2;
 }
 .hero-scroll::after {
   content: "";
