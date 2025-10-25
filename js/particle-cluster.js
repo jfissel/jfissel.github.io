@@ -9,9 +9,9 @@
     mouseInfluence: 0.00015,
     particleSize: 4,
     connectionDistance: 180,
-    lineOpacity: 0.22,
+    lineOpacity: 0.35,
     particleColor: "rgba(100, 100, 120, 0.6)",
-    lineColor: "rgba(100, 100, 120, LINE_OPACITY)",
+    lineColor: "rgba(80, 80, 100, LINE_OPACITY)",
     floatSpeed: 0.001,
     floatAmplitude: 0.3,
   };
@@ -177,7 +177,7 @@
         "LINE_OPACITY",
         config.lineOpacity
       );
-      this.ctx.lineWidth = 0.5;
+      this.ctx.lineWidth = 1.2;
 
       for (let i = 0; i < projectedParticles.length; i++) {
         const p1 = projectedParticles[i];
@@ -207,7 +207,7 @@
 
       // Draw particles
       projectedParticles.forEach(({ particle, projected }) => {
-        const size = config.particleSize * projected.scale;
+        const size = Math.min(config.particleSize * projected.scale, config.particleSize * 1.5);
         const opacity = 0.5 + projected.scale * 0.5;
 
         this.ctx.fillStyle = config.particleColor.replace("0.8", opacity);

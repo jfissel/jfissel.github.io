@@ -2102,6 +2102,7 @@ input[type="button"]:focus-visible {
   align-items: center;
   padding-top: 8rem;
   padding-bottom: 8rem;
+  overflow: hidden;
 }
 .s-hero::before {
   content: "";
