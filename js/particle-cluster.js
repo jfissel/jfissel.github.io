@@ -92,6 +92,26 @@
       this.z = z;
     }
 
+    getFadeFactor() {
+      // Calculate fade based on distance from drift bounds
+      const fadeThreshold = config.driftBounds * 0.7; // Start fading at 70% of bounds
+
+      const maxOffset = Math.max(
+        Math.abs(this.offsetX),
+        Math.abs(this.offsetY),
+        Math.abs(this.offsetZ)
+      );
+
+      if (maxOffset < fadeThreshold) {
+        return 1.0; // Full opacity
+      }
+
+      // Fade from 1.0 to 0.2 as particle approaches bounds
+      const fadeRange = config.driftBounds - fadeThreshold;
+      const fadeDist = maxOffset - fadeThreshold;
+      return Math.max(0.2, 1.0 - (fadeDist / fadeRange) * 0.8);
+    }
+
     project(centerX, centerY) {
       // Simple perspective projection with bounds checking
       const zOffset = 300 + this.z;
@@ -236,8 +256,16 @@
           const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
           if (distance < config.connectionDistance && isFinite(distance)) {
-            const opacity =
-              config.lineOpacity * (1 - distance / config.connectionDistance);
+            // Calculate base line opacity
+            const baseOpacity = config.lineOpacity * (1 - distance / config.connectionDistance);
+
+            // Apply fade factors from both particles
+            const fade1 = p1.particle.getFadeFactor();
+            const fade2 = p2.particle.getFadeFactor();
+            const combinedFade = (fade1 + fade2) / 2;
+
+            const opacity = baseOpacity * combinedFade;
+
             this.ctx.strokeStyle = config.lineColor.replace(
               "LINE_OPACITY",
               opacity.toFixed(2)
@@ -264,7 +292,12 @@
           return;
         }
 
-        const opacity = Math.max(0, Math.min(1, 0.5 + projected.scale * 0.5));
+        // Calculate base opacity from depth
+        const baseOpacity = 0.5 + projected.scale * 0.5;
+
+        // Apply fade factor based on drift bounds
+        const fadeFactor = particle.getFadeFactor();
+        const opacity = Math.max(0, Math.min(1, baseOpacity * fadeFactor));
 
         this.ctx.fillStyle = config.particleColor.replace("0.6", opacity.toFixed(2));
         this.ctx.beginPath();
