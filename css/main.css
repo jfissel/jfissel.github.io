@@ -2141,6 +2141,34 @@ input[type="button"]:focus-visible {
     background-attachment: scroll;
   }
 }
+/* -------------------------------------------------------------------
+ * ## hero particle cluster
+ * ------------------------------------------------------------------- */
+.hero-particle-cluster {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+  pointer-events: all;
+  opacity: 0.9;
+}
+/* Hide on mobile and tablet */
+@media screen and (max-width: 1200px) {
+  .hero-particle-cluster {
+    display: none;
+  }
+}
+/* Adjust size on smaller desktop screens */
+@media screen and (max-width: 1400px) {
+  .hero-particle-cluster {
+    width: 350px;
+    height: 350px;
+    left: -25px;
+  }
+}
 .hero-content {
   height: 100%;
   max-width: 1400px;
