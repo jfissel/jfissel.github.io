@@ -5,16 +5,16 @@
   const config = {
     particleCount: 80,
     sphereRadius: 300,
-    baseRotationSpeed: 0.00008,
+    baseRotationSpeed: 0.000008,
     mouseInfluence: 0.00015,
     particleSize: 4,
     connectionDistance: 180,
     lineOpacity: 0.35,
-    particleColor: "rgba(100, 100, 120, 0.6)",
-    lineColor: "rgba(80, 80, 100, LINE_OPACITY)",
-    floatSpeed: 0.001,
+    particleColor: "rgba(30, 30, 40, 0.6)",
+    lineColor: "rgba(25, 25, 35, LINE_OPACITY)",
+    floatSpeed: 0.0001,
     floatAmplitude: 0.3,
-    driftSpeed: 0.02,
+    driftSpeed: 0.002,
     driftBounds: 60,
   };
 
