@@ -14,6 +14,8 @@
     lineColor: "rgba(80, 80, 100, LINE_OPACITY)",
     floatSpeed: 0.001,
     floatAmplitude: 0.3,
+    driftSpeed: 0.02,
+    driftBounds: 60,
   };
 
   class Particle {
@@ -32,17 +34,46 @@
 
       // Random phase for floating animation
       this.floatPhase = Math.random() * Math.PI * 2;
+
+      // Slow drift velocity for dynamic constellations
+      this.driftX = (Math.random() - 0.5) * config.driftSpeed;
+      this.driftY = (Math.random() - 0.5) * config.driftSpeed;
+      this.driftZ = (Math.random() - 0.5) * config.driftSpeed;
+
+      // Drift offset accumulator
+      this.offsetX = 0;
+      this.offsetY = 0;
+      this.offsetZ = 0;
     }
 
     rotate(angleX, angleY, time) {
+      // Apply slow drift
+      this.offsetX += this.driftX;
+      this.offsetY += this.driftY;
+      this.offsetZ += this.driftZ;
+
+      // Keep drift within bounds and reverse direction when hitting limits
+      if (Math.abs(this.offsetX) > config.driftBounds) {
+        this.driftX *= -1;
+        this.offsetX = Math.sign(this.offsetX) * config.driftBounds;
+      }
+      if (Math.abs(this.offsetY) > config.driftBounds) {
+        this.driftY *= -1;
+        this.offsetY = Math.sign(this.offsetY) * config.driftBounds;
+      }
+      if (Math.abs(this.offsetZ) > config.driftBounds) {
+        this.driftZ *= -1;
+        this.offsetZ = Math.sign(this.offsetZ) * config.driftBounds;
+      }
+
       // Apply floating animation
       const floatOffset =
         Math.sin(time * config.floatSpeed + this.floatPhase) *
         config.floatAmplitude;
 
-      let x = this.originalX;
-      let y = this.originalY + floatOffset;
-      let z = this.originalZ;
+      let x = this.originalX + this.offsetX;
+      let y = this.originalY + this.offsetY + floatOffset;
+      let z = this.originalZ + this.offsetZ;
 
       // Rotate around Y axis
       let tempX = x * Math.cos(angleY) - z * Math.sin(angleY);
