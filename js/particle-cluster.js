@@ -1,0 +1,342 @@
+(function () {
+  "use strict";
+
+  // Particle cluster configuration
+  const config = {
+    particleCount: 80,
+    sphereRadius: 300,
+    baseRotationSpeed: 0.000008,
+    mouseInfluence: 0.00015,
+    particleSize: 4,
+    connectionDistance: 180,
+    lineOpacity: 0.45,
+    particleColor: "rgba(30, 30, 40, 0.6)",
+    lineColor: "rgba(60, 60, 80, LINE_OPACITY)",
+    floatSpeed: 0.0001,
+    floatAmplitude: 0.3,
+    driftSpeed: 0.002,
+    driftBounds: 60,
+  };
+
+  class Particle {
+    constructor(radius) {
+      // Generate random point on sphere using spherical coordinates
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+
+      this.originalX = radius * Math.sin(phi) * Math.cos(theta);
+      this.originalY = radius * Math.sin(phi) * Math.sin(theta);
+      this.originalZ = radius * Math.cos(phi);
+
+      this.x = this.originalX;
+      this.y = this.originalY;
+      this.z = this.originalZ;
+
+      // Random phase for floating animation
+      this.floatPhase = Math.random() * Math.PI * 2;
+
+      // Slow drift velocity for dynamic constellations
+      this.driftX = (Math.random() - 0.5) * config.driftSpeed;
+      this.driftY = (Math.random() - 0.5) * config.driftSpeed;
+      this.driftZ = (Math.random() - 0.5) * config.driftSpeed;
+
+      // Drift offset accumulator
+      this.offsetX = 0;
+      this.offsetY = 0;
+      this.offsetZ = 0;
+    }
+
+    rotate(angleX, angleY, time) {
+      // Apply slow drift
+      this.offsetX += this.driftX;
+      this.offsetY += this.driftY;
+      this.offsetZ += this.driftZ;
+
+      // Keep drift within bounds and reverse direction when hitting limits
+      if (Math.abs(this.offsetX) > config.driftBounds) {
+        this.driftX *= -1;
+        this.offsetX = Math.sign(this.offsetX) * config.driftBounds;
+      }
+      if (Math.abs(this.offsetY) > config.driftBounds) {
+        this.driftY *= -1;
+        this.offsetY = Math.sign(this.offsetY) * config.driftBounds;
+      }
+      if (Math.abs(this.offsetZ) > config.driftBounds) {
+        this.driftZ *= -1;
+        this.offsetZ = Math.sign(this.offsetZ) * config.driftBounds;
+      }
+
+      // Apply floating animation
+      const floatOffset =
+        Math.sin(time * config.floatSpeed + this.floatPhase) *
+        config.floatAmplitude;
+
+      let x = this.originalX + this.offsetX;
+      let y = this.originalY + this.offsetY + floatOffset;
+      let z = this.originalZ + this.offsetZ;
+
+      // Rotate around Y axis
+      let tempX = x * Math.cos(angleY) - z * Math.sin(angleY);
+      let tempZ = x * Math.sin(angleY) + z * Math.cos(angleY);
+      x = tempX;
+      z = tempZ;
+
+      // Rotate around X axis
+      let tempY = y * Math.cos(angleX) - z * Math.sin(angleX);
+      tempZ = y * Math.sin(angleX) + z * Math.cos(angleX);
+      y = tempY;
+      z = tempZ;
+
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+
+    getFadeFactor() {
+      // Calculate fade based on distance from drift bounds
+      const fadeThreshold = config.driftBounds * 0.7; // Start fading at 70% of bounds
+
+      const maxOffset = Math.max(
+        Math.abs(this.offsetX),
+        Math.abs(this.offsetY),
+        Math.abs(this.offsetZ)
+      );
+
+      if (maxOffset < fadeThreshold) {
+        return 1.0; // Full opacity
+      }
+
+      // Fade from 1.0 to 0.2 as particle approaches bounds
+      const fadeRange = config.driftBounds - fadeThreshold;
+      const fadeDist = maxOffset - fadeThreshold;
+      return Math.max(0.2, 1.0 - (fadeDist / fadeRange) * 0.8);
+    }
+
+    project(centerX, centerY) {
+      // Simple perspective projection with bounds checking
+      const zOffset = 300 + this.z;
+
+      // Prevent division by zero or negative values
+      if (zOffset <= 0.1) {
+        return {
+          x: centerX,
+          y: centerY,
+          scale: 0,
+        };
+      }
+
+      const scale = 300 / zOffset;
+
+      // Clamp scale to reasonable values
+      const clampedScale = Math.max(0.1, Math.min(scale, 10));
+
+      return {
+        x: this.x * clampedScale + centerX,
+        y: this.y * clampedScale + centerY,
+        scale: clampedScale,
+      };
+    }
+  }
+
+  class ParticleCluster {
+    constructor(canvas) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext("2d");
+      this.particles = [];
+      this.angleX = 0;
+      this.angleY = 0;
+      this.targetAngleX = 0;
+      this.targetAngleY = 0;
+      this.animationId = null;
+      this.time = 0;
+
+      this.centerX = 0;
+      this.centerY = 0;
+
+      this.mouseX = 0;
+      this.mouseY = 0;
+
+      this.init();
+    }
+
+    init() {
+      // Set canvas size
+      this.resize();
+
+      // Create particles
+      for (let i = 0; i < config.particleCount; i++) {
+        this.particles.push(new Particle(config.sphereRadius));
+      }
+
+      // Bind event listeners
+      this.bindEvents();
+
+      // Start animation
+      this.animate();
+    }
+
+    resize() {
+      const rect = this.canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      this.canvas.width = rect.width * dpr;
+      this.canvas.height = rect.height * dpr;
+
+      this.ctx.scale(dpr, dpr);
+
+      this.centerX = rect.width / 2;
+      this.centerY = rect.height / 2;
+    }
+
+    bindEvents() {
+      // Resize handler only - removed mouse interaction to prevent conflicts with drift
+      window.addEventListener("resize", () => this.resize());
+    }
+
+    animate() {
+      this.time++;
+
+      // Smooth angle transitions
+      this.angleX += (this.targetAngleX - this.angleX) * 0.05;
+      this.angleY += (this.targetAngleY - this.angleY) * 0.05;
+
+      // Add base rotation
+      this.angleY += config.baseRotationSpeed * this.time;
+
+      // Rotate all particles
+      this.particles.forEach((particle) => {
+        particle.rotate(this.angleX, this.angleY, this.time);
+      });
+
+      // Render
+      this.render();
+
+      // Continue animation
+      this.animationId = requestAnimationFrame(() => this.animate());
+    }
+
+    render() {
+      // Clear canvas
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      // Sort particles by Z depth for proper rendering
+      const projectedParticles = this.particles
+        .map((particle) => ({
+          particle,
+          projected: particle.project(this.centerX, this.centerY),
+        }))
+        .sort((a, b) => a.particle.z - b.particle.z);
+
+      // Draw connections first (behind particles)
+      this.ctx.strokeStyle = config.lineColor.replace(
+        "LINE_OPACITY",
+        config.lineOpacity
+      );
+      this.ctx.lineWidth = 1.2;
+
+      for (let i = 0; i < projectedParticles.length; i++) {
+        const p1 = projectedParticles[i];
+
+        // Validate p1 coordinates
+        if (!isFinite(p1.projected.x) || !isFinite(p1.projected.y)) {
+          continue;
+        }
+
+        for (let j = i + 1; j < projectedParticles.length; j++) {
+          const p2 = projectedParticles[j];
+
+          // Validate p2 coordinates
+          if (!isFinite(p2.projected.x) || !isFinite(p2.projected.y)) {
+            continue;
+          }
+
+          const dx = p1.particle.x - p2.particle.x;
+          const dy = p1.particle.y - p2.particle.y;
+          const dz = p1.particle.z - p2.particle.z;
+          const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+          if (distance < config.connectionDistance && isFinite(distance)) {
+            // Calculate base line opacity
+            const baseOpacity = config.lineOpacity * (1 - distance / config.connectionDistance);
+
+            // Apply fade factors from both particles
+            const fade1 = p1.particle.getFadeFactor();
+            const fade2 = p2.particle.getFadeFactor();
+            const combinedFade = (fade1 + fade2) / 2;
+
+            const opacity = baseOpacity * combinedFade;
+
+            this.ctx.strokeStyle = config.lineColor.replace(
+              "LINE_OPACITY",
+              opacity.toFixed(2)
+            );
+            this.ctx.beginPath();
+            this.ctx.moveTo(p1.projected.x, p1.projected.y);
+            this.ctx.lineTo(p2.projected.x, p2.projected.y);
+            this.ctx.stroke();
+          }
+        }
+      }
+
+      // Draw particles
+      projectedParticles.forEach(({ particle, projected }) => {
+        // Validate coordinates and size
+        if (!isFinite(projected.x) || !isFinite(projected.y) || !isFinite(projected.scale)) {
+          return;
+        }
+
+        const size = Math.min(config.particleSize * projected.scale, config.particleSize * 1.5);
+
+        // Ensure size is positive and valid
+        if (size <= 0 || !isFinite(size)) {
+          return;
+        }
+
+        // Calculate base opacity from depth
+        const baseOpacity = 0.5 + projected.scale * 0.5;
+
+        // Apply fade factor based on drift bounds
+        const fadeFactor = particle.getFadeFactor();
+        const opacity = Math.max(0, Math.min(1, baseOpacity * fadeFactor));
+
+        this.ctx.fillStyle = config.particleColor.replace("0.6", opacity.toFixed(2));
+        this.ctx.beginPath();
+        this.ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
+        this.ctx.fill();
+      });
+    }
+
+    destroy() {
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+      }
+    }
+  }
+
+  // Initialize particle cluster when DOM is ready
+  const initParticleCluster = () => {
+    const canvas = document.getElementById("particle-cluster");
+    if (!canvas) return;
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) {
+      canvas.style.display = "none";
+      return;
+    }
+
+    // Initialize cluster
+    new ParticleCluster(canvas);
+  };
+
+  // Initialize when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initParticleCluster, {
+      once: true,
+    });
+  } else {
+    initParticleCluster();
+  }
+})();
