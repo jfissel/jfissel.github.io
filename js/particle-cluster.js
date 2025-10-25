@@ -93,12 +93,27 @@
     }
 
     project(centerX, centerY) {
-      // Simple perspective projection
-      const scale = 300 / (300 + this.z);
+      // Simple perspective projection with bounds checking
+      const zOffset = 300 + this.z;
+
+      // Prevent division by zero or negative values
+      if (zOffset <= 0.1) {
+        return {
+          x: centerX,
+          y: centerY,
+          scale: 0,
+        };
+      }
+
+      const scale = 300 / zOffset;
+
+      // Clamp scale to reasonable values
+      const clampedScale = Math.max(0.1, Math.min(scale, 10));
+
       return {
-        x: this.x * scale + centerX,
-        y: this.y * scale + centerY,
-        scale: scale,
+        x: this.x * clampedScale + centerX,
+        y: this.y * clampedScale + centerY,
+        scale: clampedScale,
       };
     }
   }
@@ -202,20 +217,30 @@
       for (let i = 0; i < projectedParticles.length; i++) {
         const p1 = projectedParticles[i];
 
+        // Validate p1 coordinates
+        if (!isFinite(p1.projected.x) || !isFinite(p1.projected.y)) {
+          continue;
+        }
+
         for (let j = i + 1; j < projectedParticles.length; j++) {
           const p2 = projectedParticles[j];
+
+          // Validate p2 coordinates
+          if (!isFinite(p2.projected.x) || !isFinite(p2.projected.y)) {
+            continue;
+          }
 
           const dx = p1.particle.x - p2.particle.x;
           const dy = p1.particle.y - p2.particle.y;
           const dz = p1.particle.z - p2.particle.z;
           const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-          if (distance < config.connectionDistance) {
+          if (distance < config.connectionDistance && isFinite(distance)) {
             const opacity =
               config.lineOpacity * (1 - distance / config.connectionDistance);
             this.ctx.strokeStyle = config.lineColor.replace(
               "LINE_OPACITY",
-              opacity
+              opacity.toFixed(2)
             );
             this.ctx.beginPath();
             this.ctx.moveTo(p1.projected.x, p1.projected.y);
@@ -227,10 +252,21 @@
 
       // Draw particles
       projectedParticles.forEach(({ particle, projected }) => {
-        const size = Math.min(config.particleSize * projected.scale, config.particleSize * 1.5);
-        const opacity = 0.5 + projected.scale * 0.5;
+        // Validate coordinates and size
+        if (!isFinite(projected.x) || !isFinite(projected.y) || !isFinite(projected.scale)) {
+          return;
+        }
 
-        this.ctx.fillStyle = config.particleColor.replace("0.8", opacity);
+        const size = Math.min(config.particleSize * projected.scale, config.particleSize * 1.5);
+
+        // Ensure size is positive and valid
+        if (size <= 0 || !isFinite(size)) {
+          return;
+        }
+
+        const opacity = Math.max(0, Math.min(1, 0.5 + projected.scale * 0.5));
+
+        this.ctx.fillStyle = config.particleColor.replace("0.6", opacity.toFixed(2));
         this.ctx.beginPath();
         this.ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
         this.ctx.fill();
