@@ -4,12 +4,12 @@
   // Particle cluster configuration
   const config = {
     particleCount: 80,
-    sphereRadius: 150,
-    baseRotationSpeed: 0.0002,
+    sphereRadius: 300,
+    baseRotationSpeed: 0.00008,
     mouseInfluence: 0.00015,
-    particleSize: 3,
-    connectionDistance: 120,
-    lineOpacity: 0.12,
+    particleSize: 4,
+    connectionDistance: 180,
+    lineOpacity: 0.22,
     particleColor: "rgba(100, 100, 120, 0.6)",
     lineColor: "rgba(100, 100, 120, LINE_OPACITY)",
     floatSpeed: 0.001,
