@@ -154,18 +154,7 @@
     }
 
     bindEvents() {
-      // Mouse move for interactivity
-      const handleMouseMove = (e) => {
-        const rect = this.canvas.getBoundingClientRect();
-        this.mouseX = e.clientX - rect.left;
-        this.mouseY = e.clientY - rect.top;
-
-        // Calculate target angles based on mouse position
-        this.targetAngleY = (this.mouseX - this.centerX) * config.mouseInfluence;
-        this.targetAngleX = (this.mouseY - this.centerY) * config.mouseInfluence;
-      };
-
-      this.canvas.addEventListener("mousemove", handleMouseMove);
+      // Resize handler only - removed mouse interaction to prevent conflicts with drift
       window.addEventListener("resize", () => this.resize());
     }
 
