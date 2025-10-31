@@ -1648,16 +1648,7 @@ input[type="button"]:focus-visible {
     height: 8rem; /* Match the 900px header height */
     top: 0; /* Ensure sticky is at top */
   }
-  .s-header.sticky .header-menu-toggle {
-    /* Keep toggle centered in sticky header */
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .s-header.sticky.scrolling .header-menu-toggle {
-    /* Ensure centering when scrolling */
-    top: 50%;
-    transform: translateY(-50%);
-  }
+  /* Toggle maintains default centering - no special rules needed */
   .header-content {
     display: block;
     background-color: transparent;
@@ -1989,10 +1980,7 @@ input[type="button"]:focus-visible {
   body.menu-is-open .s-header {
     top: 0;
   }
-  /* Compensate toggle position so it stays in same place (but not when sticky) */
-  body.menu-is-open .s-header:not(.sticky) .header-menu-toggle {
-    top: calc(50% + 2rem);
-  }
+  /* Toggle maintains default centering naturally - no compensation needed */
   .header-logo img {
     width: 37px;
     height: 40px;
