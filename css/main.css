@@ -1837,9 +1837,14 @@ input[type="button"]:focus-visible {
   transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   position: absolute;
   right: 5.2rem;
-  /* Position relative to header-content height, not header itself */
-  top: 4.4rem; /* Half of 8.8rem header-content height */
+  /* Account for header padding (2rem) + center of header-content (4.4rem) */
+  top: 6.4rem;
   transform: translateY(-50%);
+}
+.s-header.sticky .header-menu-toggle,
+.s-header.sticky.scrolling .header-menu-toggle {
+  /* When sticky, no header padding, so just center of header-content */
+  top: 4.4rem;
 }
 .header-menu-toggle:hover,
 .header-menu-toggle:focus {
