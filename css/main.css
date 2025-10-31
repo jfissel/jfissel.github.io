@@ -3986,16 +3986,32 @@ a {
 @media screen and (max-height: 600px) and (orientation: landscape) {
   /* Reduce header height to save vertical space */
   .s-header {
-    height: 6rem;
-    padding: 1rem 0;
+    height: 6.8rem;
+    padding: 0.8rem 0;
   }
 
   .s-header.sticky {
-    height: 6rem;
+    height: 6.8rem;
   }
 
   .header-content {
-    height: 6rem;
+    height: 6.8rem;
+  }
+
+  /* Fix header navigation to fit in reduced header */
+  .header-nav {
+    line-height: 4rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    font-size: 1.3rem;
+  }
+
+  .header-nav a {
+    padding: 0.3rem 0;
+  }
+
+  .header-nav li {
+    margin: 0 1.2rem;
   }
 
   /* Adjust header logo positioning */
@@ -4004,14 +4020,14 @@ a {
   }
 
   .header-logo img {
-    width: 32px;
-    height: 35px;
+    width: 34px;
+    height: 37px;
   }
 
   /* Adjust mobile menu toggle */
   .header-menu-toggle {
     right: 3rem;
-    top: 3rem;
+    top: 3.4rem;
     height: 4rem;
     width: 4rem;
     line-height: 4rem;
@@ -4022,44 +4038,56 @@ a {
   }
 
   /* Mobile menu in landscape - more compact */
-  .header-content {
-    padding: 6rem 4rem 3rem;
-  }
+  @media screen and (max-width: 900px) {
+    .header-content {
+      padding: 6rem 4rem 3rem;
+    }
 
-  .menu-is-open .header-content {
-    padding: 6rem 4rem 3rem;
+    .menu-is-open .header-content {
+      padding: 6rem 4rem 3rem;
+    }
+
+    .header-nav {
+      padding: 1.5rem 0;
+    }
+
+    .header-nav a {
+      padding: 1.2rem 0;
+      font-size: 1.5rem;
+      min-height: 4rem;
+    }
   }
 
   /* Hero section adjustments */
   .s-hero {
     min-height: 100vh;
     min-height: 100dvh;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 
   .hero-content {
-    padding-top: 8vh;
-    padding-bottom: 1vh;
+    padding-top: 10vh;
+    padding-bottom: 2vh;
   }
 
   .hero-content h1 {
-    font-size: 3.6rem;
+    font-size: 3.8rem;
     line-height: 1.15;
     margin-bottom: 1rem;
   }
 
   .hero-content h1::before {
-    width: 6rem;
-    left: -8rem;
-    top: 0.45em;
+    width: 6.5rem;
+    left: -8.5rem;
+    top: 0.5em;
   }
 
   /* Make hero contact more compact */
   .hero-contact {
     font-size: 1rem;
     line-height: 2.4rem;
-    margin-top: 4rem;
+    margin-top: 3.5rem;
     flex-wrap: wrap;
   }
 
@@ -4068,28 +4096,67 @@ a {
     margin-right: 0.6rem;
   }
 
-  /* Adjust scroll indicator */
+  /* Adjust scroll indicator - move higher and make line more visible */
   .hero-scroll {
-    right: 2rem;
-    bottom: 4rem;
+    right: 2.5rem;
+    bottom: 8vh;
   }
 
   .hero-scroll::after {
-    height: 4rem;
-    bottom: -6rem;
+    height: 6rem;
+    bottom: -8rem;
+    background-color: rgba(255, 255, 255, 0.4);
   }
 
   .hero-scroll .scroll-link {
-    height: 4.8rem;
-    width: 4.8rem;
+    height: 5.2rem;
+    width: 5.2rem;
   }
 
   /* Particle cluster adjustments */
   .hero-particle-cluster {
-    width: 600px;
-    height: 600px;
+    width: 650px;
+    height: 650px;
     left: -100px;
     opacity: 0.5;
+  }
+
+  /* Reduce text sizes in about and skills sections */
+  .s-about h1,
+  .s-services h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+  }
+
+  .s-about h3,
+  .s-services h3 {
+    font-size: 2rem;
+  }
+
+  .s-about p,
+  .s-services p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+  }
+
+  .s-about p.lead,
+  .s-services p.lead {
+    font-size: 2rem;
+    line-height: 1.7;
+  }
+
+  .s-about__section--profile {
+    padding-top: 10rem;
+    padding-bottom: 5rem;
+  }
+
+  .services-list__item-header h5 {
+    font-size: 1.6rem;
+  }
+
+  .services-list__item-body p {
+    font-size: 1.5rem;
+    line-height: 1.6;
   }
 }
 
@@ -4097,16 +4164,32 @@ a {
 @media screen and (max-height: 450px) and (orientation: landscape) {
   /* Further reduce header for very small landscape screens */
   .s-header {
-    height: 5rem;
-    padding: 0.5rem 0;
+    height: 5.5rem;
+    padding: 0.4rem 0;
   }
 
   .s-header.sticky {
-    height: 5rem;
+    height: 5.5rem;
   }
 
   .header-content {
-    height: 5rem;
+    height: 5.5rem;
+  }
+
+  /* Compact header navigation */
+  .header-nav {
+    line-height: 3.2rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    font-size: 1.2rem;
+  }
+
+  .header-nav a {
+    padding: 0.2rem 0;
+  }
+
+  .header-nav li {
+    margin: 0 1rem;
   }
 
   .header-logo {
@@ -4114,13 +4197,13 @@ a {
   }
 
   .header-logo img {
-    width: 28px;
-    height: 30px;
+    width: 30px;
+    height: 33px;
   }
 
   .header-menu-toggle {
     right: 2rem;
-    top: 2.5rem;
+    top: 2.75rem;
     height: 3.6rem;
     width: 3.6rem;
     line-height: 3.6rem;
@@ -4140,54 +4223,56 @@ a {
   }
 
   /* Compact mobile menu */
-  .header-content {
-    padding: 5rem 3rem 2rem;
-  }
+  @media screen and (max-width: 900px) {
+    .header-content {
+      padding: 5rem 3rem 2rem;
+    }
 
-  .menu-is-open .header-content {
-    padding: 5rem 3rem 2rem;
-  }
+    .menu-is-open .header-content {
+      padding: 5rem 3rem 2rem;
+    }
 
-  .header-nav {
-    padding: 1rem 0;
-  }
+    .header-nav {
+      padding: 1rem 0;
+    }
 
-  .header-nav a {
-    padding: 1rem 0;
-    font-size: 1.4rem;
-    min-height: 3.6rem;
+    .header-nav a {
+      padding: 1rem 0;
+      font-size: 1.4rem;
+      min-height: 3.6rem;
+    }
   }
 
   /* Hero section - maximize vertical space */
   .s-hero {
     min-height: 100vh;
     min-height: 100dvh;
-    padding-top: 3rem;
+    padding-top: 2.5rem;
     padding-bottom: 2rem;
   }
 
   .hero-content {
-    padding-top: 6vh;
+    padding-top: 8vh;
     padding-bottom: 1vh;
   }
 
   .hero-content h1 {
-    font-size: 3rem;
+    font-size: 3.2rem;
     line-height: 1.1;
     margin-bottom: 0.5rem;
     padding-right: 2rem;
   }
 
   .hero-content h1::before {
-    width: 5rem;
-    left: -6.5rem;
-    top: 0.4em;
+    width: 5.5rem;
+    left: -7rem;
+    top: 0.45em;
     height: 1.5px;
   }
 
   /* Very compact contact list */
   .hero-contact {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 2rem;
     margin-top: 2.5rem;
     letter-spacing: 0.3em;
@@ -4197,20 +4282,21 @@ a {
     margin-right: 0.5rem;
   }
 
-  /* Minimize scroll indicator */
+  /* Better positioned scroll indicator */
   .hero-scroll {
-    right: 1.5rem;
-    bottom: 2rem;
+    right: 2rem;
+    bottom: 6vh;
   }
 
   .hero-scroll::after {
-    height: 3rem;
-    bottom: -4rem;
+    height: 4rem;
+    bottom: -5.5rem;
+    background-color: rgba(255, 255, 255, 0.35);
   }
 
   .hero-scroll .scroll-link {
-    height: 4rem;
-    width: 4rem;
+    height: 4.4rem;
+    width: 4.4rem;
   }
 
   .hero-scroll .scroll-link svg {
@@ -4220,16 +4306,48 @@ a {
 
   /* Smaller particle cluster */
   .hero-particle-cluster {
-    width: 500px;
-    height: 500px;
-    left: -120px;
-    opacity: 0.4;
+    width: 550px;
+    height: 550px;
+    left: -110px;
+    opacity: 0.45;
   }
 
-  /* Reduce spacing in sections for landscape */
+  /* Reduce text sizes in about and skills sections */
+  .s-about h1,
+  .s-services h1 {
+    font-size: 2.6rem;
+    line-height: 1.15;
+  }
+
+  .s-about h3,
+  .s-services h3 {
+    font-size: 1.8rem;
+  }
+
+  .s-about p,
+  .s-services p {
+    font-size: 1.5rem;
+    line-height: 1.55;
+  }
+
+  .s-about p.lead,
+  .s-services p.lead {
+    font-size: 1.8rem;
+    line-height: 1.6;
+  }
+
   .s-about__section--profile {
-    padding-top: 8rem;
-    padding-bottom: 4rem;
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+  }
+
+  .services-list__item-header h5 {
+    font-size: 1.5rem;
+  }
+
+  .services-list__item-body p {
+    font-size: 1.4rem;
+    line-height: 1.55;
   }
 }
 
@@ -4237,19 +4355,49 @@ a {
 @media screen and (max-height: 380px) and (orientation: landscape) {
   /* Minimal header */
   .s-header {
-    height: 4.5rem;
+    height: 5rem;
+    padding: 0.3rem 0;
   }
 
   .s-header.sticky {
-    height: 4.5rem;
+    height: 5rem;
   }
 
   .header-content {
-    height: 4.5rem;
+    height: 5rem;
+  }
+
+  /* Very compact header navigation */
+  .header-nav {
+    line-height: 2.8rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .header-nav a {
+    padding: 0.2rem 0;
+  }
+
+  .header-nav li {
+    margin: 0 0.8rem;
+  }
+
+  .header-logo img {
+    width: 26px;
+    height: 28px;
   }
 
   .header-menu-toggle {
-    top: 2.25rem;
+    top: 2.5rem;
+    height: 3.2rem;
+    width: 3.2rem;
+    line-height: 3.2rem;
+  }
+
+  .header-menu-toggle span {
+    width: 1.8rem;
+    left: 0.5rem;
   }
 
   /* Hero - focus on content, minimize decoration */
@@ -4259,21 +4407,24 @@ a {
   }
 
   .hero-content {
-    padding-top: 4vh;
+    padding-top: 6vh;
+    padding-bottom: 1vh;
   }
 
   .hero-content h1 {
-    font-size: 2.6rem;
-    line-height: 1.05;
+    font-size: 2.8rem;
+    line-height: 1.08;
   }
 
   .hero-content h1::before {
-    width: 4rem;
-    left: -5.5rem;
+    width: 4.5rem;
+    left: -6rem;
+    top: 0.42em;
+    height: 1.5px;
   }
 
   .hero-contact {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     line-height: 1.8rem;
     margin-top: 2rem;
   }
@@ -4284,8 +4435,47 @@ a {
   }
 
   .hero-particle-cluster {
-    width: 400px;
-    height: 400px;
-    opacity: 0.3;
+    width: 450px;
+    height: 450px;
+    left: -100px;
+    opacity: 0.35;
+  }
+
+  /* Reduce text sizes in about and skills sections */
+  .s-about h1,
+  .s-services h1 {
+    font-size: 2.4rem;
+    line-height: 1.12;
+  }
+
+  .s-about h3,
+  .s-services h3 {
+    font-size: 1.6rem;
+  }
+
+  .s-about p,
+  .s-services p {
+    font-size: 1.4rem;
+    line-height: 1.5;
+  }
+
+  .s-about p.lead,
+  .s-services p.lead {
+    font-size: 1.6rem;
+    line-height: 1.55;
+  }
+
+  .s-about__section--profile {
+    padding-top: 6rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .services-list__item-header h5 {
+    font-size: 1.4rem;
+  }
+
+  .services-list__item-body p {
+    font-size: 1.3rem;
+    line-height: 1.5;
   }
 }
