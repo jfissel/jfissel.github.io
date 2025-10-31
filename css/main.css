@@ -1975,6 +1975,11 @@ input[type="button"]:focus-visible {
   .s-header {
     top: 2rem;
     height: 8rem;
+    transition: top 0.3s ease-out;
+  }
+  /* Remove gap when menu is open */
+  body.menu-is-open .s-header {
+    top: 0;
   }
   .header-logo img {
     width: 37px;
