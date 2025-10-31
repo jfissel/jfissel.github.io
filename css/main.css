@@ -50,7 +50,20 @@ html {
 }
 @media screen and (max-width: 400px) {
   html {
-    font-size: 9.444444444444444px;
+    font-size: 10.5px; /* Improved from 9.444px for better readability on small devices */
+  }
+  /* Ensure form inputs remain readable */
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px; /* Maintain 16px minimum to prevent iOS zoom */
+    min-height: 5.6rem; /* Reduced from 6.8rem but still touch-friendly */
   }
 }
 html,
@@ -1633,6 +1646,10 @@ input[type="button"]:focus-visible {
   .s-header.sticky {
     background-color: #111111;
   }
+  .s-header.sticky .header-menu-toggle {
+    top: 1.6rem;
+    transform: none;
+  }
   .header-content {
     display: block;
     background-color: transparent;
@@ -1818,44 +1835,6 @@ input[type="button"]:focus-visible {
   right: 5.2rem;
   top: 50%;
   transform: translateY(-50%);
-}
-@media screen and (max-width: 900px) {
-  .s-header {
-    background-color: transparent;
-    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .s-header.sticky {
-    background-color: #111111;
-  }
-  .s-header.sticky .header-menu-toggle {
-    top: 1.6rem;
-    transform: none;
-  }
-  .header-content {
-    display: block;
-    background-color: transparent;
-    height: auto;
-    width: 100%;
-    padding: 10rem 6rem 6rem;
-    transform: translate3d(0, -100%, 0);
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .menu-is-open .header-content {
-    transform: translate3d(0, 0, 0);
-    background-color: #111111;
-  }
-  .header-nav {
-    display: none;
-  }
-  .menu-is-open .header-nav {
-    display: block;
-  }
-  .header-menu-toggle {
-    display: block;
-  }
 }
 .header-menu-toggle:hover,
 .header-menu-toggle:focus {
@@ -2538,6 +2517,10 @@ html.no-csstransitions .hero-content {
   }
   .hero-content h1 {
     font-size: 4.6rem;
+    /* Ensure text wraps naturally when line breaks are hidden */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .hero-content h1 br {
     display: none;
@@ -2603,6 +2586,9 @@ html.no-csstransitions .hero-content {
   position: absolute;
   top: 8rem;
   left: calc(50% + 80px);
+  /* Add smooth transitions for better mobile experience */
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 /* ------------------------------------------------------------------- 
  * ## career position
@@ -2675,6 +2661,11 @@ html.no-csstransitions .hero-content {
   .position {
     padding-right: 8rem;
   }
+  /* Start fading out profile image on smaller tablets */
+  .s-about__section--profile .profile-pic {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
 }
 @media screen and (max-width: 800px) {
   .s-about__section--profile {
@@ -2682,9 +2673,14 @@ html.no-csstransitions .hero-content {
     padding-bottom: 0;
     min-height: 0;
   }
-  .s-about__section--profile::before,
-  .s-about__section--profile .profile-pic {
+  .s-about__section--profile::before {
     display: none;
+  }
+  /* Use opacity and visibility for smoother transition */
+  .s-about__section--profile .profile-pic {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
   .position {
     padding-right: 0;
