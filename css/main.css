@@ -1647,8 +1647,9 @@ input[type="button"]:focus-visible {
     background-color: #111111;
   }
   .s-header.sticky .header-menu-toggle {
-    top: 1.6rem;
-    transform: none;
+    /* Keep toggle centered in sticky header */
+    top: 50%;
+    transform: translateY(-50%);
   }
   .header-content {
     display: block;
