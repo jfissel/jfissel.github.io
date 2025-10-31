@@ -4024,13 +4024,18 @@ a {
     height: 37px;
   }
 
-  /* Adjust mobile menu toggle */
+  /* Adjust mobile menu toggle - better centered */
   .header-menu-toggle {
     right: 3rem;
-    top: 3.4rem;
+    top: 50%;
     height: 4rem;
     width: 4rem;
     line-height: 4rem;
+  }
+
+  .s-header.sticky .header-menu-toggle,
+  .s-header.sticky.scrolling .header-menu-toggle {
+    top: 50%;
   }
 
   .header-menu-toggle span {
@@ -4071,8 +4076,9 @@ a {
     padding-bottom: 2vh;
   }
 
+  /* Increased hero text size for better readability */
   .hero-content h1 {
-    font-size: 3.8rem;
+    font-size: 4.4rem;
     line-height: 1.15;
     margin-bottom: 1rem;
   }
@@ -4121,33 +4127,57 @@ a {
     opacity: 0.5;
   }
 
-  /* Reduce text sizes in about and skills sections */
+  /* Vertical line alignment */
+  .right-vert-line {
+    height: 10rem;
+    right: 2.5rem;
+  }
+
+  /* Reduce whitespace and text sizes in about section */
+  .s-about__section--profile {
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+
   .s-about h1,
-  .s-services h1 {
-    font-size: 3rem;
+  .s-about .display-1 {
+    font-size: 2.4rem;
     line-height: 1.2;
   }
 
-  .s-about h3,
-  .s-services h3 {
-    font-size: 2rem;
+  .s-about h3 {
+    font-size: 1.8rem;
   }
 
-  .s-about p,
-  .s-services p {
-    font-size: 1.6rem;
+  .s-about p {
+    font-size: 1.5rem;
     line-height: 1.6;
   }
 
-  .s-about p.lead,
-  .s-services p.lead {
-    font-size: 2rem;
-    line-height: 1.7;
+  .s-about p.lead {
+    font-size: 1.8rem;
+    line-height: 1.65;
   }
 
-  .s-about__section--profile {
-    padding-top: 10rem;
-    padding-bottom: 5rem;
+  /* Reduce text sizes in skills section */
+  .s-services h1,
+  .s-services .display-1 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+
+  .s-services h3 {
+    font-size: 1.8rem;
+  }
+
+  .s-services p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .s-services p.lead {
+    font-size: 1.8rem;
+    line-height: 1.65;
   }
 
   .services-list__item-header h5 {
@@ -4155,6 +4185,22 @@ a {
   }
 
   .services-list__item-body p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Reduce text sizes in contact/footer section */
+  .s-footer h1,
+  .s-footer .display-1 {
+    font-size: 2.4rem;
+    line-height: 1.2;
+  }
+
+  .s-footer h3 {
+    font-size: 1.8rem;
+  }
+
+  .s-footer p {
     font-size: 1.5rem;
     line-height: 1.6;
   }
@@ -4201,12 +4247,18 @@ a {
     height: 33px;
   }
 
+  /* Better centered mobile menu toggle */
   .header-menu-toggle {
     right: 2rem;
-    top: 2.75rem;
+    top: 50%;
     height: 3.6rem;
     width: 3.6rem;
     line-height: 3.6rem;
+  }
+
+  .s-header.sticky .header-menu-toggle,
+  .s-header.sticky.scrolling .header-menu-toggle {
+    top: 50%;
   }
 
   .header-menu-toggle span {
@@ -4256,8 +4308,9 @@ a {
     padding-bottom: 1vh;
   }
 
+  /* Increased hero text size */
   .hero-content h1 {
-    font-size: 3.2rem;
+    font-size: 3.8rem;
     line-height: 1.1;
     margin-bottom: 0.5rem;
     padding-right: 2rem;
@@ -4312,33 +4365,57 @@ a {
     opacity: 0.45;
   }
 
-  /* Reduce text sizes in about and skills sections */
+  /* Vertical line alignment */
+  .right-vert-line {
+    height: 8rem;
+    right: 2rem;
+  }
+
+  /* Reduce whitespace and text sizes in about section */
+  .s-about__section--profile {
+    padding-top: 5rem;
+    padding-bottom: 2.5rem;
+  }
+
   .s-about h1,
-  .s-services h1 {
-    font-size: 2.6rem;
+  .s-about .display-1 {
+    font-size: 2.2rem;
     line-height: 1.15;
   }
 
-  .s-about h3,
-  .s-services h3 {
-    font-size: 1.8rem;
+  .s-about h3 {
+    font-size: 1.6rem;
   }
 
-  .s-about p,
-  .s-services p {
-    font-size: 1.5rem;
+  .s-about p {
+    font-size: 1.4rem;
     line-height: 1.55;
   }
 
-  .s-about p.lead,
-  .s-services p.lead {
-    font-size: 1.8rem;
+  .s-about p.lead {
+    font-size: 1.6rem;
     line-height: 1.6;
   }
 
-  .s-about__section--profile {
-    padding-top: 7rem;
-    padding-bottom: 3rem;
+  /* Reduce text sizes in skills section */
+  .s-services h1,
+  .s-services .display-1 {
+    font-size: 2.2rem;
+    line-height: 1.15;
+  }
+
+  .s-services h3 {
+    font-size: 1.6rem;
+  }
+
+  .s-services p {
+    font-size: 1.4rem;
+    line-height: 1.55;
+  }
+
+  .s-services p.lead {
+    font-size: 1.6rem;
+    line-height: 1.6;
   }
 
   .services-list__item-header h5 {
@@ -4346,6 +4423,22 @@ a {
   }
 
   .services-list__item-body p {
+    font-size: 1.4rem;
+    line-height: 1.55;
+  }
+
+  /* Reduce text sizes in contact/footer section */
+  .s-footer h1,
+  .s-footer .display-1 {
+    font-size: 2.2rem;
+    line-height: 1.15;
+  }
+
+  .s-footer h3 {
+    font-size: 1.6rem;
+  }
+
+  .s-footer p {
     font-size: 1.4rem;
     line-height: 1.55;
   }
@@ -4388,11 +4481,17 @@ a {
     height: 28px;
   }
 
+  /* Better centered mobile menu toggle */
   .header-menu-toggle {
-    top: 2.5rem;
+    top: 50%;
     height: 3.2rem;
     width: 3.2rem;
     line-height: 3.2rem;
+  }
+
+  .s-header.sticky .header-menu-toggle,
+  .s-header.sticky.scrolling .header-menu-toggle {
+    top: 50%;
   }
 
   .header-menu-toggle span {
@@ -4411,8 +4510,9 @@ a {
     padding-bottom: 1vh;
   }
 
+  /* Increased hero text size */
   .hero-content h1 {
-    font-size: 2.8rem;
+    font-size: 3.2rem;
     line-height: 1.08;
   }
 
@@ -4429,9 +4529,26 @@ a {
     margin-top: 2rem;
   }
 
-  /* Hide scroll indicator on very small landscape screens */
+  /* Keep scroll indicator visible but compact */
   .hero-scroll {
-    display: none;
+    right: 1.5rem;
+    bottom: 5vh;
+  }
+
+  .hero-scroll::after {
+    height: 3rem;
+    bottom: -4.5rem;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .hero-scroll .scroll-link {
+    height: 3.8rem;
+    width: 3.8rem;
+  }
+
+  .hero-scroll .scroll-link svg {
+    height: 0.9rem;
+    width: 0.9rem;
   }
 
   .hero-particle-cluster {
@@ -4441,33 +4558,57 @@ a {
     opacity: 0.35;
   }
 
-  /* Reduce text sizes in about and skills sections */
+  /* Vertical line alignment */
+  .right-vert-line {
+    height: 7rem;
+    right: 1.5rem;
+  }
+
+  /* Reduce whitespace and text sizes in about section */
+  .s-about__section--profile {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
   .s-about h1,
-  .s-services h1 {
-    font-size: 2.4rem;
+  .s-about .display-1 {
+    font-size: 2rem;
     line-height: 1.12;
   }
 
-  .s-about h3,
-  .s-services h3 {
-    font-size: 1.6rem;
+  .s-about h3 {
+    font-size: 1.5rem;
   }
 
-  .s-about p,
-  .s-services p {
-    font-size: 1.4rem;
+  .s-about p {
+    font-size: 1.3rem;
     line-height: 1.5;
   }
 
-  .s-about p.lead,
-  .s-services p.lead {
-    font-size: 1.6rem;
+  .s-about p.lead {
+    font-size: 1.5rem;
     line-height: 1.55;
   }
 
-  .s-about__section--profile {
-    padding-top: 6rem;
-    padding-bottom: 2.5rem;
+  /* Reduce text sizes in skills section */
+  .s-services h1,
+  .s-services .display-1 {
+    font-size: 2rem;
+    line-height: 1.12;
+  }
+
+  .s-services h3 {
+    font-size: 1.5rem;
+  }
+
+  .s-services p {
+    font-size: 1.3rem;
+    line-height: 1.5;
+  }
+
+  .s-services p.lead {
+    font-size: 1.5rem;
+    line-height: 1.55;
   }
 
   .services-list__item-header h5 {
@@ -4475,6 +4616,22 @@ a {
   }
 
   .services-list__item-body p {
+    font-size: 1.3rem;
+    line-height: 1.5;
+  }
+
+  /* Reduce text sizes in contact/footer section */
+  .s-footer h1,
+  .s-footer .display-1 {
+    font-size: 2rem;
+    line-height: 1.12;
+  }
+
+  .s-footer h3 {
+    font-size: 1.5rem;
+  }
+
+  .s-footer p {
     font-size: 1.3rem;
     line-height: 1.5;
   }
