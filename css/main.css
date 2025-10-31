@@ -1655,7 +1655,7 @@ input[type="button"]:focus-visible {
     background-color: transparent;
     height: auto;
     width: 100%;
-    padding: 10rem 6rem 6rem;
+    padding: 8rem 6rem 6rem;
     transform: translate3d(0, -100%, 0);
     position: absolute;
     top: 0;
@@ -1985,7 +1985,7 @@ input[type="button"]:focus-visible {
     background-color: transparent;
     height: auto;
     width: 100%;
-    padding: 10rem 6rem 6rem;
+    padding: 8rem 6rem 6rem;
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
     position: absolute;
