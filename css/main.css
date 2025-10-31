@@ -1639,16 +1639,7 @@ input[type="button"]:focus-visible {
 }
 /* Mobile menu styles */
 @media screen and (max-width: 900px) {
-  .s-header {
-    background-color: transparent;
-    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .s-header.sticky {
-    background-color: #111111;
-    height: 8rem; /* Match the 900px header height */
-    top: 0; /* Ensure sticky is at top */
-  }
-  /* Toggle maintains default centering - no special rules needed */
+  /* Header behaves exactly like desktop - no position overrides */
   .header-content {
     display: block;
     background-color: transparent;
@@ -1971,16 +1962,7 @@ input[type="button"]:focus-visible {
   }
 }
 @media screen and (max-width: 900px) {
-  .s-header {
-    top: 2rem;
-    height: 8rem;
-    transition: top 0.3s ease-out;
-  }
-  /* Remove gap when menu is open */
-  body.menu-is-open .s-header {
-    top: 0;
-  }
-  /* Toggle maintains default centering naturally - no compensation needed */
+  /* Header behaves exactly like desktop - no position overrides */
   .header-logo img {
     width: 37px;
     height: 40px;
