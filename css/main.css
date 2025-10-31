@@ -1843,8 +1843,8 @@ input[type="button"]:focus-visible {
 }
 .s-header.sticky .header-menu-toggle,
 .s-header.sticky.scrolling .header-menu-toggle {
-  /* When sticky, center within the 8.8rem header */
-  top: 50%;
+  /* When sticky, position at 60% for optimal visual alignment */
+  top: 60%;
 }
 .header-menu-toggle:hover,
 .header-menu-toggle:focus {
