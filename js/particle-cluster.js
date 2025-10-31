@@ -189,8 +189,17 @@
     }
 
     bindEvents() {
-      // Resize handler only - removed mouse interaction to prevent conflicts with drift
-      window.addEventListener("resize", () => this.resize());
+      // Resize handler for window resizing and device orientation changes
+      const handleResize = () => this.resize();
+      window.addEventListener("resize", handleResize);
+
+      // Add orientationchange event for mobile devices
+      if ('onorientationchange' in window) {
+        window.addEventListener("orientationchange", () => {
+          // Small delay to ensure viewport has updated
+          setTimeout(handleResize, 100);
+        });
+      }
     }
 
     animate() {

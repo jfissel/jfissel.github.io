@@ -50,7 +50,20 @@ html {
 }
 @media screen and (max-width: 400px) {
   html {
-    font-size: 9.444444444444444px;
+    font-size: 10.5px; /* Improved from 9.444px for better readability on small devices */
+  }
+  /* Ensure form inputs remain readable */
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px; /* Maintain 16px minimum to prevent iOS zoom */
+    min-height: 5.6rem; /* Reduced from 6.8rem but still touch-friendly */
   }
 }
 html,
@@ -1633,17 +1646,23 @@ input[type="button"]:focus-visible {
   .s-header.sticky {
     background-color: #111111;
   }
+  .s-header.sticky .header-menu-toggle {
+    top: 1.6rem;
+    transform: none;
+  }
   .header-content {
     display: block;
     background-color: transparent;
     height: auto;
     width: 100%;
-    padding: 10rem 6rem 6rem;
+    padding: 8rem 6rem 6rem;
     transform: translate3d(0, -100%, 0);
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    /* Simplified animation for better performance */
+    will-change: transform;
+    transition: transform 0.3s ease-out, background-color 0.3s ease-out;
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
@@ -1655,8 +1674,20 @@ input[type="button"]:focus-visible {
   .menu-is-open .header-nav {
     display: block;
   }
+  /* Improve touch targets for mobile - minimum 44x44px */
+  .header-nav a {
+    padding: 1.4rem 2rem;
+    display: block;
+    min-height: 44px;
+  }
+  .header-nav li {
+    margin: 0;
+  }
   .header-menu-toggle {
     display: block;
+    /* Increase touch area around toggle */
+    padding: 1.2rem;
+    margin: -1.2rem;
   }
 }
 /* Active link styles */
@@ -1819,44 +1850,6 @@ input[type="button"]:focus-visible {
   top: 50%;
   transform: translateY(-50%);
 }
-@media screen and (max-width: 900px) {
-  .s-header {
-    background-color: transparent;
-    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .s-header.sticky {
-    background-color: #111111;
-  }
-  .s-header.sticky .header-menu-toggle {
-    top: 1.6rem;
-    transform: none;
-  }
-  .header-content {
-    display: block;
-    background-color: transparent;
-    height: auto;
-    width: 100%;
-    padding: 10rem 6rem 6rem;
-    transform: translate3d(0, -100%, 0);
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  .menu-is-open .header-content {
-    transform: translate3d(0, 0, 0);
-    background-color: #111111;
-  }
-  .header-nav {
-    display: none;
-  }
-  .menu-is-open .header-nav {
-    display: block;
-  }
-  .header-menu-toggle {
-    display: block;
-  }
-}
 .header-menu-toggle:hover,
 .header-menu-toggle:focus {
   color: #ffffff;
@@ -1982,6 +1975,11 @@ input[type="button"]:focus-visible {
   .s-header {
     top: 2rem;
     height: 8rem;
+    transition: top 0.3s ease-out;
+  }
+  /* Remove gap when menu is open */
+  body.menu-is-open .s-header {
+    top: 0;
   }
   .header-logo img {
     width: 37px;
@@ -1992,13 +1990,15 @@ input[type="button"]:focus-visible {
     background-color: transparent;
     height: auto;
     width: 100%;
-    padding: 10rem 6rem 6rem;
+    padding: 8rem 6rem 6rem;
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
     position: absolute;
-    top: -2rem;
+    top: 0;
     left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    /* Simplified animation for better performance */
+    will-change: transform;
+    transition: transform 0.3s ease-out, background-color 0.3s ease-out;
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
@@ -2006,16 +2006,12 @@ input[type="button"]:focus-visible {
   }
   .header-content .btn {
     margin-top: 4.8rem;
-    -webkit-transform: translate3d(0, -2rem, 0);
-    transform: translate3d(0, -2rem, 0);
     opacity: 0;
     visibility: hidden;
     position: static;
   }
   .header-nav-wrap {
     padding: 0;
-    -webkit-transform: translate3d(0, -2rem, 0);
-    transform: translate3d(0, -2rem, 0);
     opacity: 0;
     visibility: hidden;
   }
@@ -2039,30 +2035,16 @@ input[type="button"]:focus-visible {
     display: block;
   }
   .menu-is-open .header-content .btn {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
     opacity: 1;
     visibility: visible;
-    -webkit-transition-property: opacity, -webkit-transform;
-    transition-property: opacity, -webkit-transform;
-    transition-property: transform, opacity;
-    transition-property: transform, opacity, -webkit-transform;
-    -webkit-transition-duration: 0.5s;
-    transition-duration: 0.5s;
-    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transition-delay: 0.7s;
-    transition-delay: 0.7s;
+    /* Simplified transition - removed extra transforms and delays */
+    transition: opacity 0.2s ease-out 0.15s, visibility 0.2s ease-out 0.15s;
   }
   .menu-is-open .header-nav-wrap {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
     opacity: 1;
     visibility: visible;
-    -webkit-transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transition-delay: 0.6s;
-    transition-delay: 0.6s;
+    /* Simplified transition - removed extra transforms and delays */
+    transition: opacity 0.2s ease-out 0.1s, visibility 0.2s ease-out 0.1s;
   }
 }
 @media screen and (max-width: 600px) {
@@ -2538,6 +2520,9 @@ html.no-csstransitions .hero-content {
   }
   .hero-content h1 {
     font-size: 4.6rem;
+    /* Ensure text wraps naturally when line breaks are hidden */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   .hero-content h1 br {
     display: none;
@@ -2603,6 +2588,9 @@ html.no-csstransitions .hero-content {
   position: absolute;
   top: 8rem;
   left: calc(50% + 80px);
+  /* Add smooth transitions for better mobile experience */
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 /* ------------------------------------------------------------------- 
  * ## career position
@@ -2675,6 +2663,11 @@ html.no-csstransitions .hero-content {
   .position {
     padding-right: 8rem;
   }
+  /* Start fading out profile image on smaller tablets */
+  .s-about__section--profile .profile-pic {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
 }
 @media screen and (max-width: 800px) {
   .s-about__section--profile {
@@ -2682,9 +2675,14 @@ html.no-csstransitions .hero-content {
     padding-bottom: 0;
     min-height: 0;
   }
-  .s-about__section--profile::before,
-  .s-about__section--profile .profile-pic {
+  .s-about__section--profile::before {
     display: none;
+  }
+  /* Use opacity and visibility for smoother transition */
+  .s-about__section--profile .profile-pic {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
   .position {
     padding-right: 0;
