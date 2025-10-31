@@ -1981,6 +1981,10 @@ input[type="button"]:focus-visible {
   body.menu-is-open .s-header {
     top: 0;
   }
+  /* Compensate toggle position so it stays in same place */
+  body.menu-is-open .header-menu-toggle {
+    top: calc(50% + 2rem);
+  }
   .header-logo img {
     width: 37px;
     height: 40px;
