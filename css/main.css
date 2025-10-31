@@ -1660,7 +1660,9 @@ input[type="button"]:focus-visible {
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    /* Simplified animation for better performance */
+    will-change: transform;
+    transition: transform 0.3s ease-out, background-color 0.3s ease-out;
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
@@ -1672,8 +1674,20 @@ input[type="button"]:focus-visible {
   .menu-is-open .header-nav {
     display: block;
   }
+  /* Improve touch targets for mobile - minimum 44x44px */
+  .header-nav a {
+    padding: 1.4rem 2rem;
+    display: block;
+    min-height: 44px;
+  }
+  .header-nav li {
+    margin: 0;
+  }
   .header-menu-toggle {
     display: block;
+    /* Increase touch area around toggle */
+    padding: 1.2rem;
+    margin: -1.2rem;
   }
 }
 /* Active link styles */
@@ -1975,9 +1989,11 @@ input[type="button"]:focus-visible {
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
     position: absolute;
-    top: -2rem;
+    top: 0;
     left: 0;
-    transition: transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    /* Simplified animation for better performance */
+    will-change: transform;
+    transition: transform 0.3s ease-out, background-color 0.3s ease-out;
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
@@ -1985,16 +2001,12 @@ input[type="button"]:focus-visible {
   }
   .header-content .btn {
     margin-top: 4.8rem;
-    -webkit-transform: translate3d(0, -2rem, 0);
-    transform: translate3d(0, -2rem, 0);
     opacity: 0;
     visibility: hidden;
     position: static;
   }
   .header-nav-wrap {
     padding: 0;
-    -webkit-transform: translate3d(0, -2rem, 0);
-    transform: translate3d(0, -2rem, 0);
     opacity: 0;
     visibility: hidden;
   }
@@ -2018,30 +2030,16 @@ input[type="button"]:focus-visible {
     display: block;
   }
   .menu-is-open .header-content .btn {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
     opacity: 1;
     visibility: visible;
-    -webkit-transition-property: opacity, -webkit-transform;
-    transition-property: opacity, -webkit-transform;
-    transition-property: transform, opacity;
-    transition-property: transform, opacity, -webkit-transform;
-    -webkit-transition-duration: 0.5s;
-    transition-duration: 0.5s;
-    -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transition-delay: 0.7s;
-    transition-delay: 0.7s;
+    /* Simplified transition - removed extra transforms and delays */
+    transition: opacity 0.2s ease-out 0.15s, visibility 0.2s ease-out 0.15s;
   }
   .menu-is-open .header-nav-wrap {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
     opacity: 1;
     visibility: visible;
-    -webkit-transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    -webkit-transition-delay: 0.6s;
-    transition-delay: 0.6s;
+    /* Simplified transition - removed extra transforms and delays */
+    transition: opacity 0.2s ease-out 0.1s, visibility 0.2s ease-out 0.1s;
   }
 }
 @media screen and (max-width: 600px) {
@@ -2520,7 +2518,6 @@ html.no-csstransitions .hero-content {
     /* Ensure text wraps naturally when line breaks are hidden */
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
   }
   .hero-content h1 br {
     display: none;

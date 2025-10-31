@@ -879,8 +879,9 @@ textarea {
 @media screen and (max-width: 600px) {
   .row {
     width: 100%;
-    padding-left: 24px;
-    padding-right: 24px;
+    /* Standardized to match column padding for consistent gutters */
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .row .row {
@@ -990,8 +991,9 @@ textarea {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 400px) {
   .row {
-    padding-left: 22px;
-    padding-right: 22px;
+    /* Standardized padding for consistency */
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .row .row {
