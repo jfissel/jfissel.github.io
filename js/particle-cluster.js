@@ -6,7 +6,6 @@
     particleCount: 80,
     sphereRadius: 300,
     baseRotationSpeed: 0.000008,
-    mouseInfluence: 0.00015,
     particleSize: 4,
     connectionDistance: 180,
     lineOpacity: 0.45,
@@ -153,8 +152,8 @@
       this.centerX = 0;
       this.centerY = 0;
 
-      this.mouseX = 0;
-      this.mouseY = 0;
+      this._handleResize = null;
+      this._handleOrientation = null;
 
       this.init();
     }
@@ -190,15 +189,16 @@
 
     bindEvents() {
       // Resize handler for window resizing and device orientation changes
-      const handleResize = () => this.resize();
-      window.addEventListener("resize", handleResize);
+      this._handleResize = () => this.resize();
+      window.addEventListener("resize", this._handleResize);
 
       // Add orientationchange event for mobile devices
       if ('onorientationchange' in window) {
-        window.addEventListener("orientationchange", () => {
+        this._handleOrientation = () => {
           // Small delay to ensure viewport has updated
-          setTimeout(handleResize, 100);
-        });
+          setTimeout(this._handleResize, 100);
+        };
+        window.addEventListener("orientationchange", this._handleOrientation);
       }
     }
 
@@ -318,6 +318,12 @@
     destroy() {
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
+      }
+      if (this._handleResize) {
+        window.removeEventListener("resize", this._handleResize);
+      }
+      if (this._handleOrientation) {
+        window.removeEventListener("orientationchange", this._handleOrientation);
       }
     }
   }
