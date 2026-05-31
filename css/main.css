@@ -1220,24 +1220,6 @@ input[type="button"]:focus-visible {
   z-index: 2;
   margin-bottom: 3rem;
 }
-.section-intro::before {
-  content: attr(data-num);
-  font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: 30rem;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  color: rgba(0, 0, 0, 0.08);
-  position: absolute;
-  top: -0.25em;
-  left: 0;
-  z-index: 1;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-.section-intro:hover::before {
-  opacity: 0.7;
-}
 /* Card styles */
 .card {
   background: var(--color-text-light);
@@ -1302,9 +1284,6 @@ input[type="button"]:focus-visible {
 .h-dark-bg .section-intro .display-1 {
   color: var(--color-text-light);
 }
-.h-dark-bg .section-intro::before {
-  color: rgba(255, 255, 255, 0.08);
-}
 .h-dark-bg p.lead {
   color: rgba(255, 255, 255, 0.9);
 }
@@ -1322,9 +1301,6 @@ input[type="button"]:focus-visible {
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -1336,9 +1312,6 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 8rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
   .card {
     padding: 2.4rem;
   }
@@ -1349,9 +1322,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -1360,9 +1330,6 @@ input[type="button"]:focus-visible {
 .h-dark-bg .section-intro .display-1 {
   color: var(--color-text-light);
 }
-.h-dark-bg .section-intro::before {
-  color: rgba(255, 255, 255, 0.08);
-}
 .h-dark-bg p.lead {
   color: rgba(255, 255, 255, 0.9);
 }
@@ -1380,9 +1347,6 @@ input[type="button"]:focus-visible {
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -1394,9 +1358,6 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 8rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
   .card {
     padding: 2.4rem;
   }
@@ -1407,9 +1368,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -1435,9 +1393,6 @@ input[type="button"]:focus-visible {
   }
 }
 @media screen and (max-width: 800px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .right-vert-line {
     height: 16rem;
     right: 6.2rem;
@@ -1449,9 +1404,6 @@ input[type="button"]:focus-visible {
   }
   .display-1 {
     font-size: 4.2rem;
-  }
-  .section-intro::before {
-    font-size: 22rem;
   }
   .right-vert-line {
     height: 12rem;
@@ -1467,16 +1419,10 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 9.6rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
 }
 @media screen and (max-width: 360px) {
   .display-1 {
     font-size: 3.6rem;
-  }
-  .section-intro::before {
-    font-size: 18rem;
   }
 }
 @media screen and (max-width: 320px) {
@@ -1485,9 +1431,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 8rem;
-  }
-  .section-intro::before {
-    font-size: 14rem;
   }
 }
 /* ===================================================================
@@ -1509,7 +1452,7 @@ input[type="button"]:focus-visible {
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #111111;
+  background-color: var(--color-primary);
   opacity: 0;
   visibility: hidden;
   transform: translate3d(0, -100%, 0);
@@ -1525,7 +1468,7 @@ input[type="button"]:focus-visible {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0);
-  background-color: #111111;
+  background-color: var(--color-primary);
 }
 /* Mobile menu styles */
 @media screen and (max-width: 900px) {
@@ -1546,7 +1489,7 @@ input[type="button"]:focus-visible {
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
-    background-color: #111111;
+    background-color: var(--color-primary);
   }
   .header-nav {
     display: none;
@@ -1880,7 +1823,7 @@ input[type="button"]:focus-visible {
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
-    background-color: #111111;
+    background-color: var(--color-primary);
   }
   .header-content .btn {
     margin-top: 4.8rem;
@@ -3045,9 +2988,6 @@ html.no-csstransitions .hero-content {
   .section-intro {
     margin-bottom: 10rem;
   }
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -3061,9 +3001,6 @@ html.no-csstransitions .hero-content {
   }
   .section-intro {
     margin-bottom: 8rem;
-  }
-  .section-intro::before {
-    font-size: 20rem;
   }
   .card {
     padding: 2.4rem;
@@ -3102,9 +3039,6 @@ html.no-csstransitions .hero-content {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -3153,9 +3087,6 @@ html.no-csstransitions .hero-content {
 }
 /* Small mobile devices */
 @media screen and (max-width: 400px) {
-  .section-intro::before {
-    font-size: 14rem;
-  }
   .display-1 {
     font-size: 3.2rem;
   }
@@ -3501,6 +3432,13 @@ a {
  * dark-mode adaptation.
  * ------------------------------------------------------------------- */
 
+/* ---- Anchor offset so fixed-header jumps land below the header ----
+ * Covers native hash navigation and reduced-motion users (the JS
+ * smooth-scroll already compensates for everyone else). */
+.target-section {
+  scroll-margin-top: 8.8rem;
+}
+
 /* ---- Display serif (Source Serif 4) applied only to showcase text ----
  * Body, nav, labels and minor headings stay on the sans (Inter),
  * matching the original sans intent; the big editorial statements
@@ -3562,6 +3500,18 @@ p.lead {
   line-height: 1.778;
 }
 
+/* ---- Brand-gradient underline on nav links (hover + active) ---- */
+.header-nav a::after {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-brand);
+}
+/* Keep the active link's underline persistently visible */
+.header-nav a.current::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 /* ---- Glassmorphism on the sticky header ---- */
 .s-header.sticky.scrolling {
   background-color: rgba(11, 10, 21, 0.6);
@@ -3572,7 +3522,7 @@ p.lead {
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .s-header.sticky.scrolling {
-    background-color: #111111;
+    background-color: var(--color-primary);
   }
 }
 
@@ -3770,4 +3720,59 @@ input[type="button"] {
   .s-about .right-vert-line {
     background-color: var(--surface-dark-3);
   }
+}
+
+/* ===================================================================
+ * # Contact section icons
+ * Inline line-icons reuse the skill-card icon language for a
+ * consistent, more scannable footer.
+ * ------------------------------------------------------------------- */
+.footer-contact-block__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.footer-contact-block__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 134, 26, 0.12);
+  color: var(--color-accent);
+}
+.footer-contact-block__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  stroke: currentColor;
+  fill: none;
+}
+.footer-contact-block__list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.footer-social__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  color: var(--color-gray);
+  transition: color var(--transition-normal);
+}
+.footer-social__icon svg {
+  width: 2rem;
+  height: 2rem;
+  stroke: currentColor;
+  fill: none;
+}
+.footer-contact-block__list a:hover .footer-social__icon,
+.footer-contact-block__list a:focus .footer-social__icon {
+  color: var(--color-accent);
 }
