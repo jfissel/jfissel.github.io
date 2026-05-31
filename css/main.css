@@ -3752,27 +3752,3 @@ input[type="button"] {
   stroke: currentColor;
   fill: none;
 }
-.footer-contact-block__list a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-.footer-social__icon {
-  display: inline-grid;
-  place-items: center;
-  width: 2.2rem;
-  height: 2.2rem;
-  flex: 0 0 auto;
-  color: var(--color-gray);
-  transition: color var(--transition-normal);
-}
-.footer-social__icon svg {
-  width: 2rem;
-  height: 2rem;
-  stroke: currentColor;
-  fill: none;
-}
-.footer-contact-block__list a:hover .footer-social__icon,
-.footer-contact-block__list a:focus .footer-social__icon {
-  color: var(--color-accent);
-}
