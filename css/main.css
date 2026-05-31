@@ -3501,7 +3501,7 @@ a {
  * dark-mode adaptation.
  * ------------------------------------------------------------------- */
 
-/* ---- Display serif (Fraunces) applied only to showcase text ----
+/* ---- Display serif (Source Serif 4) applied only to showcase text ----
  * Body, nav, labels and minor headings stay on the sans (Inter),
  * matching the original sans intent; the big editorial statements
  * get the variable serif. */
