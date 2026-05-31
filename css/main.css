@@ -3556,6 +3556,12 @@ p.lead {
   max-width: 68ch;
 }
 
+/* Match the Skills intro paragraph to the About body-copy size */
+.s-services__leftcol p.lead {
+  font-size: 1.8rem;
+  line-height: 1.778;
+}
+
 /* ---- Glassmorphism on the sticky header ---- */
 .s-header.sticky.scrolling {
   background-color: rgba(11, 10, 21, 0.6);
