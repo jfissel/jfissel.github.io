@@ -24,7 +24,7 @@
   /* Type families (variable fonts, two-family system)
    * --font-display : editorial serif for headings
    * --font-text/ui : modern grotesque for body & interface */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-text: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -3587,14 +3587,28 @@ input[type="button"] {
 .s-services {
   background-color: var(--surface-dark-1);
 }
+/* Full-width card grid sits in its own row below the intro */
+.s-services__grid {
+  margin-top: 2rem;
+}
 .services-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2.4rem;
   list-style: none;
-  margin: 6rem 0 0;
+  margin: 0;
   padding: 0;
   counter-reset: ctr;
+}
+@media screen and (max-width: 900px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 560px) {
+  .services-list {
+    grid-template-columns: 1fr;
+  }
 }
 .services-list__item {
   display: flex;

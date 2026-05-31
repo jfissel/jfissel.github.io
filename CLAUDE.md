@@ -17,10 +17,10 @@ This is a **zero-dependency, no-build-step static site** built entirely with van
 | Layer | Technology |
 |---|---|
 | Markup | HTML5 (single page: `index.html`) |
-| Styles | Vanilla CSS3 (`css/` directory, 3 files) |
-| Scripts | Vanilla JavaScript ES6+ (`js/` directory, 3 files) |
-| Fonts | Google Fonts (Libre Baskerville, Source Sans 3) via CDN |
-| Animation | AOS (Animate On Scroll) via vendored files |
+| Styles | Vanilla CSS3 (`css/` directory, 2 files) |
+| Scripts | Vanilla JavaScript ES6+ (`js/` directory, 2 files) |
+| Fonts | Google Fonts (Source Serif 4 + Inter, variable) via CDN |
+| Animation | Native IntersectionObserver scroll-reveal (no library) |
 | Effects | Custom Canvas particle animation (`particle-cluster.js`) |
 | PWA | Service worker (`sw.js`) + Web App Manifest (`site.webmanifest`) |
 | Hosting | GitHub Pages with custom domain via `CNAME` file |
@@ -40,14 +40,12 @@ jfissel.github.io/
 ├── README.md               # Human-readable project documentation
 │
 ├── css/
-│   ├── base.css            # Normalize.css v8.0.1 + base element styles (1,316 lines)
-│   ├── main.css            # Custom layout, components, responsive styles (3,976 lines)
-│   └── vendor.css          # AOS animation library styles (1,421 lines)
+│   ├── base.css            # Normalize.css v8.0.1 + base element styles
+│   └── main.css            # Custom layout, components, responsive styles
 │
 ├── js/
-│   ├── main.js             # Core interactivity (scroll, menu, typewriter, etc.) (582 lines)
-│   ├── plugins.js          # Minified AOS library (11 lines)
-│   └── particle-cluster.js # Canvas 3D particle animation (351 lines)
+│   ├── main.js             # Core interactivity (scroll, menu, typewriter, scroll-reveal, etc.)
+│   └── particle-cluster.js # Canvas 3D particle animation
 │
 ├── images/
 │   ├── hero-bg-3000.webp   # Hero section background
@@ -130,7 +128,6 @@ Deployment is automatic via **GitHub Pages**:
 - **Responsive breakpoints**: Defined with `@media` queries. Main breakpoints: `900px` (tablet), `1000px` (desktop), `400px` (small mobile).
 - **Mobile-first**: Write base styles for mobile, then add complexity for larger screens via `min-width` media queries.
 - **Do not edit `base.css`**: This is a CSS normalize/reset. It should not be modified.
-- **Do not edit `vendor.css`**: This is the AOS library. It should not be modified.
 
 ### JavaScript (`js/main.js`)
 
@@ -174,8 +171,7 @@ This site targets high Lighthouse scores. When making changes, preserve the foll
 
 - **Do not introduce build tools** (webpack, vite, rollup, etc.) without explicit instruction. This is intentionally a no-build project.
 - **Do not add npm/package.json** unless explicitly requested.
-- **Do not edit `base.css` or `vendor.css`**. These are third-party files.
-- **Do not modify `plugins.js`**. It is a minified vendor library (AOS).
+- **Do not edit `base.css`**. It is a third-party normalize/reset.
 - **Do not push to `master` directly** when working from a feature branch — open a PR instead.
 - **Do not remove PWA files** (`sw.js`, `site.webmanifest`) without deliberate intent.
 - **Do not use JavaScript frameworks** (React, Vue, etc.) for changes. Keep it vanilla JS.
@@ -210,5 +206,5 @@ The single-page `index.html` is divided into these sections (in order):
 - **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It responds to mouse movement for interactive 3D depth.
 - **Sticky header**: JavaScript adds a `.sticky` class to `.s-header` on scroll, which triggers CSS transitions defined in `main.css`.
 - **Mobile menu**: Toggled by `.header-menu-toggle` button; the open state is tracked via `aria-expanded` and a `.menu-is-open` class on `<html>`.
-- **AOS animations**: Elements with `data-aos="..."` attributes animate into view on scroll, driven by the vendored `plugins.js` AOS library initialized in `main.js`.
+- **Scroll-reveal**: Elements with `data-aos="..."` attributes fade/slide into view on scroll, driven by a native `IntersectionObserver` in `main.js` (the `ssReveal` function). Respects `prefers-reduced-motion`.
 - **Cache busting**: To force the service worker to re-fetch assets after a deployment, increment `CACHE_VERSION` in `sw.js`.
