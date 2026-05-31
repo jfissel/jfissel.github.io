@@ -1,13 +1,11 @@
-const CACHE_NAME = "johnfissel-site-cache-v4";
+const CACHE_NAME = "johnfissel-site-cache-v5";
 const urlsToCache = [
   "/",
   "/index.html",
   "/404.html",
   "/css/base.css",
   "/css/main.css",
-  "/css/vendor.css",
   "/js/main.js",
-  "/js/plugins.js",
   "/js/particle-cluster.js",
   "/images/profile-pic.webp",
   "/images/profile-pic@2x.webp",
