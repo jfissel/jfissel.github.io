@@ -87,8 +87,7 @@ jfissel.github.io/
 - **Web App Manifest**: PWA installation
 
 ### Third-Party Resources
-- **Google Fonts**: Custom typography
-- **AOS (Animate On Scroll)**: Scroll-triggered animations
+- **Google Fonts**: Custom typography (Source Serif 4 + Inter)
 
 ### Standards & Protocols
 - **Schema.org**: Structured data for search engines

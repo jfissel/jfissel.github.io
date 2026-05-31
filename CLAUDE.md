@@ -136,7 +136,7 @@ Deployment is automatic via **GitHub Pages**:
 - **Event delegation**: Prefer a single parent-level listener over multiple child listeners where possible.
 - **Scroll performance**: Scroll handlers use `requestAnimationFrame` with a throttle pattern to avoid jank.
 - **Passive listeners**: Always add `{ passive: true }` to scroll and resize event listeners.
-- **No dependencies**: Do not import external libraries. The only external script is the vendored AOS (`plugins.js`).
+- **No dependencies**: Do not import external libraries. All JavaScript is first-party and vanilla.
 
 ### Service Worker (`sw.js`)
 
