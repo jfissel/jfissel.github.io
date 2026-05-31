@@ -9,8 +9,8 @@
     particleSize: 4,
     connectionDistance: 180,
     lineOpacity: 0.45,
-    particleColor: "rgba(30, 30, 40, 0.6)",
-    lineColor: "rgba(60, 60, 80, LINE_OPACITY)",
+    particleColor: "rgb(30, 30, 40)",
+    lineColor: "rgb(60, 60, 80)",
     floatSpeed: 0.0001,
     floatAmplitude: 0.3,
     driftSpeed: 0.002,
@@ -138,9 +138,12 @@
   }
 
   class ParticleCluster {
-    constructor(canvas) {
+    constructor(canvas, options = {}) {
       this.canvas = canvas;
       this.ctx = canvas.getContext("2d");
+      // When false, draw a single static frame instead of animating
+      // (used to honour prefers-reduced-motion without hiding the canvas).
+      this.animated = options.animated !== false;
       this.particles = [];
       this.angleX = 0;
       this.angleY = 0;
@@ -170,8 +173,12 @@
       // Bind event listeners
       this.bindEvents();
 
-      // Start animation
-      this.animate();
+      // Start animation, or draw a single static frame for reduced motion.
+      if (this.animated) {
+        this.animate();
+      } else {
+        this.render();
+      }
     }
 
     resize() {
@@ -188,8 +195,13 @@
     }
 
     bindEvents() {
-      // Resize handler for window resizing and device orientation changes
-      this._handleResize = () => this.resize();
+      // Resize handler for window resizing and device orientation changes.
+      // When static, redraw after resizing since the animation loop isn't
+      // running to repaint the (cleared) canvas.
+      this._handleResize = () => {
+        this.resize();
+        if (!this.animated) this.render();
+      };
       window.addEventListener("resize", this._handleResize);
 
       // Add orientationchange event for mobile devices
@@ -236,11 +248,10 @@
         }))
         .sort((a, b) => a.particle.z - b.particle.z);
 
-      // Draw connections first (behind particles)
-      this.ctx.strokeStyle = config.lineColor.replace(
-        "LINE_OPACITY",
-        config.lineOpacity
-      );
+      // Draw connections first (behind particles). Set the colour once and
+      // modulate transparency per segment via globalAlpha — far cheaper than
+      // rebuilding an rgba() string on every connection, every frame.
+      this.ctx.strokeStyle = config.lineColor;
       this.ctx.lineWidth = 1.2;
 
       for (let i = 0; i < projectedParticles.length; i++) {
@@ -275,10 +286,7 @@
 
             const opacity = baseOpacity * combinedFade;
 
-            this.ctx.strokeStyle = config.lineColor.replace(
-              "LINE_OPACITY",
-              opacity.toFixed(2)
-            );
+            this.ctx.globalAlpha = opacity;
             this.ctx.beginPath();
             this.ctx.moveTo(p1.projected.x, p1.projected.y);
             this.ctx.lineTo(p2.projected.x, p2.projected.y);
@@ -288,6 +296,7 @@
       }
 
       // Draw particles
+      this.ctx.fillStyle = config.particleColor;
       projectedParticles.forEach(({ particle, projected }) => {
         // Validate coordinates and size
         if (!isFinite(projected.x) || !isFinite(projected.y) || !isFinite(projected.scale)) {
@@ -308,11 +317,14 @@
         const fadeFactor = particle.getFadeFactor();
         const opacity = Math.max(0, Math.min(1, baseOpacity * fadeFactor));
 
-        this.ctx.fillStyle = config.particleColor.replace("0.6", opacity.toFixed(2));
+        this.ctx.globalAlpha = opacity;
         this.ctx.beginPath();
         this.ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
         this.ctx.fill();
       });
+
+      // Restore default alpha for any subsequent drawing.
+      this.ctx.globalAlpha = 1;
     }
 
     destroy() {
@@ -337,13 +349,9 @@
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (prefersReducedMotion) {
-      canvas.style.display = "none";
-      return;
-    }
-
-    // Initialize cluster
-    new ParticleCluster(canvas);
+    // Honour reduced-motion by rendering a single static frame rather than
+    // hiding the canvas (keeps the hero composition intact, no motion).
+    new ParticleCluster(canvas, { animated: !prefersReducedMotion });
   };
 
   // Initialize when DOM is ready

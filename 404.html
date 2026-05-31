@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Page Not Found | John Fissel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111111" />
+    <meta name="robots" content="noindex" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;700;800&family=Martel:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --color-primary: #0b0a15;
+        --color-accent: #f9861a;
+        --color-text-light: #ffffff;
+        --color-gray: #7e7e7e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 62.5%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2.4rem;
+        background: var(--color-primary);
+        color: var(--color-text-light);
+        font-family: "Martel", serif;
+        font-size: 1.8rem;
+        line-height: 1.6;
+      }
+      .e404__code {
+        font-family: "Gothic A1", sans-serif;
+        font-weight: 800;
+        font-size: clamp(8rem, 22vw, 18rem);
+        line-height: 1;
+        margin: 0;
+        color: var(--color-accent);
+        letter-spacing: -0.02em;
+      }
+      .e404__title {
+        font-family: "Gothic A1", sans-serif;
+        font-weight: 700;
+        font-size: clamp(2.2rem, 5vw, 3.2rem);
+        margin: 1.6rem 0 0.8rem;
+      }
+      .e404__text {
+        max-width: 48rem;
+        margin: 0 auto 3.2rem;
+        color: var(--color-gray);
+      }
+      .e404__link {
+        display: inline-block;
+        font-family: "Gothic A1", sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        text-decoration: none;
+        color: var(--color-primary);
+        background: var(--color-accent);
+        padding: 1.6rem 3.2rem;
+        border-radius: 4px;
+        transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+      }
+      .e404__link:hover,
+      .e404__link:focus {
+        background: #e67a17;
+        transform: translateY(-2px);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .e404__link {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="e404">
+      <p class="e404__code">404</p>
+      <h1 class="e404__title">Page Not Found</h1>
+      <p class="e404__text">
+        The page you're looking for doesn't exist or may have been moved.
+      </p>
+      <a class="e404__link" href="/">Back to Home</a>
+    </main>
+  </body>
+</html>

@@ -1,7 +1,8 @@
-const CACHE_NAME = "johnfissel-site-cache-v3";
+const CACHE_NAME = "johnfissel-site-cache-v4";
 const urlsToCache = [
   "/",
   "/index.html",
+  "/404.html",
   "/css/base.css",
   "/css/main.css",
   "/css/vendor.css",
@@ -77,7 +78,12 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => {
-          return caches.match("/index.html");
+          // Offline: serve the cached homepage for navigations, the
+          // cached 404 page as a final fallback for anything else.
+          if (event.request.mode === "navigate") {
+            return caches.match("/index.html");
+          }
+          return caches.match("/404.html");
         });
     })
   );

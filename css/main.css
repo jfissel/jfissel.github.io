@@ -121,7 +121,7 @@ h6,
   font-family: "Gothic A1", sans-serif;
   font-weight: 700;
   font-style: normal;
-  color: #000000;
+  color: var(--color-text);
   -webkit-font-variant-ligatures: common-ligatures;
   font-variant-ligatures: common-ligatures;
   text-rendering: optimizeLegibility;
@@ -212,7 +212,7 @@ p.lead {
   font-size: 2.4rem;
   line-height: 1.833;
   margin-bottom: 3.6rem;
-  color: #000000;
+  color: var(--color-text);
 }
 @media screen and (max-width: 1200px) {
   p.lead {
@@ -267,7 +267,7 @@ blockquote p {
   padding: 0;
   font-size: 2.8rem;
   line-height: 1.857;
-  color: #000000;
+  color: var(--color-text);
 }
 @media screen and (max-width: 1200px) {
   blockquote p {
@@ -292,7 +292,7 @@ blockquote cite:before {
 blockquote cite,
 blockquote cite a,
 blockquote cite a:visited {
-  color: #7e7e7e;
+  color: var(--color-gray);
   border: none;
 }
 abbr {
@@ -301,7 +301,7 @@ abbr {
   font-variant: small-caps;
   text-transform: lowercase;
   letter-spacing: 0.05rem;
-  color: #7e7e7e;
+  color: var(--color-gray);
 }
 var,
 kbd,
@@ -312,7 +312,7 @@ pre {
 }
 pre {
   padding: 2.4rem 3.2rem 3.2rem;
-  background: #efefef;
+  background: var(--color-gray-light);
   overflow-x: auto;
 }
 code {
@@ -320,9 +320,9 @@ code {
   margin: 0 0.2rem;
   padding: 0.4rem 0.8rem;
   white-space: nowrap;
-  background: #efefef;
+  background: var(--color-gray-light);
   border: 1px solid #d3d3d3;
-  color: #000000;
+  color: var(--color-text);
   border-radius: 3px;
 }
 pre > code {
@@ -346,7 +346,7 @@ dfn[title] {
 }
 mark {
   background: #fff099;
-  color: #000000;
+  color: var(--color-text);
 }
 hr {
   border: solid #e0e0e0;
@@ -392,7 +392,7 @@ ul.disc li::before {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #f9861a;
+  background: var(--color-accent);
   position: absolute;
   left: -16px;
   top: 11px;
@@ -400,7 +400,7 @@ ul.disc li::before {
 }
 dt {
   margin: 0;
-  color: #f9861a;
+  color: var(--color-accent);
 }
 dd {
   margin: 0 0 0 2rem;
@@ -450,7 +450,7 @@ td {
   border-bottom: 1px solid #e0e0e0;
 }
 th {
-  color: #000000;
+  color: var(--color-text);
   font-family: "Gothic A1", sans-serif;
   font-weight: 700;
 }
@@ -502,7 +502,7 @@ form,
   left: 0;
   right: 0;
   bottom: 0;
-  background: #0b0a15;
+  background: var(--color-primary);
   z-index: 500;
   height: 100vh;
   width: 100%;
@@ -531,7 +531,7 @@ form,
 }
 #loader > div {
   content: "";
-  background: #ffffff;
+  background: var(--color-text-light);
   width: 6px;
   height: 6px;
   position: absolute;
@@ -683,7 +683,7 @@ select {
   padding: 1.8rem 0 1.5rem;
   border: 0;
   outline: none;
-  color: #000000;
+  color: var(--color-text);
   font-family: "Gothic A1", sans-serif;
   font-size: 1.6rem;
   line-height: 3.2rem;
@@ -715,8 +715,8 @@ select {
   display: none;
 }
 .ss-custom-select::after {
-  border-bottom: 2px solid #000000;
-  border-right: 2px solid #000000;
+  border-bottom: 2px solid var(--color-text);
+  border-right: 2px solid var(--color-text);
   content: "";
   display: block;
   height: 8px;
@@ -745,8 +745,8 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  color: #000000;
-  border-bottom: 1px solid #000000;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-text);
 }
 label,
 legend {
@@ -755,7 +755,7 @@ legend {
   font-size: 1.4rem;
   margin-bottom: 0.8rem;
   line-height: 1.714;
-  color: #000000;
+  color: var(--color-text);
   display: block;
 }
 input[type="checkbox"],
@@ -807,7 +807,7 @@ textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: #f9861a;
+  -webkit-text-fill-color: var(--color-accent);
   -webkit-transition: background-color 5000s ease-in-out 0s;
   transition: background-color 5000s ease-in-out 0s;
 }
@@ -977,7 +977,7 @@ input[type="button"]:focus-visible {
   padding: 0 0.125em 0 0;
   text-transform: uppercase;
   background: transparent;
-  color: #000000;
+  color: var(--color-text);
 }
 /* line definition style 
  * ----------------------------------------------- */
@@ -1035,7 +1035,7 @@ input[type="button"]:focus-visible {
   padding: 2.4rem 0;
 }
 .pull-quote blockquote {
-  background-color: #efefef;
+  background-color: var(--color-gray-light);
   border: none;
   margin: 0;
   padding-top: 9.6rem;
@@ -1158,7 +1158,7 @@ input[type="button"]:focus-visible {
   letter-spacing: 0.4em;
   margin-top: 0;
   margin-bottom: 6rem;
-  color: #f9861a;
+  color: var(--color-accent);
 }
 .display-1 {
   font-size: 4.8rem;
@@ -1199,7 +1199,7 @@ input[type="button"]:focus-visible {
 }
 /* Card styles */
 .card {
-  background: #ffffff;
+  background: var(--color-text-light);
   border-radius: 8px;
   padding: 4rem;
   margin-bottom: 3rem;
@@ -1240,7 +1240,7 @@ input[type="button"]:focus-visible {
 }
 /* Dark background sections */
 .h-dark-bg {
-  color: #ffffff;
+  color: var(--color-text-light);
   background: var(--color-primary);
   position: relative;
 }
@@ -1259,7 +1259,7 @@ input[type="button"]:focus-visible {
   pointer-events: none;
 }
 .h-dark-bg .section-intro .display-1 {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .h-dark-bg .section-intro::before {
   color: rgba(255, 255, 255, 0.08);
@@ -1273,11 +1273,11 @@ input[type="button"]:focus-visible {
   position: relative;
 }
 .section--light {
-  background: #ffffff;
+  background: var(--color-text-light);
 }
 .section--dark {
   background: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
@@ -1317,7 +1317,7 @@ input[type="button"]:focus-visible {
   }
 }
 .h-dark-bg .section-intro .display-1 {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .h-dark-bg .section-intro::before {
   color: rgba(255, 255, 255, 0.08);
@@ -1331,11 +1331,11 @@ input[type="button"]:focus-visible {
   position: relative;
 }
 .section--light {
-  background: #ffffff;
+  background: var(--color-text-light);
 }
 .section--dark {
   background: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
@@ -1531,7 +1531,7 @@ input[type="button"]:focus-visible {
 }
 /* Active link styles */
 .header-nav a.current {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 /* Remove the underline styles */
 .header-nav a.current::after,
@@ -1545,7 +1545,7 @@ input[type="button"]:focus-visible {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #f9861a;
+  background-color: var(--color-accent);
   transition: transform 0.3s ease;
   transform: scaleX(0);
 }
@@ -1619,10 +1619,10 @@ input[type="button"]:focus-visible {
 }
 .header-nav a:hover,
 .header-nav a:focus {
-  color: #ffffff !important;
+  color: var(--color-text-light) !important;
 }
 .header-nav a.current {
-  color: #ffffff !important;
+  color: var(--color-text-light) !important;
 }
 .header-nav a::after {
   content: "";
@@ -1631,7 +1631,7 @@ input[type="button"]:focus-visible {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #f9861a;
+  background-color: var(--color-accent);
   transform: scaleX(0);
   transition: transform 0.3s ease;
   transform-origin: right;
@@ -1681,7 +1681,7 @@ input[type="button"]:focus-visible {
   font-size: 1.4rem;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
-  color: #ffffff;
+  color: var(--color-text-light);
   outline: none;
   transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   position: absolute;
@@ -1697,13 +1697,13 @@ input[type="button"]:focus-visible {
 }
 .header-menu-toggle:hover,
 .header-menu-toggle:focus {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .header-menu-toggle span {
   display: block;
   width: 2.4rem;
   height: 2px;
-  background-color: #ffffff;
+  background-color: var(--color-text-light);
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   font: 0/0 a;
@@ -1777,8 +1777,8 @@ input[type="button"]:focus-visible {
  * ## download resume button
  * ------------------------------------------------------------------- */
 .header-content .btn {
-  border-color: #ffffff;
-  color: #ffffff;
+  border-color: var(--color-text-light);
+  color: var(--color-text-light);
   margin: 0;
   padding: 0 4rem;
   font-size: 1.1rem;
@@ -1790,8 +1790,8 @@ input[type="button"]:focus-visible {
 }
 .header-content .btn:hover,
 .header-content .btn:focus {
-  background-color: #f9861a !important;
-  border-color: #f9861a !important;
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
 }
 /* ------------------------------------------------------------------- 
  * responsive:
@@ -2065,7 +2065,7 @@ input[type="button"]:focus-visible {
   line-height: 1.257;
   padding-right: 3.2rem;
   margin-top: 0;
-  color: #ffffff;
+  color: var(--color-text-light);
   position: relative;
 }
 .hero-content h1::before {
@@ -2073,7 +2073,7 @@ input[type="button"]:focus-visible {
   display: block;
   height: 2px;
   width: 8rem;
-  background-color: #f9861a;
+  background-color: var(--color-accent);
   position: absolute;
   left: -10.8rem;
   top: 0.55em;
@@ -2102,12 +2102,12 @@ input[type="button"]:focus-visible {
   position: relative;
 }
 .hero-contact a {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .hero-contact a:hover,
 .hero-contact a:focus,
 .hero-contact a:active {
-  color: #f9861a;
+  color: var(--color-accent);
 }
 .hero-contact li {
   padding-left: 0;
@@ -2168,11 +2168,11 @@ input[type="button"]:focus-visible {
   top: 50%;
 }
 .hero-scroll .scroll-link svg path {
-  fill: #ffffff;
+  fill: var(--color-text-light);
 }
 .hero-scroll .scroll-link:hover,
 .hero-scroll .scroll-link:focus {
-  background-color: #f9861a;
+  background-color: var(--color-accent);
 }
 /* -------------------------------------------------------------------
  * ## animate intro content
@@ -2395,7 +2395,7 @@ html.no-csstransitions .hero-content {
  *
  * ------------------------------------------------------------------- */
 .s-about {
-  background-color: #ffffff;
+  background-color: var(--color-text-light);
   position: relative;
 }
 .s-about .right-vert-line {
@@ -2471,7 +2471,7 @@ html.no-csstransitions .hero-content {
   line-height: 2rem;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
-  color: #7e7e7e;
+  color: var(--color-gray);
 }
 /* ------------------------------------------------------------------- 
  * responsive:
@@ -2596,7 +2596,7 @@ html.no-csstransitions .hero-content {
   counter-reset: ctr;
 }
 .services-list h5 {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .services-list__item {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -2627,14 +2627,14 @@ html.no-csstransitions .hero-content {
   font-weight: 600;
   font-size: 0.5em;
   line-height: 1;
-  color: #f9861a;
+  color: var(--color-accent);
   position: absolute;
   top: 0.5em;
   left: 0;
 }
 .services-list__item-header::after {
-  border-bottom: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid var(--color-text-light);
+  border-right: 2px solid var(--color-text-light);
   content: "";
   display: block;
   height: 6px;
@@ -2737,7 +2737,7 @@ html.no-csstransitions .hero-content {
 .s-footer {
   padding-top: 14rem;
   padding-bottom: 8rem;
-  background-color: #0b0a15;
+  background-color: var(--color-primary);
   position: relative;
   scroll-margin-top: 0;
 }
@@ -2781,7 +2781,7 @@ html.no-csstransitions .hero-content {
   margin-bottom: 3.2rem;
 }
 .s-footer .right-vert-line {
-  background-color: #f9861a;
+  background-color: var(--color-accent);
 }
 .s-footer__bottom {
   font-family: "Gothic A1", sans-serif;
@@ -2790,9 +2790,9 @@ html.no-csstransitions .hero-content {
 }
 .s-footer .footer-email-us .btn:hover,
 .s-footer .footer-email-us .btn:focus {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
+  background-color: var(--color-text-light);
+  border-color: var(--color-text-light);
+  color: var(--color-text);
 }
 .s-footer .footer-contacts {
   margin-top: 7.2rem;
@@ -2824,11 +2824,11 @@ html.no-csstransitions .hero-content {
   line-height: 1.2;
 }
 .footer-contact-block a {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .footer-contact-block a:hover,
 .footer-contact-block a:focus {
-  color: #f9861a;
+  color: var(--color-accent);
 }
 .footer-contact-block__content,
 .footer-contact-block__list li {
@@ -2854,11 +2854,11 @@ html.no-csstransitions .hero-content {
   position: relative;
 }
 .ss-copyright a {
-  color: #ffffff;
+  color: var(--color-text-light);
 }
 .ss-copyright a:hover,
 .ss-copyright a:focus {
-  color: #f9861a;
+  color: var(--color-accent);
 }
 .ss-copyright span {
   font-size: 1.5rem;
@@ -2895,14 +2895,14 @@ html.no-csstransitions .hero-content {
   height: 6.4rem;
   width: 6.4rem;
   border-radius: 50%;
-  background-color: #000000;
+  background-color: var(--color-text);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   position: relative;
 }
 .page-anchor a:hover,
 .page-anchor a:focus {
-  background-color: #f9861a;
+  background-color: var(--color-accent);
 }
 /* Pulse effect on hover */
 .page-anchor.link-is-visible a:hover {
@@ -2918,7 +2918,7 @@ html.no-csstransitions .hero-content {
   top: 50%;
 }
 .page-anchor svg path {
-  fill: #ffffff;
+  fill: var(--color-text-light);
 }
 .page-anchor.link-is-visible {
   opacity: 1;
