@@ -454,6 +454,16 @@
     currentLine.style.opacity = "0";
     heading.appendChild(currentLine);
 
+    // Track the pending timeout so it can be cancelled if the page is
+    // hidden/unloaded mid-animation (prevents stray timers firing).
+    let typeTimeout = null;
+    const cancelTyping = () => {
+      if (typeTimeout !== null) {
+        clearTimeout(typeTimeout);
+        typeTimeout = null;
+      }
+    };
+
     const typeNextChar = () => {
       if (lineIndex >= lines.length) {
         return;
@@ -464,7 +474,7 @@
       if (charIndex < currentText.length) {
         currentLine.textContent += currentText[charIndex];
         charIndex++;
-        setTimeout(typeNextChar, 40); // 40ms per character for smooth typing
+        typeTimeout = setTimeout(typeNextChar, 40); // 40ms per character for smooth typing
       } else {
         // Finished current line
         lineIndex++;
@@ -483,13 +493,16 @@
             currentLine.style.opacity = "1";
           });
 
-          setTimeout(typeNextChar, 150); // Pause between lines
+          typeTimeout = setTimeout(typeNextChar, 150); // Pause between lines
         }
       }
     };
 
+    // Stop any pending timer when the page goes away.
+    window.addEventListener("pagehide", cancelTyping, { once: true });
+
     // Start typing after a short delay
-    setTimeout(() => {
+    typeTimeout = setTimeout(() => {
       currentLine.style.transition = "opacity 0.3s ease-in-out";
       currentLine.style.opacity = "1";
       typeNextChar();
@@ -506,10 +519,8 @@
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    // Check if on mobile
-    if (window.innerWidth <= 900) return;
-
     let ticking = false;
+    let isBound = false;
 
     const updateParallax = () => {
       const scrolled = window.scrollY;
@@ -539,8 +550,28 @@
       }
     };
 
-    window.addEventListener("scroll", onParallaxScroll, { passive: true });
-    updateParallax(); // Initial call
+    // Only run parallax on larger viewports; bind/unbind as the viewport
+    // crosses the breakpoint so the listener never lingers on mobile.
+    const desktop = window.matchMedia("(min-width: 901px)");
+
+    const bind = () => {
+      if (isBound) return;
+      window.addEventListener("scroll", onParallaxScroll, { passive: true });
+      isBound = true;
+      updateParallax(); // Initial call
+    };
+
+    const unbind = () => {
+      if (!isBound) return;
+      window.removeEventListener("scroll", onParallaxScroll);
+      isBound = false;
+      profilePic.style.transform = ""; // Reset any applied offset
+    };
+
+    const syncParallax = () => (desktop.matches ? bind() : unbind());
+
+    desktop.addEventListener("change", syncParallax);
+    syncParallax();
   };
 
   /* Initialize with performance optimizations
