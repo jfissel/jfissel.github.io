@@ -8,10 +8,11 @@
     hdr: null,
     toggleButton: null,
     headerContent: null,
-    servicesList: null,
     goTopButton: null,
+    progressBar: null,
     sections: null,
-    navLinks: null
+    navLinks: null,
+    revealEls: null
   };
 
   // Initialize DOM cache
@@ -19,10 +20,11 @@
     DOM.hdr = document.querySelector(".s-header");
     DOM.toggleButton = document.querySelector(".header-menu-toggle");
     DOM.headerContent = document.querySelector(".header-content");
-    DOM.servicesList = document.querySelector(".services-list");
     DOM.goTopButton = document.querySelector(".page-anchor");
+    DOM.progressBar = document.querySelector(".scroll-progress");
     DOM.sections = document.querySelectorAll(".target-section");
     DOM.navLinks = document.querySelectorAll(".header-nav a");
+    DOM.revealEls = document.querySelectorAll("[data-aos]");
   };
 
   DOM.html.classList.remove("no-js");
@@ -92,12 +94,23 @@
     }
   };
 
+  // Update the scroll progress indicator (0 -> 1 across the document)
+  const updateScrollProgress = () => {
+    if (!DOM.progressBar) return;
+
+    const scrollable =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+    DOM.progressBar.style.transform = `scaleX(${Math.min(progress, 1)})`;
+  };
+
   // Combined scroll handler for better performance
   const onScroll = () => {
     if (!ticking) {
       requestAnimationFrame(() => {
         updateHeaderState();
         updateBackToTop();
+        updateScrollProgress();
         ticking = false;
       });
       ticking = true;
@@ -240,114 +253,36 @@
     window.addEventListener("resize", handleResize, { passive: true });
   };
 
-  /* Optimized accordion with better animations
+  /* Scroll reveal — native replacement for the AOS library.
+   * Adds `.reveal-in` to [data-aos] elements as they enter the
+   * viewport. Honours prefers-reduced-motion by revealing everything
+   * immediately (the CSS only hides elements when motion is allowed).
    * ------------------------------------------------------ */
-  const ssAccordion = () => {
-    if (!DOM.servicesList) return;
+  const ssReveal = () => {
+    if (!DOM.revealEls.length) return;
 
-    const allPanels = DOM.servicesList.querySelectorAll(".services-list__item-body");
-    
-    // Hide all panels except first using CSS
-    allPanels.forEach((panel, index) => {
-      if (index > 0) {
-        panel.style.display = "none";
-      }
-    });
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    // Use single event listener with delegation
-    DOM.servicesList.addEventListener("click", (e) => {
-      const header = e.target.closest(".services-list__item-header");
-      if (!header) return;
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      DOM.revealEls.forEach((el) => el.classList.add("reveal-in"));
+      return;
+    }
 
-      e.preventDefault();
-
-      const curItem = header.parentElement;
-      const curPanel = curItem.querySelector(".services-list__item-body");
-      const activeItem = DOM.servicesList.querySelector(".services-list__item.is-active");
-
-      if (curItem === activeItem) {
-        // Close current panel
-        slideUp(curPanel, cfg.ACCORDION_DURATION);
-        curItem.classList.remove("is-active");
-      } else {
-        // Close active panel and open new one
-        if (activeItem) {
-          const activePanel = activeItem.querySelector(".services-list__item-body");
-          slideUp(activePanel, cfg.ACCORDION_DURATION);
-          activeItem.classList.remove("is-active");
-        }
-        
-        slideDown(curPanel, cfg.ACCORDION_DURATION, () => {
-          const panelTop = curItem.getBoundingClientRect().top + window.scrollY;
-          if (panelTop < window.scrollY) {
-            smoothScroll(panelTop - cfg.SCROLL_OFFSET, cfg.ACCORDION_DURATION);
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            obs.unobserve(entry.target);
           }
         });
-        curItem.classList.add("is-active");
-      }
-    });
-  };
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 }
+    );
 
-  // Optimized slide animations using CSS transitions
-  const slideUp = (element, duration, callback) => {
-    if (!element) return;
-
-    const height = element.scrollHeight;
-    element.style.height = height + "px";
-    element.style.transition = `height ${duration}ms ease-out`;
-    element.style.overflow = "hidden";
-
-    requestAnimationFrame(() => {
-      element.style.height = "0px";
-    });
-
-    const cleanup = () => {
-      element.style.display = "none";
-      element.style.removeProperty("height");
-      element.style.removeProperty("transition");
-      element.style.removeProperty("overflow");
-      callback?.();
-    };
-
-    element.addEventListener("transitionend", cleanup, { once: true });
-  };
-
-  const slideDown = (element, duration, callback) => {
-    if (!element) return;
-
-    element.style.display = "block";
-    const height = element.scrollHeight;
-    
-    element.style.height = "0px";
-    element.style.overflow = "hidden";
-    element.style.transition = `height ${duration}ms ease-out`;
-
-    requestAnimationFrame(() => {
-      element.style.height = height + "px";
-    });
-
-    const cleanup = () => {
-      element.style.removeProperty("height");
-      element.style.removeProperty("transition");
-      element.style.removeProperty("overflow");
-      callback?.();
-    };
-
-    element.addEventListener("transitionend", cleanup, { once: true });
-  };
-
-  /* AOS initialization
-   * ------------------------------------------------------ */
-  const ssAOS = () => {
-    if (typeof AOS !== "undefined") {
-      AOS.init({
-        offset: 100,
-        duration: 600,
-        easing: "ease-in-out",
-        delay: 300,
-        once: false,
-      });
-    }
+    DOM.revealEls.forEach((el) => observer.observe(el));
   };
 
   /* Optimized smooth scrolling with event delegation
@@ -586,15 +521,14 @@
     // Use a single RAF for initialization
     requestAnimationFrame(() => {
       ssMobileMenu();
-      ssAccordion();
       ssSmoothScroll();
       ssBackToTop();
       ssHighlightActiveLink();
       ssTypewriter();
       ssParallaxProfile();
 
-      // Initialize AOS after other components
-      requestAnimationFrame(ssAOS);
+      // Initialize scroll-reveal after other components
+      requestAnimationFrame(ssReveal);
     });
 
     // Add optimized scroll listener
@@ -602,6 +536,7 @@
 
     // Initialize header state
     updateHeaderState();
+    updateScrollProgress();
   };
 
   // Initialize when DOM is ready

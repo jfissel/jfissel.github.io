@@ -51,11 +51,10 @@ This is a single-page Progressive Web App (PWA) featuring a responsive design op
 jfissel.github.io/
 ├── css/
 │   ├── base.css          # Base styles and CSS reset
-│   ├── main.css          # Custom styles and layout
-│   └── vendor.css        # Third-party styles and utilities
+│   └── main.css          # Custom styles and layout
 ├── js/
 │   ├── main.js           # Core JavaScript functionality
-│   └── plugins.js        # JavaScript plugins and helpers
+│   └── particle-cluster.js # Particle animation system
 ├── images/
 │   ├── profile-pic.webp  # Profile image (1x)
 │   └── profile-pic@2x.webp  # Profile image (2x retina)
@@ -87,8 +86,7 @@ jfissel.github.io/
 - **Web App Manifest**: PWA installation
 
 ### Third-Party Resources
-- **Google Fonts**: Custom typography
-- **AOS (Animate On Scroll)**: Scroll-triggered animations
+- **Google Fonts**: Custom typography (Source Serif 4 + Inter)
 
 ### Standards & Protocols
 - **Schema.org**: Structured data for search engines

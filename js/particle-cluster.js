@@ -327,6 +327,21 @@
       this.ctx.globalAlpha = 1;
     }
 
+    // Pause/resume the render loop. Used to avoid burning CPU/GPU while
+    // the hero is scrolled out of view or the tab is hidden.
+    pause() {
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+      }
+    }
+
+    resume() {
+      if (this.animated && this.animationId === null) {
+        this.animate();
+      }
+    }
+
     destroy() {
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
@@ -351,7 +366,35 @@
     ).matches;
     // Honour reduced-motion by rendering a single static frame rather than
     // hiding the canvas (keeps the hero composition intact, no motion).
-    new ParticleCluster(canvas, { animated: !prefersReducedMotion });
+    const cluster = new ParticleCluster(canvas, {
+      animated: !prefersReducedMotion,
+    });
+
+    // Performance: only animate while the hero is on screen.
+    if (!prefersReducedMotion && "IntersectionObserver" in window) {
+      const visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !document.hidden) {
+              cluster.resume();
+            } else {
+              cluster.pause();
+            }
+          });
+        },
+        { threshold: 0 }
+      );
+      visibilityObserver.observe(canvas);
+
+      // Also pause when the tab is backgrounded.
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          cluster.pause();
+        } else if (canvas.getBoundingClientRect().bottom > 0) {
+          cluster.resume();
+        }
+      });
+    }
   };
 
   // Initialize when DOM is ready

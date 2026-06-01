@@ -19,17 +19,58 @@
  *
  * ------------------------------------------------------------------- */
 :root {
+  color-scheme: light dark;
+
+  /* Type families (variable fonts, two-family system)
+   * --font-display : editorial serif for headings
+   * --font-text/ui : modern grotesque for body & interface */
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-text: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
   --color-primary: #0b0a15;
   --color-primary-light: #1a1925;
   --color-accent: #f9861a;
   --color-accent-hover: #e67a17;
   --color-secondary: #544d9d;
   --color-secondary-light: #6a63b3;
-  --color-text: #000000;
+  --color-text: #111014;
   --color-text-light: #ffffff;
-  --color-gray: #7e7e7e;
+  --color-gray: #6f6f78;
   --color-gray-light: #efefef;
   --color-gray-dark: #333333;
+
+  /* Layered surfaces (light context) for subtle elevation */
+  --surface-1: #ffffff;
+  --surface-2: #f7f6f9;
+  --surface-3: #eeecf2;
+
+  /* Layered surfaces (dark context) */
+  --surface-dark-1: #131127;
+  --surface-dark-2: #1b1934;
+  --surface-dark-3: #242145;
+  --hairline-dark: rgba(255, 255, 255, 0.09);
+
+  /* Signature gradient (violet -> amber) */
+  --gradient-brand: linear-gradient(
+    120deg,
+    var(--color-secondary) 0%,
+    var(--color-accent) 100%
+  );
+
+  /* Radii */
+  --radius-sm: 0.6rem;
+  --radius-md: 1.2rem;
+  --radius-lg: 2rem;
+  --radius-pill: 999px;
+
+  /* Soft elevation shadows */
+  --shadow-sm: 0 1px 2px rgba(11, 10, 21, 0.06),
+    0 2px 8px rgba(11, 10, 21, 0.06);
+  --shadow-md: 0 4px 12px rgba(11, 10, 21, 0.08),
+    0 12px 32px rgba(11, 10, 21, 0.1);
+  --shadow-lg: 0 18px 48px rgba(11, 10, 21, 0.18);
+
   /* Add common spacing variables */
   --spacing-xs: 0.8rem;
   --spacing-sm: 1.6rem;
@@ -72,7 +113,7 @@ body {
 }
 body {
   background: var(--color-primary);
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   font-size: 1.8rem;
   line-height: 1.778;
   color: var(--color-text);
@@ -118,7 +159,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
   font-style: normal;
   color: var(--color-text);
@@ -207,7 +248,7 @@ p img {
   margin: 0;
 }
 p.lead {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 300;
   font-size: 2.4rem;
   line-height: 1.833;
@@ -233,12 +274,12 @@ b {
 }
 em,
 i {
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   font-style: italic;
 }
 strong,
 b {
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   font-weight: 700;
 }
 small {
@@ -262,7 +303,7 @@ blockquote {
   }
 }
 blockquote p {
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   font-weight: 400;
   padding: 0;
   font-size: 2.8rem;
@@ -281,7 +322,7 @@ blockquote p {
 }
 blockquote cite {
   display: block;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.5rem;
   font-style: normal;
   line-height: 1.333;
@@ -296,7 +337,7 @@ blockquote cite a:visited {
   border: none;
 }
 abbr {
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   font-weight: 700;
   font-variant: small-caps;
   text-transform: lowercase;
@@ -440,7 +481,7 @@ table {
   border-width: 0;
   width: 100%;
   max-width: 100%;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   border-collapse: collapse;
 }
 th,
@@ -451,7 +492,7 @@ td {
 }
 th {
   color: var(--color-text);
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
 }
 th:first-child,
@@ -684,7 +725,7 @@ select {
   border: 0;
   outline: none;
   color: var(--color-text);
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.6rem;
   line-height: 3.2rem;
   max-width: 100%;
@@ -750,7 +791,7 @@ select:focus {
 }
 label,
 legend {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
   font-size: 1.4rem;
   margin-bottom: 0.8rem;
@@ -765,7 +806,7 @@ input[type="radio"] {
 label > .label-text {
   display: inline-block;
   margin-left: 1rem;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   line-height: inherit;
 }
 label > input[type="checkbox"],
@@ -821,7 +862,7 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"] {
   display: inline-block;
-  font-family: "Work Sans", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: 1.3rem;
   text-transform: uppercase;
@@ -970,7 +1011,7 @@ input[type="button"]:focus-visible {
  * ------------------------------------------------------------------- */
 .drop-cap:first-letter {
   float: left;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
   font-size: 5.334em;
   line-height: 1;
@@ -1074,7 +1115,7 @@ input[type="button"]:focus-visible {
   position: relative;
   margin-bottom: 3.2rem;
   border-radius: 3px;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 1.6;
@@ -1179,24 +1220,6 @@ input[type="button"]:focus-visible {
   z-index: 2;
   margin-bottom: 3rem;
 }
-.section-intro::before {
-  content: attr(data-num);
-  font-family: "Work Sans", sans-serif;
-  font-weight: 600;
-  font-size: 30rem;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  color: rgba(0, 0, 0, 0.08);
-  position: absolute;
-  top: -0.25em;
-  left: 0;
-  z-index: 1;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-.section-intro:hover::before {
-  opacity: 0.7;
-}
 /* Card styles */
 .card {
   background: var(--color-text-light);
@@ -1227,7 +1250,7 @@ input[type="button"]:focus-visible {
   transform: scaleX(1);
 }
 .card__title {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 2.4rem;
   font-weight: 700;
   margin-bottom: 2rem;
@@ -1261,9 +1284,6 @@ input[type="button"]:focus-visible {
 .h-dark-bg .section-intro .display-1 {
   color: var(--color-text-light);
 }
-.h-dark-bg .section-intro::before {
-  color: rgba(255, 255, 255, 0.08);
-}
 .h-dark-bg p.lead {
   color: rgba(255, 255, 255, 0.9);
 }
@@ -1281,9 +1301,6 @@ input[type="button"]:focus-visible {
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -1295,9 +1312,6 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 8rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
   .card {
     padding: 2.4rem;
   }
@@ -1308,9 +1322,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -1319,9 +1330,6 @@ input[type="button"]:focus-visible {
 .h-dark-bg .section-intro .display-1 {
   color: var(--color-text-light);
 }
-.h-dark-bg .section-intro::before {
-  color: rgba(255, 255, 255, 0.08);
-}
 .h-dark-bg p.lead {
   color: rgba(255, 255, 255, 0.9);
 }
@@ -1339,9 +1347,6 @@ input[type="button"]:focus-visible {
 }
 /* Responsive adjustments */
 @media screen and (max-width: 1200px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -1353,9 +1358,6 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 8rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
   .card {
     padding: 2.4rem;
   }
@@ -1366,9 +1368,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -1394,9 +1393,6 @@ input[type="button"]:focus-visible {
   }
 }
 @media screen and (max-width: 800px) {
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .right-vert-line {
     height: 16rem;
     right: 6.2rem;
@@ -1408,9 +1404,6 @@ input[type="button"]:focus-visible {
   }
   .display-1 {
     font-size: 4.2rem;
-  }
-  .section-intro::before {
-    font-size: 22rem;
   }
   .right-vert-line {
     height: 12rem;
@@ -1426,16 +1419,10 @@ input[type="button"]:focus-visible {
   .section-intro {
     margin-bottom: 9.6rem;
   }
-  .section-intro::before {
-    font-size: 20rem;
-  }
 }
 @media screen and (max-width: 360px) {
   .display-1 {
     font-size: 3.6rem;
-  }
-  .section-intro::before {
-    font-size: 18rem;
   }
 }
 @media screen and (max-width: 320px) {
@@ -1444,9 +1431,6 @@ input[type="button"]:focus-visible {
   }
   .section-intro {
     margin-bottom: 8rem;
-  }
-  .section-intro::before {
-    font-size: 14rem;
   }
 }
 /* ===================================================================
@@ -1468,7 +1452,7 @@ input[type="button"]:focus-visible {
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #111111;
+  background-color: var(--color-primary);
   opacity: 0;
   visibility: hidden;
   transform: translate3d(0, -100%, 0);
@@ -1484,7 +1468,7 @@ input[type="button"]:focus-visible {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0);
-  background-color: #111111;
+  background-color: var(--color-primary);
 }
 /* Mobile menu styles */
 @media screen and (max-width: 900px) {
@@ -1505,7 +1489,7 @@ input[type="button"]:focus-visible {
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
-    background-color: #111111;
+    background-color: var(--color-primary);
   }
   .header-nav {
     display: none;
@@ -1603,7 +1587,7 @@ input[type="button"]:focus-visible {
 }
 .header-nav {
   list-style: none;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 700;
   font-size: 1.4rem;
   line-height: 6rem;
@@ -1677,7 +1661,7 @@ input[type="button"]:focus-visible {
   height: 4.8rem;
   width: 4.8rem;
   line-height: 4.8rem;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.4rem;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
@@ -1839,7 +1823,7 @@ input[type="button"]:focus-visible {
   }
   .menu-is-open .header-content {
     transform: translate3d(0, 0, 0);
-    background-color: #111111;
+    background-color: var(--color-primary);
   }
   .header-content .btn {
     margin-top: 4.8rem;
@@ -2090,7 +2074,7 @@ input[type="button"]:focus-visible {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   flex-flow: row wrap;
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.2rem;
   font-weight: 700;
   line-height: 3.2rem;
@@ -2450,7 +2434,7 @@ html.no-csstransitions .hero-content {
   margin-bottom: 4rem;
 }
 .position__header h6 {
-  font-family: "Martel", serif;
+  font-family: var(--font-text);
   line-height: 2.8rem;
   margin-top: 0;
   margin-bottom: 0.4rem;
@@ -2465,7 +2449,7 @@ html.no-csstransitions .hero-content {
   letter-spacing: 0;
 }
 .position__timeframe {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 2rem;
@@ -2613,7 +2597,7 @@ html.no-csstransitions .hero-content {
   position: relative;
 }
 .services-list__item-header h5 {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 400;
   font-size: 3.6rem;
   padding-left: 1.111em;
@@ -2623,7 +2607,7 @@ html.no-csstransitions .hero-content {
 .services-list__item-header h5::before {
   content: counter(ctr, decimal-leading-zero) ".";
   counter-increment: ctr;
-  font-family: "Work Sans", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 600;
   font-size: 0.5em;
   line-height: 1;
@@ -2774,7 +2758,7 @@ html.no-csstransitions .hero-content {
   }
 }
 .footer-contact-block {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 400;
   font-size: 3rem;
   line-height: 1.2;
@@ -2784,7 +2768,7 @@ html.no-csstransitions .hero-content {
   background-color: var(--color-accent);
 }
 .s-footer__bottom {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   color: rgba(255, 255, 255, 0.5);
   margin-top: 8rem;
 }
@@ -2818,7 +2802,7 @@ html.no-csstransitions .hero-content {
  * ## contact block
  * ------------------------------------------------------------------- */
 .footer-contact-block {
-  font-family: "Gothic A1", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 400;
   font-size: 3rem;
   line-height: 1.2;
@@ -3004,9 +2988,6 @@ html.no-csstransitions .hero-content {
   .section-intro {
     margin-bottom: 10rem;
   }
-  .section-intro::before {
-    font-size: 24rem;
-  }
   .card {
     padding: 3.2rem;
   }
@@ -3020,9 +3001,6 @@ html.no-csstransitions .hero-content {
   }
   .section-intro {
     margin-bottom: 8rem;
-  }
-  .section-intro::before {
-    font-size: 20rem;
   }
   .card {
     padding: 2.4rem;
@@ -3061,9 +3039,6 @@ html.no-csstransitions .hero-content {
   }
   .section-intro {
     margin-bottom: 6rem;
-  }
-  .section-intro::before {
-    font-size: 16rem;
   }
   .card {
     padding: 2rem;
@@ -3112,9 +3087,6 @@ html.no-csstransitions .hero-content {
 }
 /* Small mobile devices */
 @media screen and (max-width: 400px) {
-  .section-intro::before {
-    font-size: 14rem;
-  }
   .display-1 {
     font-size: 3.2rem;
   }
@@ -3449,4 +3421,334 @@ a {
   .container {
     padding: 0 var(--spacing-xs);
   }
+}
+
+/* ===================================================================
+ * # MODERNIZATION LAYER (2026 refresh)
+ *
+ * Appended last so it wins the cascade over the legacy rules above
+ * without rewriting them. Groups: fluid type, depth/material,
+ * glass header, skills cards, scroll reveal, scroll progress,
+ * dark-mode adaptation.
+ * ------------------------------------------------------------------- */
+
+/* ---- Anchor offset so fixed-header jumps land below the header ----
+ * Covers native hash navigation and reduced-motion users (the JS
+ * smooth-scroll already compensates for everyone else). */
+.target-section {
+  scroll-margin-top: 8.8rem;
+}
+
+/* ---- Display serif (Source Serif 4) applied only to showcase text ----
+ * Body, nav, labels and minor headings stay on the sans (Inter),
+ * matching the original sans intent; the big editorial statements
+ * get the variable serif. */
+.hero-content h1,
+.display-1,
+.services-list__item-header h5,
+blockquote p {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+/* ---- Fluid typography (clamp-based, truly responsive) ---- */
+h1, .h1 {
+  font-size: clamp(2.8rem, 1.9rem + 2.6vw, 3.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+h2, .h2 {
+  font-size: clamp(2.6rem, 1.9rem + 2vw, 3.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+h3, .h3 {
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.6rem);
+  line-height: 1.22;
+}
+
+.display-1 {
+  font-size: clamp(3.4rem, 1.9rem + 3.1vw, 4.8rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.s-services .section-intro .display-1 {
+  font-size: clamp(3.2rem, 2.1rem + 2.4vw, 4.4rem);
+}
+.hero-content h1 {
+  font-size: clamp(3.8rem, 1rem + 6.1vw, 7.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+p.lead {
+  font-size: clamp(1.9rem, 1.5rem + 0.9vw, 2.4rem);
+  line-height: 1.6;
+}
+.subhead {
+  letter-spacing: 0.32em;
+}
+
+/* Comfortable measure for prose */
+.s-about .section-intro p,
+.s-services__leftcol p.lead {
+  max-width: 68ch;
+}
+
+/* Match the Skills intro paragraph to the About body-copy size */
+.s-services__leftcol p.lead {
+  font-size: 1.8rem;
+  line-height: 1.778;
+}
+
+/* ---- Brand-gradient underline on nav links (hover + active) ---- */
+.header-nav a::after {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-brand);
+}
+/* Keep the active link's underline persistently visible */
+.header-nav a.current::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---- Glassmorphism on the sticky header ---- */
+.s-header.sticky.scrolling {
+  background-color: rgba(11, 10, 21, 0.6);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .s-header.sticky.scrolling {
+    background-color: var(--color-primary);
+  }
+}
+
+/* ---- Softer, rounder buttons with the brand gradient ---- */
+.btn,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.18em;
+}
+
+/* ===================================================================
+ * # Skills as a responsive card grid
+ * (accordion retired; every panel is always visible)
+ * ------------------------------------------------------------------- */
+.s-services {
+  background-color: var(--surface-dark-1);
+}
+/* Full-width card grid sits in its own row below the intro */
+.s-services__grid {
+  margin-top: 2rem;
+}
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: ctr;
+}
+@media screen and (max-width: 900px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 560px) {
+  .services-list {
+    grid-template-columns: 1fr;
+  }
+}
+.services-list__item {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid var(--hairline-dark);
+  border-radius: var(--radius-lg);
+  padding: 3.2rem;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.215, 0.61, 0.355, 1),
+    box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.services-list__item::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.services-list__item:hover,
+.services-list__item:focus-within {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-lg);
+}
+.services-list__item:hover::before,
+.services-list__item:focus-within::before {
+  transform: scaleX(1);
+}
+.services-list__item-header {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding: 0 0 1.6rem;
+  cursor: default;
+}
+/* retire the accordion chevron */
+.services-list__item-header::after {
+  display: none;
+}
+.services-list__icon {
+  flex: 0 0 auto;
+  width: 4.8rem;
+  height: 4.8rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: rgba(249, 134, 26, 0.12);
+  color: var(--color-accent);
+}
+.services-list__icon svg {
+  width: 2.4rem;
+  height: 2.4rem;
+  stroke: currentColor;
+  fill: none;
+}
+.services-list__item-header h5 {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  padding-left: 0;
+  margin: 0;
+}
+.services-list__item-header h5::before {
+  content: counter(ctr, decimal-leading-zero);
+  counter-increment: ctr;
+  position: static;
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  margin-bottom: 0.4rem;
+}
+.services-list__item-body {
+  display: block;
+  padding: 0;
+}
+.services-list__item-body p {
+  font-size: 1.6rem;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.74);
+  margin: 0;
+}
+
+/* ===================================================================
+ * # Scroll-reveal (native IntersectionObserver replaces AOS)
+ * ------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  [data-aos] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  [data-aos].reveal-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===================================================================
+ * # Scroll progress indicator
+ * ------------------------------------------------------------------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--gradient-brand);
+  z-index: 600;
+  pointer-events: none;
+}
+
+/* ===================================================================
+ * # Dark-mode adaptation
+ * The page is predominantly dark already; the single light section
+ * (About) is darkened so dark-mode users get a cohesive experience.
+ * Light-scheme users keep the original light About section.
+ * ------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .s-about {
+    background-color: var(--surface-dark-1);
+  }
+  .s-about__section--profile::before {
+    background-color: var(--surface-dark-3);
+  }
+  .s-about .section-intro :is(h2, h3, h4),
+  .s-about .section-intro .display-1 {
+    color: var(--color-text-light);
+  }
+  .s-about .section-intro .subhead {
+    color: var(--color-accent);
+  }
+  .s-about .section-intro p {
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .s-about .right-vert-line {
+    background-color: var(--surface-dark-3);
+  }
+}
+
+/* ===================================================================
+ * # Contact section icons
+ * Inline line-icons reuse the skill-card icon language for a
+ * consistent, more scannable footer.
+ * ------------------------------------------------------------------- */
+.footer-contact-block__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.footer-contact-block__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 134, 26, 0.12);
+  color: var(--color-accent);
+}
+.footer-contact-block__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  stroke: currentColor;
+  fill: none;
 }
