@@ -33,13 +33,8 @@
   const cfg = {
     scrollDuration: 800,
     HERO_THRESHOLD: 100,
-    BACK_TO_TOP_THRESHOLD: 800,
-    ACCORDION_DURATION: 400,
-    SCROLL_OFFSET: 90
+    BACK_TO_TOP_THRESHOLD: 800
   };
-
-  // Add User Agent (cached)
-  DOM.html.setAttribute("data-useragent", navigator.userAgent);
 
   // Performance optimized scroll handler
   let lastScrollY = window.scrollY;
@@ -117,18 +112,12 @@
     }
   };
 
-  // Optimized debounce with immediate execution option
-  const debounce = (func, wait, immediate = false) => {
+  // Trailing-edge debounce.
+  const debounce = (func, wait) => {
     let timeout;
     return function executedFunction(...args) {
-      const later = () => {
-        timeout = null;
-        if (!immediate) func.apply(this, args);
-      };
-      const callNow = immediate && !timeout;
       clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(this, args);
+      timeout = setTimeout(() => func.apply(this, args), wait);
     };
   };
 
@@ -219,6 +208,7 @@
       isMenuOpen = !isMenuOpen;
       
       DOM.toggleButton.classList.toggle("is-clicked", isMenuOpen);
+      DOM.toggleButton.setAttribute("aria-expanded", String(isMenuOpen));
       DOM.body.classList.toggle("menu-is-open", isMenuOpen);
       DOM.body.style.overflow = isMenuOpen ? "hidden" : "";
     };

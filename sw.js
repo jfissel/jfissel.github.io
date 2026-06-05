@@ -1,4 +1,4 @@
-const CACHE_NAME = "johnfissel-site-cache-v7";
+const CACHE_NAME = "johnfissel-site-cache-v8";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -10,7 +10,6 @@ const urlsToCache = [
   "/images/profile-pic.webp",
   "/images/profile-pic@2x.webp",
   "/images/hero-bg-3000.webp",
-  "/images/logo.svg",
   "/images/icons/icon-quote.svg",
   "/favicon.ico",
   "/apple-touch-icon.png",
