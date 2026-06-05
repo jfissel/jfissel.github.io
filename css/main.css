@@ -3385,11 +3385,14 @@ input[type="button"] {
  * portrait treatment and only genuinely short screens are affected.
  * ------------------------------------------------------------------- */
 @media screen and (max-height: 600px) and (orientation: landscape) {
-  /* Hero: size to its content instead of a tall min-height, and leave
-     room below the fixed 8.8rem header. */
+  /* Hero: still fill the screen, but driven by the viewport height
+     instead of the portrait 800px min-height (which overflowed short
+     landscape screens). Reduced padding keeps the content clear of the
+     fixed header while staying vertically centred. */
   .s-hero {
+    min-height: 100vh;
+    min-height: 100dvh;
     height: auto;
-    min-height: 0;
     padding-top: 11rem;
     padding-bottom: 5rem;
   }
@@ -3431,6 +3434,30 @@ input[type="button"] {
   }
   .section-intro {
     margin-bottom: 5rem;
+  }
+}
+
+/* ---- Open mobile menu on short landscape screens ----
+ * The open menu panel is absolutely positioned with large padding and
+ * no scrolling, so on a short landscape viewport its lower items (the
+ * contact button) fall below the fold and get clipped. Cap the panel to
+ * the viewport, let it scroll, and tighten the spacing so it fits.
+ * Scoped to <=900px width so it only touches the actual mobile menu. */
+@media screen and (max-width: 900px) and (max-height: 600px) and (orientation: landscape) {
+  .header-content {
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .header-nav a {
+    padding: 1.1rem 0;
+    min-height: 0;
+  }
+  .menu-is-open .header-content .btn {
+    margin-top: 2.4rem;
   }
 }
 
