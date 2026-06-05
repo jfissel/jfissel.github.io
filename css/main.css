@@ -1732,7 +1732,10 @@ input[type="button"]:focus-visible {
   position: relative;
   height: 100vh; /* Fallback for browsers that don't support dvh */
   height: 100dvh;
+  /* Cap the min-height to the viewport so short landscape phones don't
+     get an 800px-tall hero forced taller than the screen. */
   min-height: 800px;
+  min-height: min(800px, 100dvh);
   display: flex;
   align-items: center;
   padding-top: 8rem;
@@ -3271,7 +3274,7 @@ input[type="button"] {
 .services-list__item-body p {
   font-size: 1.6rem;
   line-height: 1.72;
-  color: rgba(255, 255, 255, 0.74);
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
 }
 
@@ -3365,4 +3368,125 @@ input[type="button"] {
   height: 1.8rem;
   stroke: currentColor;
   fill: none;
+}
+
+/* ===================================================================
+ * # Landscape phones (short viewports)
+ *
+ * The whole layout is tuned for portrait: tall hero min-heights, large
+ * vertical section paddings (14rem) and a 108rem About min-height. In
+ * landscape on a phone the viewport is only ~350-430px tall, so that
+ * portrait rhythm pushes content far off-screen and forces excessive
+ * scrolling, which is what makes it hard to read.
+ *
+ * These rules collapse the vertical rhythm so a screenful of content
+ * actually fits. They are gated on viewport HEIGHT (not width) and
+ * `orientation: landscape`, so tall tablets in landscape keep the full
+ * portrait treatment and only genuinely short screens are affected.
+ * ------------------------------------------------------------------- */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  /* Hero: still fill the screen, but driven by the viewport height
+     instead of the portrait 800px min-height (which overflowed short
+     landscape screens). Reduced padding keeps the content clear of the
+     fixed header while staying vertically centred. */
+  .s-hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    padding-top: 11rem;
+    padding-bottom: 5rem;
+  }
+  .hero-content {
+    height: auto;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .hero-content h1 {
+    font-size: clamp(2.8rem, 1.6rem + 4vw, 4.6rem);
+    line-height: 1.1;
+  }
+  /* The three hard line breaks make the heading too tall here; let the
+     text reflow to the available width instead. */
+  .hero-content h1 br {
+    display: none;
+  }
+  .hero-contact {
+    margin-top: 3.2rem;
+  }
+  /* Not enough vertical room for the scroll cue without overlapping. */
+  .hero-scroll {
+    display: none;
+  }
+
+  /* Trim the oversized top paddings on the stacked sections so each
+     section starts near the top of the screen. */
+  .s-about__section--profile {
+    padding-top: 11rem;
+    padding-bottom: 4rem;
+    min-height: 0;
+  }
+  .s-services {
+    padding-top: 11rem;
+  }
+  .s-footer {
+    padding-top: 11rem;
+  }
+  .section-intro {
+    margin-bottom: 5rem;
+  }
+}
+
+/* ---- Open mobile menu on short landscape screens ----
+ * The open menu panel is absolutely positioned with large padding and
+ * no scrolling, so on a short landscape viewport its lower items (the
+ * contact button) fall below the fold and get clipped. Cap the panel to
+ * the viewport, let it scroll, and tighten the spacing so it fits.
+ * Scoped to <=900px width so it only touches the actual mobile menu. */
+@media screen and (max-width: 900px) and (max-height: 600px) and (orientation: landscape) {
+  .header-content {
+    padding-top: 7rem;
+    padding-bottom: 3rem;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .header-nav a {
+    padding: 1.1rem 0;
+    min-height: 0;
+  }
+  .menu-is-open .header-content .btn {
+    margin-top: 2.4rem;
+  }
+}
+
+/* ===================================================================
+ * # Small portrait phones — readability tweaks
+ *
+ * The grid stacks a 5.5% row margin (.row is 89% wide), 20px of column
+ * padding and — below 400px — another 20px of row padding. On a ~360px
+ * phone that is ~120px of combined side gutter, squeezing prose into a
+ * cramped ~240px column. Reclaiming that width gives long paragraphs
+ * room to breathe, which is the main portrait readability win.
+ * ------------------------------------------------------------------- */
+@media screen and (max-width: 600px) {
+  .row {
+    width: 92%;
+  }
+  /* Keep the hero heading from running edge-to-edge on small screens. */
+  .hero-content h1 {
+    padding-right: 0;
+  }
+  /* A touch more breathing room between stacked skill cards. */
+  .services-list {
+    gap: 2rem;
+  }
+}
+@media screen and (max-width: 400px) {
+  /* base.css already adds a 20px gutter to .row here, so go full width
+     and let that single gutter (plus column padding) do the spacing. */
+  .row {
+    width: 100%;
+  }
 }

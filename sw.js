@@ -1,4 +1,4 @@
-const CACHE_NAME = "johnfissel-site-cache-v8";
+const CACHE_NAME = "johnfissel-site-cache-v10";
 const urlsToCache = [
   "/",
   "/index.html",
