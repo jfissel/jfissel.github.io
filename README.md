@@ -157,7 +157,7 @@ Service workers require HTTPS or localhost. For local testing:
 The site is deployed automatically via GitHub Pages:
 
 1. Push changes to the `main` branch
-2. GitHub Actions builds and deploys automatically
+2. GitHub Pages publishes the static files automatically (no build step)
 3. Live site updates within 1-2 minutes
 
 ### Custom Domain
@@ -167,7 +167,7 @@ The site uses a custom domain configured via the `CNAME` file. DNS is configured
 
 ### Cache Busting
 When updating the service worker:
-1. Increment the `CACHE_VERSION` in `sw.js`
+1. Increment the version suffix in the `CACHE_NAME` constant in `sw.js`
 2. Update the files array if new assets were added
 3. Test locally before pushing to production
 

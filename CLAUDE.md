@@ -31,7 +31,7 @@ This is a **zero-dependency, no-build-step static site** built entirely with van
 
 ```
 jfissel.github.io/
-├── index.html              # Single-page application entry point (542 lines)
+├── index.html              # Single-page application entry point
 ├── CNAME                   # Custom domain: johnfissel.com
 ├── robots.txt              # Search engine crawler directives
 ├── sitemap.xml             # XML sitemap for SEO
@@ -51,9 +51,9 @@ jfissel.github.io/
 │   ├── hero-bg-3000.webp   # Hero section background
 │   ├── profile-pic.webp    # 1x profile photo
 │   ├── profile-pic@2x.webp # 2x retina profile photo
-│   ├── logo.svg            # Site logo
+│   ├── logo.svg            # Site logo (not currently referenced)
 │   └── icons/
-│       └── icon-quote.svg  # Testimonial quote icon
+│       └── icon-quote.svg  # Quote icon (used by the .pull-quote CSS component)
 │
 ├── favicon.ico             # Browser tab icon
 ├── favicon-16x16.png       # Small favicon
@@ -90,12 +90,12 @@ npx serve .
 
 1. Edit `index.html`, `css/main.css`, or `js/main.js` directly.
 2. Hard-refresh the browser (`Ctrl+Shift+R` / `Cmd+Shift+R`) to bypass the service worker cache during development.
-3. If you modify cached assets, increment `CACHE_VERSION` in `sw.js` to force cache invalidation.
+3. If you modify cached assets, increment the `CACHE_NAME` version in `sw.js` to force cache invalidation.
 
 ### Deployment
 
 Deployment is automatic via **GitHub Pages**:
-- Push changes to the `master` branch.
+- Push changes to the `main` branch.
 - The live site at `johnfissel.com` updates within 1–2 minutes.
 - No build commands required.
 
@@ -140,7 +140,7 @@ Deployment is automatic via **GitHub Pages**:
 
 ### Service Worker (`sw.js`)
 
-- **Cache versioning**: The `CACHE_VERSION` constant must be incremented whenever cached assets change, to ensure users receive fresh content.
+- **Cache versioning**: The version suffix in the `CACHE_NAME` constant must be incremented whenever cached assets change, to ensure users receive fresh content.
 - **Offline-first strategy**: The service worker uses a cache-first strategy for static assets. Verify this remains intact after edits.
 
 ---
@@ -172,7 +172,7 @@ This site targets high Lighthouse scores. When making changes, preserve the foll
 - **Do not introduce build tools** (webpack, vite, rollup, etc.) without explicit instruction. This is intentionally a no-build project.
 - **Do not add npm/package.json** unless explicitly requested.
 - **Do not edit `base.css`**. It is a third-party normalize/reset.
-- **Do not push to `master` directly** when working from a feature branch — open a PR instead.
+- **Do not push to `main` directly** when working from a feature branch — open a PR instead.
 - **Do not remove PWA files** (`sw.js`, `site.webmanifest`) without deliberate intent.
 - **Do not use JavaScript frameworks** (React, Vue, etc.) for changes. Keep it vanilla JS.
 
@@ -180,7 +180,7 @@ This site targets high Lighthouse scores. When making changes, preserve the foll
 
 ## Git Workflow
 
-- **Primary branch**: `master` (deploys to production via GitHub Pages)
+- **Primary branch**: `main` (deploys to production via GitHub Pages)
 - **Feature branches**: Use descriptive names, e.g., `fix/mobile-nav`, `feat/dark-mode`
 - **Commit messages**: Use imperative present tense (e.g., `Fix mobile toggle alignment`, `Add dark mode toggle`)
 - **No CI/CD**: There are no automated tests or linters. Review changes manually in-browser before merging.
@@ -191,20 +191,18 @@ This site targets high Lighthouse scores. When making changes, preserve the foll
 
 The single-page `index.html` is divided into these sections (in order):
 
-1. **`#home` / `.s-header`** — Hero with particle animation, name, CTA buttons
-2. **`.s-about`** — Professional bio, profile photo, stats
-3. **`.s-services`** — Service offerings with accordion expand/collapse
-4. **`.s-testimonials`** — Client testimonials slider
-5. **`.s-contact`** — Contact information and social links
-6. **`footer`** — Copyright, back-to-top link
+1. **`#home` / `.s-hero`** — Hero with canvas particle animation, name, and contact links. (`.s-header` is the separate fixed navigation bar.)
+2. **`#about` / `.s-about`** — Professional bio and profile photo
+3. **`#skills` / `.s-services`** — Skills shown as a static, always-visible card grid (the legacy accordion has been retired)
+4. **`#contact` / `.s-footer`** — Contact details, social links, copyright, and back-to-top link (the footer doubles as the contact section)
 
 ---
 
 ## Known Patterns & Non-obvious Behaviors
 
-- **Typewriter effect**: Implemented in `main.js` via a character-by-character interval loop on the hero subtitle text.
-- **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It responds to mouse movement for interactive 3D depth.
-- **Sticky header**: JavaScript adds a `.sticky` class to `.s-header` on scroll, which triggers CSS transitions defined in `main.css`.
-- **Mobile menu**: Toggled by `.header-menu-toggle` button; the open state is tracked via `aria-expanded` and a `.menu-is-open` class on `<html>`.
+- **Typewriter effect**: Implemented in `main.js` (the `ssTypewriter` function) via a character-by-character timeout loop on the hero `<h1>` heading.
+- **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It auto-rotates and drifts; the render loop is paused via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden, and honours `prefers-reduced-motion` by drawing a single static frame.
+- **Sticky header**: JavaScript adds `.sticky`/`.scrolling` classes to `.s-header` on scroll, which trigger CSS transitions defined in `main.css`.
+- **Mobile menu**: Toggled by the `.header-menu-toggle` button; the open state is tracked via `aria-expanded` on the toggle and a `.menu-is-open` class on `<body>`.
 - **Scroll-reveal**: Elements with `data-aos="..."` attributes fade/slide into view on scroll, driven by a native `IntersectionObserver` in `main.js` (the `ssReveal` function). Respects `prefers-reduced-motion`.
-- **Cache busting**: To force the service worker to re-fetch assets after a deployment, increment `CACHE_VERSION` in `sw.js`.
+- **Cache busting**: To force the service worker to re-fetch assets after a deployment, increment the `CACHE_NAME` version in `sw.js`.
