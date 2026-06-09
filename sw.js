@@ -1,4 +1,8 @@
-const CACHE_NAME = "johnfissel-site-cache-v10";
+const CACHE_NAME = "johnfissel-site-cache-v11";
+// Precache only the critical shell. Everything else (images, icons,
+// manifest) is cached at runtime by the fetch handler on first use, so
+// first-time visitors don't download assets their device never displays
+// (e.g. both the 1x and 2x profile photos).
 const urlsToCache = [
   "/",
   "/index.html",
@@ -7,17 +11,7 @@ const urlsToCache = [
   "/css/main.css",
   "/js/main.js",
   "/js/particle-cluster.js",
-  "/images/profile-pic.webp",
-  "/images/profile-pic@2x.webp",
-  "/images/hero-bg-3000.webp",
-  "/images/icons/icon-quote.svg",
-  "/favicon.ico",
-  "/apple-touch-icon.png",
-  "/favicon-32x32.png",
-  "/favicon-16x16.png",
-  "/android-chrome-192x192.png",
-  "/android-chrome-512x512.png",
-  "/site.webmanifest",
+  "/images/hero-bg-1920.webp",
 ];
 
 // Install event - cache assets

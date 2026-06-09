@@ -10,6 +10,7 @@
     />
     <meta name="author" content="John Fissel" />
     <meta name="theme-color" content="#0b0a15" />
+    <link rel="canonical" href="https://johnfissel.com/" />
 
     <!-- Mobile Specific Metas -->
     <meta
@@ -52,7 +53,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="preload"
+      href="/images/hero-bg-1920.webp"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&family=Inter:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -92,15 +100,6 @@
     <!-- Scroll progress indicator -->
     <div class="scroll-progress" aria-hidden="true"></div>
 
-    <!-- Preloader -->
-    <div id="preloader" aria-hidden="true" role="presentation">
-      <div id="loader" class="dots-fade">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-
     <!-- Header -->
     <header class="s-header" role="banner">
       <div class="header-content">
@@ -110,17 +109,15 @@
           aria-label="Main Navigation"
         >
           <ul class="header-nav">
-            <li><a class="smoothscroll" href="#home" title="Intro">Home</a></li>
+            <li><a href="#home" title="Intro">Home</a></li>
             <li>
-              <a class="smoothscroll" href="#about" title="About">About</a>
+              <a href="#about" title="About">About</a>
             </li>
             <li>
-              <a class="smoothscroll" href="#skills" title="Skills">Skills</a>
+              <a href="#skills" title="Skills">Skills</a>
             </li>
             <li>
-              <a class="smoothscroll" href="#contact" title="Contact"
-                >Contact</a
-              >
+              <a href="#contact" title="Contact">Contact</a>
             </li>
           </ul>
         </nav>
@@ -190,7 +187,7 @@
         <a
           href="#about"
           title="About"
-          class="scroll-link smoothscroll"
+          class="scroll-link"
           aria-label="Scroll to About section"
         >
           <svg
@@ -580,7 +577,6 @@
 
         <div class="page-anchor">
           <a
-            class="smoothscroll"
             href="#top"
             aria-label="Back to Top"
           >

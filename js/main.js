@@ -31,7 +31,6 @@
   DOM.html.classList.add("js");
 
   const cfg = {
-    scrollDuration: 800,
     HERO_THRESHOLD: 100,
     BACK_TO_TOP_THRESHOLD: 800
   };
@@ -121,74 +120,6 @@
     };
   };
 
-  // Optimized smooth scroll with better easing
-  const smoothScroll = (targetPosition, duration = cfg.scrollDuration, callback) => {
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-    
-    if (Math.abs(distance) < 5) {
-      window.scrollTo(0, targetPosition);
-      callback?.();
-      return;
-    }
-
-    let start = null;
-    const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const step = (timestamp) => {
-      start ??= timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      const easing = easeInOutCubic(progress);
-      
-      window.scrollTo(0, startPosition + distance * easing);
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        callback?.();
-      }
-    };
-
-    requestAnimationFrame(step);
-  };
-
-  /* Preloader with optimized fade effect
-   * -------------------------------------------------- */
-  const ssPreloader = () => {
-    DOM.html.classList.add("ss-preload");
-
-    const handleLoad = () => {
-      smoothScroll(0, 400);
-
-      const loader = document.getElementById("loader");
-      const preloader = document.getElementById("preloader");
-
-      DOM.html.classList.remove("ss-preload");
-      DOM.html.classList.add("ss-loaded");
-
-      if (loader && preloader) {
-        // Use CSS transitions instead of manual animation
-        loader.style.transition = "opacity 0.6s ease-out";
-        loader.style.opacity = "0";
-        
-        setTimeout(() => {
-          preloader.style.transition = "opacity 0.6s ease-out";
-          preloader.style.opacity = "0";
-          
-          setTimeout(() => {
-            preloader.remove();
-          }, 600);
-        }, 600);
-      }
-    };
-
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad, { once: true });
-    }
-  };
-
   /* Mobile menu with optimized event handling
    * ---------------------------------------------------- */
   const ssMobileMenu = () => {
@@ -275,48 +206,6 @@
     DOM.revealEls.forEach((el) => observer.observe(el));
   };
 
-  /* Optimized smooth scrolling with event delegation
-   * ------------------------------------------------------ */
-  const ssSmoothScroll = () => {
-    document.addEventListener("click", (e) => {
-      const target = e.target.closest(".smoothscroll");
-      if (!target) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      const href = target.getAttribute("href");
-      if (!href || !href.startsWith("#")) return;
-
-      const targetElement = document.querySelector(href);
-      if (!targetElement) return;
-
-      const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-
-      smoothScroll(targetPosition, cfg.scrollDuration, () => {
-        // Use replaceState instead of hash to avoid triggering scroll events
-        history.replaceState(null, null, href);
-        updateHeaderState();
-      });
-    });
-  };
-
-  /* Back to top (handled in scroll event)
-   * ------------------------------------------------------ */
-  const ssBackToTop = () => {
-    if (!DOM.goTopButton) return;
-
-    // Initial state
-    updateBackToTop();
-
-    DOM.goTopButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      smoothScroll(0, cfg.scrollDuration, () => {
-        history.replaceState(null, null, "#top");
-      });
-    });
-  };
-
   /* Optimized active link highlighting with Intersection Observer
    * ------------------------------------------------------ */
   const ssHighlightActiveLink = () => {
@@ -362,6 +251,12 @@
   const ssTypewriter = () => {
     const heading = document.querySelector(".hero-content h1");
     if (!heading) return;
+
+    // Show the heading immediately for users who prefer reduced motion.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      heading.style.opacity = "1";
+      return;
+    }
 
     // Get the full text content, preserving line breaks
     const fullText = heading.innerHTML;
@@ -426,12 +321,12 @@
     // Stop any pending timer when the page goes away.
     window.addEventListener("pagehide", cancelTyping, { once: true });
 
-    // Start typing after a short delay
+    // Start typing after a short delay (just enough for the hero fade-in)
     typeTimeout = setTimeout(() => {
       currentLine.style.transition = "opacity 0.3s ease-in-out";
       currentLine.style.opacity = "1";
       typeNextChar();
-    }, 800);
+    }, 400);
   };
 
   /* Parallax scroll effect for profile image
@@ -505,14 +400,12 @@
     // Initialize DOM cache first
     initDOMCache();
 
-    // Start preloader immediately
-    ssPreloader();
+    // Trigger the hero entrance animations (CSS keys off .ss-loaded)
+    DOM.html.classList.add("ss-loaded");
 
     // Use a single RAF for initialization
     requestAnimationFrame(() => {
       ssMobileMenu();
-      ssSmoothScroll();
-      ssBackToTop();
       ssHighlightActiveLink();
       ssTypewriter();
       ssParallaxProfile();
@@ -526,6 +419,7 @@
 
     // Initialize header state
     updateHeaderState();
+    updateBackToTop();
     updateScrollProgress();
   };
 
