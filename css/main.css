@@ -89,6 +89,14 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Native smooth scrolling for anchor navigation (replaces the old JS
+   implementation). Gated on reduced-motion so those users get instant
+   jumps; .target-section's scroll-margin-top handles the header offset. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 @media screen and (max-width: 400px) {
   html {
     font-size: 10.5px; /* Improved from 9.444px for better readability on small devices */
@@ -532,96 +540,6 @@ form,
 .video-container,
 .ss-custom-select {
   margin-bottom: 3.2rem;
-}
-/* ===================================================================
- * # preloader
- *
- * ------------------------------------------------------------------- */
-#preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-primary);
-  z-index: 500;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  visibility: visible; /* Explicitly set visibility */
-  opacity: 1; /* Explicitly set opacity */
-  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out; /* Smoother transition */
-}
-.no-js #preloader,
-.oldie #preloader,
-.ss-loaded #preloader {
-  display: none;
-  visibility: hidden;
-  opacity: 0;
-}
-#loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  padding: 0;
-  display: inline-block;
-  -webkit-transform: translate3d(-50%, -50%, 0);
-  transform: translate3d(-50%, -50%, 0);
-}
-#loader > div {
-  content: "";
-  background: var(--color-text-light);
-  width: 6px;
-  height: 6px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-}
-#loader > div:nth-of-type(1) {
-  left: 15px;
-}
-#loader > div:nth-of-type(3) {
-  left: -15px;
-}
-/* dots fade */
-.dots-fade > div {
-  -webkit-animation: dots-fade 1.6s infinite ease;
-  animation: dots-fade 1.6s infinite ease;
-  -webkit-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-.dots-fade > div:nth-of-type(1) {
-  -webkit-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-.dots-fade > div:nth-of-type(3) {
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
-}
-@-webkit-keyframes dots-fade {
-  0% {
-    opacity: 1;
-  }
-  40% {
-    opacity: 0.2;
-  }
-  80% {
-    opacity: 1;
-  }
-}
-@keyframes dots-fade {
-  0% {
-    opacity: 1;
-  }
-  40% {
-    opacity: 0.2;
-  }
-  80% {
-    opacity: 1;
-  }
 }
 /* ===================================================================
  * # forms
@@ -1219,34 +1137,6 @@ input[type="button"]:focus-visible {
   background: var(--color-primary);
   color: var(--color-text-light);
 }
-/* Responsive adjustments */
-@media screen and (max-width: 1200px) {
-  .card {
-    padding: 3.2rem;
-  }
-}
-@media screen and (max-width: 800px) {
-  .section {
-    padding: 8rem 0;
-  }
-  .section-intro {
-    margin-bottom: 8rem;
-  }
-  .card {
-    padding: 2.4rem;
-  }
-}
-@media screen and (max-width: 600px) {
-  .section {
-    padding: 6rem 0;
-  }
-  .section-intro {
-    margin-bottom: 6rem;
-  }
-  .card {
-    padding: 2rem;
-  }
-}
 .right-vert-line {
   width: 2px;
   height: 20rem;
@@ -1266,7 +1156,7 @@ input[type="button"]:focus-visible {
     right: 9rem;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .right-vert-line {
     height: 16rem;
     right: 6.2rem;
@@ -1276,35 +1166,9 @@ input[type="button"]:focus-visible {
   .subhead {
     font-size: 1.3rem;
   }
-  .display-1 {
-    font-size: 4.2rem;
-  }
   .right-vert-line {
     height: 12rem;
     right: 5rem;
-  }
-}
-@media screen and (max-width: 500px) {
-  .display-1 {
-    font-size: 4rem;
-  }
-}
-@media screen and (max-width: 400px) {
-  .section-intro {
-    margin-bottom: 9.6rem;
-  }
-}
-@media screen and (max-width: 360px) {
-  .display-1 {
-    font-size: 3.6rem;
-  }
-}
-@media screen and (max-width: 320px) {
-  .display-1 {
-    font-size: 3.4rem;
-  }
-  .section-intro {
-    margin-bottom: 8rem;
   }
 }
 /* ===================================================================
@@ -1624,7 +1488,7 @@ input[type="button"]:focus-visible {
  * responsive:
  * header
  * ------------------------------------------------------------------- */
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1800px) {
   .header-nav-wrap {
     max-width: none;
     width: 100%;
@@ -1754,7 +1618,7 @@ input[type="button"]:focus-visible {
       rgba(0, 0, 0, 0.6) 10%,
       rgba(0, 0, 0, 0) 100%
     ),
-    url("/images/hero-bg-3000.webp");
+    url("/images/hero-bg-1920.webp");
   background-size: cover;
   background-position: center;
   pointer-events: none;
@@ -1772,13 +1636,6 @@ input[type="button"]:focus-visible {
     rgba(11, 10, 21, 0) 70%
   );
   pointer-events: none;
-}
-/* Disable parallax effect on mobile */
-@media screen and (max-width: 900px) {
-  .s-hero::before {
-    position: absolute;
-    background-attachment: scroll;
-  }
 }
 /* -------------------------------------------------------------------
  * ## hero particle cluster
@@ -1808,20 +1665,6 @@ input[type="button"]:focus-visible {
     left: -150px;
   }
 }
-@media screen and (max-width: 1600px) {
-  .hero-particle-cluster {
-    width: 1100px;
-    height: 1100px;
-    left: -125px;
-  }
-}
-@media screen and (max-width: 1400px) {
-  .hero-particle-cluster {
-    width: 1000px;
-    height: 1000px;
-    left: -100px;
-  }
-}
 @media screen and (max-width: 1200px) {
   .hero-particle-cluster {
     width: 900px;
@@ -1829,26 +1672,11 @@ input[type="button"]:focus-visible {
     left: -75px;
   }
 }
-@media screen and (max-width: 1024px) {
-  .hero-particle-cluster {
-    width: 800px;
-    height: 800px;
-    left: -50px;
-  }
-}
 @media screen and (max-width: 900px) {
   .hero-particle-cluster {
     width: 700px;
     height: 700px;
     left: -25px;
-  }
-}
-@media screen and (max-width: 768px) {
-  .hero-particle-cluster {
-    width: 600px;
-    height: 600px;
-    left: -50px;
-    opacity: 0.7;
   }
 }
 @media screen and (max-width: 600px) {
@@ -1859,7 +1687,7 @@ input[type="button"]:focus-visible {
     opacity: 0.6;
   }
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 400px) {
   .hero-particle-cluster {
     width: 450px;
     height: 450px;
@@ -1996,14 +1824,14 @@ input[type="button"]:focus-visible {
 /* -------------------------------------------------------------------
  * ## animate intro content
  * ------------------------------------------------------------------- */
-html.ss-preload .hero-content {
-  opacity: 0;
-}
 /* -------------------------------------------------------------------
  * responsive:
  * hero
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1800px) {
+  .hero-content {
+    max-width: 1200px;
+  }
   .hero-content h1 {
     font-size: 6.3rem;
   }
@@ -2012,20 +1840,7 @@ html.ss-preload .hero-content {
     left: -8.8rem;
   }
 }
-@media screen and (max-width: 1700px) {
-  .hero-content {
-    max-width: 1200px;
-  }
-}
-@media screen and (max-width: 1500px) {
-  .hero-content {
-    max-width: 1000px;
-  }
-}
-@media screen and (max-width: 1300px) {
-  .hero-content {
-    max-width: 1200px;
-  }
+@media screen and (max-width: 1200px) {
   .hero-content h1 {
     font-size: 6rem;
     padding-top: 3.2rem;
@@ -2035,8 +1850,6 @@ html.ss-preload .hero-content {
     top: 0;
     left: 0;
   }
-}
-@media screen and (max-width: 1200px) {
   .hero-scroll {
     right: 6rem;
   }
@@ -2056,7 +1869,7 @@ html.ss-preload .hero-content {
     font-size: 1.1rem;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .hero-content h1 {
     font-size: 4.8rem;
   }
@@ -2091,23 +1904,12 @@ html.ss-preload .hero-content {
     right: 2.4rem;
   }
 }
-@media screen and (max-width: 500px) {
-  .hero-content h1 {
-    font-size: 4.4rem;
-    padding-right: 0;
-  }
-}
 @media screen and (max-width: 400px) {
   .s-hero {
     min-height: 500px;
   }
   .hero-content h1 {
     font-size: 4rem;
-  }
-}
-@media screen and (max-width: 360px) {
-  .hero-content h1 {
-    font-size: 3.8rem;
   }
 }
 /* ===================================================================
@@ -2164,13 +1966,6 @@ html.ss-preload .hero-content {
   }
 }
 @media screen and (max-width: 900px) {
-  /* Start fading out profile image on smaller tablets */
-  .s-about__section--profile .profile-pic {
-    opacity: 0.7;
-    transform: scale(0.95);
-  }
-}
-@media screen and (max-width: 800px) {
   .s-about__section--profile {
     padding-top: 14rem;
     padding-bottom: 0;
@@ -2204,11 +1999,6 @@ html.ss-preload .hero-content {
   font-size: 2.2rem;
   line-height: 1.6;
 }
-@media screen and (max-width: 800px) {
-  .s-services__leftcol p.lead {
-    font-size: 2.2rem;
-  }
-}
 @media screen and (max-width: 600px) {
   .s-services__leftcol p.lead {
     font-size: 2rem;
@@ -2217,7 +2007,7 @@ html.ss-preload .hero-content {
 .s-services .section-intro .display-1 {
   font-size: 4rem;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .s-services .section-intro .display-1 {
     font-size: 3.6rem;
   }
@@ -2327,7 +2117,7 @@ html.ss-preload .hero-content {
     right: 9rem;
   }
 }
-@media screen and (max-width: 1040px) {
+@media screen and (max-width: 1000px) {
   .s-services .vert-line {
     height: 12rem;
   }
@@ -2348,7 +2138,7 @@ html.ss-preload .hero-content {
     margin: 0;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .s-services {
     padding-top: 14rem;
   }
@@ -2369,11 +2159,6 @@ html.ss-preload .hero-content {
   }
   .services-list__item-header h5 {
     font-size: 3.2rem;
-  }
-}
-@media screen and (max-width: 500px) {
-  .services-list__item-header h5 {
-    font-size: 3rem;
   }
 }
 @media screen and (max-width: 400px) {
@@ -2590,7 +2375,7 @@ html.ss-preload .hero-content {
     max-width: 100%;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .s-footer {
     padding-top: 14rem;
   }
@@ -2794,18 +2579,16 @@ html.ss-preload .hero-content {
 .hero-contact a,
 .footer-contact-block a,
 .services-list__item-header {
-  transition: all var(--transition-normal);
-  will-change: transform, opacity;
+  transition: color var(--transition-normal),
+    border-color var(--transition-normal),
+    transform var(--transition-normal),
+    opacity var(--transition-normal);
 }
 /* Optimize hover effects */
 .btn:hover {
   transform: translateY(-2px);
 }
-/* Optimize loading animations */
-html.ss-preload .hero-content {
-  opacity: 0;
-  transform: translateY(20px);
-}
+/* Hero entrance animation (.ss-loaded is added by main.js on init) */
 html.ss-loaded .hero-content {
   animation: fadeIn 0.8s var(--transition-normal) forwards;
 }
@@ -2816,10 +2599,6 @@ html.ss-loaded .hero-content {
 
 /* Hero Section Animations */
 /* Typewriter effect for hero heading */
-html.ss-preload .hero-content h1 {
-  opacity: 0;
-}
-
 html.ss-loaded .hero-content h1 {
   opacity: 1;
 }
@@ -2829,8 +2608,9 @@ html.ss-loaded .hero-content h1 {
   display: inline;
 }
 
-/* Contact links staggered animation */
-.hero-contact li {
+/* Contact links staggered animation (gated on .js so the links stay
+   visible if JavaScript never runs) */
+html.js .hero-contact li {
   opacity: 0;
   transform: scale(0.8) translateY(10px);
 }
@@ -3000,7 +2780,7 @@ a {
   }
 }
 /* Tablets */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   :root {
     --spacing-xl: 3.6rem;
     --spacing-lg: 2.4rem;
@@ -3178,7 +2958,7 @@ input[type="button"] {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 600px) {
   .services-list {
     grid-template-columns: 1fr;
   }

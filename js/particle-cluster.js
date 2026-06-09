@@ -183,7 +183,10 @@
 
     resize() {
       const rect = this.canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      // Cap the backing-store resolution: the canvas is a soft, masked
+      // decorative element, so rendering above 1.5x wastes memory and
+      // per-frame fill time with no visible benefit on high-DPI screens.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
       this.canvas.width = rect.width * dpr;
       this.canvas.height = rect.height * dpr;

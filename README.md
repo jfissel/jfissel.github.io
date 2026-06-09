@@ -41,7 +41,6 @@ This is a single-page Progressive Web App (PWA) featuring a responsive design op
 ### User Experience
 - **Smooth Scrolling**: Animated navigation between sections
 - **Responsive Design**: Mobile-first approach, works on all screen sizes
-- **Loading Animation**: Elegant preloader for initial page load
 - **Interactive Navigation**: Sticky header with mobile menu toggle
 - **Scroll Indicators**: Visual cues for navigation
 
@@ -56,6 +55,7 @@ jfissel.github.io/
 │   ├── main.js           # Core JavaScript functionality
 │   └── particle-cluster.js # Particle animation system
 ├── images/
+│   ├── hero-bg-1920.webp # Hero section background
 │   ├── profile-pic.webp  # Profile image (1x)
 │   └── profile-pic@2x.webp  # Profile image (2x retina)
 ├── .well-known/          # Domain verification files

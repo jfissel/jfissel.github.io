@@ -48,7 +48,7 @@ jfissel.github.io/
 │   └── particle-cluster.js # Canvas 3D particle animation
 │
 ├── images/
-│   ├── hero-bg-3000.webp   # Hero section background
+│   ├── hero-bg-1920.webp   # Hero section background
 │   ├── profile-pic.webp    # 1x profile photo
 │   ├── profile-pic@2x.webp # 2x retina profile photo
 │   ├── logo.svg            # Site logo (not currently referenced)
@@ -125,7 +125,7 @@ Deployment is automatic via **GitHub Pages**:
 - **BEM-like naming**: Component classes use a `block__element` or `block--modifier` pattern (e.g., `services-list__item-header`, `s-header`, `u-fullwidth`).
 - **Section prefixes**: Page sections are prefixed with `s-` (e.g., `.s-about`, `.s-services`, `.s-contact`).
 - **Utility prefixes**: Utility classes use `u-` (e.g., `.u-fullwidth`, `.u-hidden`).
-- **Responsive breakpoints**: Defined with `@media` queries. Main breakpoints: `900px` (tablet), `1000px` (desktop), `400px` (small mobile).
+- **Responsive breakpoints**: Defined with `@media` queries using a consolidated scale: `1800px`, `1200px`, `1000px`, `900px` (tablet), `600px`, `400px` (small mobile), plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape).
 - **Mobile-first**: Write base styles for mobile, then add complexity for larger screens via `min-width` media queries.
 - **Do not edit `base.css`**: This is a CSS normalize/reset. It should not be modified.
 
@@ -200,7 +200,8 @@ The single-page `index.html` is divided into these sections (in order):
 
 ## Known Patterns & Non-obvious Behaviors
 
-- **Typewriter effect**: Implemented in `main.js` (the `ssTypewriter` function) via a character-by-character timeout loop on the hero `<h1>` heading.
+- **Typewriter effect**: Implemented in `main.js` (the `ssTypewriter` function) via a character-by-character timeout loop on the hero `<h1>` heading. Honours `prefers-reduced-motion` by showing the full heading immediately.
+- **Smooth scrolling**: Anchor navigation uses native CSS `scroll-behavior: smooth` (gated on `prefers-reduced-motion`) with `scroll-margin-top` on `.target-section` for the fixed-header offset — there is no JS scroll animation.
 - **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It auto-rotates and drifts; the render loop is paused via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden, and honours `prefers-reduced-motion` by drawing a single static frame.
 - **Sticky header**: JavaScript adds `.sticky`/`.scrolling` classes to `.s-header` on scroll, which trigger CSS transitions defined in `main.css`.
 - **Mobile menu**: Toggled by the `.header-menu-toggle` button; the open state is tracked via `aria-expanded` on the toggle and a `.menu-is-open` class on `<body>`.
