@@ -157,6 +157,7 @@
 
       this._handleResize = null;
       this._handleOrientation = null;
+      this._handlePointer = null;
 
       this.init();
     }
@@ -214,6 +215,23 @@
           setTimeout(this._handleResize, 100);
         };
         window.addEventListener("orientationchange", this._handleOrientation);
+      }
+
+      // Pointer parallax: nudge the cluster's target rotation toward the
+      // cursor; the existing easing in animate() turns that into a slow,
+      // fluid follow. Fine pointers only (touch keeps the auto-drift),
+      // and never when reduced motion forced a static frame. Listening
+      // on window because the canvas itself is pointer-events: none.
+      if (this.animated && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        this._handlePointer = (e) => {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          this.targetAngleY = nx * 0.4;
+          this.targetAngleX = ny * 0.3;
+        };
+        window.addEventListener("pointermove", this._handlePointer, {
+          passive: true,
+        });
       }
     }
 
@@ -354,6 +372,9 @@
       }
       if (this._handleOrientation) {
         window.removeEventListener("orientationchange", this._handleOrientation);
+      }
+      if (this._handlePointer) {
+        window.removeEventListener("pointermove", this._handlePointer);
       }
     }
   }

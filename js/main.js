@@ -137,7 +137,7 @@
 
     const toggleMenu = () => {
       isMenuOpen = !isMenuOpen;
-      
+
       DOM.toggleButton.classList.toggle("is-clicked", isMenuOpen);
       DOM.toggleButton.setAttribute("aria-expanded", String(isMenuOpen));
       DOM.body.classList.toggle("menu-is-open", isMenuOpen);
@@ -149,6 +149,39 @@
         toggleMenu();
       }
     };
+
+    // Keyboard support for the open menu: Escape closes it (returning
+    // focus to the toggle) and Tab is trapped within the header so
+    // keyboard users can't wander behind the overlay.
+    const handleMenuKeydown = (e) => {
+      if (!isMenuOpen || !mediaQuery.matches) return;
+
+      if (e.key === "Escape") {
+        closeMenu();
+        DOM.toggleButton.focus();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+
+      const focusables = DOM.hdr.querySelectorAll(
+        '.header-nav a, .header-content .btn, .theme-toggle, .header-menu-toggle'
+      );
+      if (!focusables.length) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleMenuKeydown);
 
     // Optimized resize handler
     const handleResize = debounce(() => {
@@ -230,14 +263,18 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;
-          
+
           // Remove active class from all links (more efficient)
-          DOM.navLinks.forEach(link => link.classList.remove("current"));
-          
+          DOM.navLinks.forEach(link => {
+            link.classList.remove("current");
+            link.removeAttribute("aria-current");
+          });
+
           // Add active class to current section link
           const activeLink = linkMap.get(sectionId);
           if (activeLink) {
             activeLink.classList.add("current");
+            activeLink.setAttribute("aria-current", "true");
           }
         }
       });
@@ -294,7 +331,7 @@
       if (charIndex < currentText.length) {
         currentLine.textContent += currentText[charIndex];
         charIndex++;
-        typeTimeout = setTimeout(typeNextChar, 40); // 40ms per character for smooth typing
+        typeTimeout = setTimeout(typeNextChar, 24); // quick enough that the name reads in ~2s
       } else {
         // Finished current line
         lineIndex++;
@@ -313,7 +350,7 @@
             currentLine.style.opacity = "1";
           });
 
-          typeTimeout = setTimeout(typeNextChar, 150); // Pause between lines
+          typeTimeout = setTimeout(typeNextChar, 100); // Pause between lines
         }
       }
     };
@@ -326,7 +363,7 @@
       currentLine.style.transition = "opacity 0.3s ease-in-out";
       currentLine.style.opacity = "1";
       typeNextChar();
-    }, 400);
+    }, 250);
   };
 
   /* Parallax scroll effect for profile image
@@ -394,6 +431,85 @@
     syncParallax();
   };
 
+  /* Copy-to-clipboard for the footer email
+   * The button ships hidden in the markup and is only revealed when
+   * the Clipboard API is actually available (it isn't on insecure
+   * origins), so nobody sees a button that can't work.
+   * ------------------------------------------------------ */
+  const ssCopyEmail = () => {
+    const button = document.querySelector(".copy-email");
+    if (!button) return;
+
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+    button.hidden = false;
+
+    const status = button.parentElement.querySelector(
+      ".u-screen-reader-text"
+    );
+    let resetTimeout = null;
+
+    button.addEventListener("click", () => {
+      navigator.clipboard
+        .writeText(button.dataset.copy)
+        .then(() => {
+          button.classList.add("is-copied");
+          if (status) status.textContent = "Email address copied";
+
+          clearTimeout(resetTimeout);
+          resetTimeout = setTimeout(() => {
+            button.classList.remove("is-copied");
+            if (status) status.textContent = "";
+          }, 2000);
+        })
+        .catch(() => {
+          if (status) status.textContent = "Copy failed";
+        });
+    });
+  };
+
+  /* Theme toggle (sun/moon in the header)
+   * Overrides the system colour scheme via [data-theme] on <html> and
+   * persists the choice. CSS decides which icon shows, so this only
+   * has to flip the attribute and keep the label honest.
+   * ------------------------------------------------------ */
+  const ssThemeToggle = () => {
+    const button = document.querySelector(".theme-toggle");
+    if (!button) return;
+
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const effectiveTheme = () => {
+      const override = DOM.html.getAttribute("data-theme");
+      if (override === "light" || override === "dark") return override;
+      return systemDark.matches ? "dark" : "light";
+    };
+
+    const updateLabel = () => {
+      button.setAttribute(
+        "aria-label",
+        effectiveTheme() === "dark"
+          ? "Switch to light theme"
+          : "Switch to dark theme"
+      );
+    };
+
+    button.addEventListener("click", () => {
+      const next = effectiveTheme() === "dark" ? "light" : "dark";
+      DOM.html.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {
+        // Storage unavailable (private mode etc.) — theme still applies
+        // for this page view.
+      }
+      updateLabel();
+    });
+
+    // Keep the label accurate if the OS scheme changes mid-session.
+    systemDark.addEventListener("change", updateLabel);
+    updateLabel();
+  };
+
   /* Initialize with performance optimizations
    * ------------------------------------------------------ */
   const ssInit = () => {
@@ -409,6 +525,8 @@
       ssHighlightActiveLink();
       ssTypewriter();
       ssParallaxProfile();
+      ssCopyEmail();
+      ssThemeToggle();
 
       // Initialize scroll-reveal after other components
       requestAnimationFrame(ssReveal);

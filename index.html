@@ -33,7 +33,13 @@
     <meta property="og:url" content="https://johnfissel.com" />
     <meta
       property="og:image"
-      content="https://johnfissel.com/images/profile-pic.webp"
+      content="https://johnfissel.com/images/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="John Fissel — CPA in Austin, TX. Data analytics, automation and AI in accounting."
     />
 
     <!-- Twitter Card data -->
@@ -45,8 +51,18 @@
     />
     <meta
       name="twitter:image"
-      content="https://johnfissel.com/images/profile-pic.webp"
+      content="https://johnfissel.com/images/og-image.png"
     />
+
+    <!-- Apply a stored theme override before first paint (no flash) -->
+    <script>
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    </script>
 
     <!-- Performance optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -97,6 +113,8 @@
   </head>
 
   <body id="top">
+    <a class="skip-link" href="#home">Skip to main content</a>
+
     <!-- Scroll progress indicator -->
     <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -123,6 +141,32 @@
         </nav>
       </div>
       <!-- end header-content -->
+
+      <button class="theme-toggle" type="button" aria-label="Switch theme">
+        <svg
+          class="theme-toggle__icon theme-toggle__icon--sun"
+          viewBox="0 0 24 24"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+          />
+        </svg>
+        <svg
+          class="theme-toggle__icon theme-toggle__icon--moon"
+          viewBox="0 0 24 24"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+      </button>
 
       <a
         class="header-menu-toggle"
@@ -217,6 +261,24 @@
                 I'm always looking for opportunities for professional
                 development.
               </h2>
+
+              <ul class="about-highlights" aria-label="Quick facts">
+                <li class="about-highlights__item">
+                  <strong class="about-highlights__value">CPA</strong>
+                  <span class="about-highlights__label"
+                    >Licensed &amp; Active</span
+                  >
+                </li>
+                <li class="about-highlights__item">
+                  <strong class="about-highlights__value">Austin, TX</strong>
+                  <span class="about-highlights__label">Home Base</span>
+                </li>
+                <li class="about-highlights__item">
+                  <strong class="about-highlights__value">AI + Analytics</strong>
+                  <span class="about-highlights__label">Core Focus</span>
+                </li>
+              </ul>
+
               <h3>Profile</h3>
               <p>
                 I am a licensed Certified Public Accountant (CPA) with a strong
@@ -315,6 +377,11 @@
                 </span>
                 <h5>Artificial Intelligence</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Generative AI</li>
+                <li>Machine Learning</li>
+                <li>AI Integration</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   AI is rapidly reshaping the way businesses operate, offering
@@ -342,6 +409,11 @@
                 </span>
                 <h5>Data Analytics</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Alteryx</li>
+                <li>Python</li>
+                <li>VBA</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   In today’s data-driven world, businesses need more than basic
@@ -367,6 +439,11 @@
                 </span>
                 <h5>Data Visualization</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Power BI</li>
+                <li>Tableau</li>
+                <li>Dashboards</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   Effectively communicating insights is just as important as
@@ -390,6 +467,12 @@
                 </span>
                 <h5>Automation</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Power Automate</li>
+                <li>UiPath</li>
+                <li>Alteryx</li>
+                <li>Python</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   Repetitive, manual tasks can drain time and resources, time
@@ -415,6 +498,12 @@
                 </span>
                 <h5>Accounting Technology</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Excel</li>
+                <li>Power Query</li>
+                <li>SQL</li>
+                <li>SAP</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   I bring a broad and practical skill set to accounting and
@@ -441,6 +530,11 @@
                 </span>
                 <h5>Communication</h5>
               </div>
+              <ul class="services-list__tags" aria-label="Tools and topics">
+                <li>Client Relations</li>
+                <li>Mentorship</li>
+                <li>Collaboration</li>
+              </ul>
               <div class="services-list__item-body">
                 <p>
                   While technology plays a transformative role in modern
@@ -502,6 +596,40 @@
                   aria-label="Send email to contact@johnfissel.com"
                   >contact@johnfissel.com</a
                 >
+                <button
+                  class="copy-email"
+                  type="button"
+                  data-copy="contact@johnfissel.com"
+                  aria-label="Copy email address"
+                  hidden
+                >
+                  <svg
+                    class="copy-email__icon copy-email__icon--copy"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="9" y="9" width="11" height="11" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  <svg
+                    class="copy-email__icon copy-email__icon--check"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </button>
+                <span
+                  class="u-screen-reader-text"
+                  role="status"
+                  aria-live="polite"
+                ></span>
               </p>
             </div>
             <!-- end footer-contact-block -->
