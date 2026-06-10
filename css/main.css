@@ -662,7 +662,10 @@ button:focus-visible {
   margin-top: -1px;
   position: absolute;
   top: 50%;
-  left: 0.9rem;
+  /* centre the 2.4rem lines in the box so the circular hover halo
+     wraps the icon symmetrically */
+  left: 50%;
+  margin-left: -1.2rem;
   right: auto;
   bottom: auto;
 }
@@ -2257,6 +2260,25 @@ html[data-theme="dark"] .theme-toggle__icon--sun {
 }
 html[data-theme="dark"] .theme-toggle__icon--moon {
   display: none;
+}
+/* Quarter-turn entrance for the incoming icon when the theme is
+ * switched. main.js retriggers .is-switching on each click, so the
+ * animation never runs on page load; gated on reduced motion like
+ * every other animation. */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-toggle.is-switching .theme-toggle__icon {
+    animation: theme-icon-in 0.45s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+}
+@keyframes theme-icon-in {
+  from {
+    transform: rotate(-90deg) scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
 }
 /* Mobile: sit beside the hamburger and mirror its geometry exactly —
  * same 4.8rem box, same padding/negative-margin trick, same top values

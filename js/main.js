@@ -501,6 +501,13 @@
     button.addEventListener("click", () => {
       const next = effectiveTheme() === "dark" ? "light" : "dark";
       DOM.html.setAttribute("data-theme", next);
+
+      // Spin in the incoming icon (CSS gates this on reduced motion).
+      // Remove + reflow restarts the animation on rapid clicks.
+      button.classList.remove("is-switching");
+      void button.offsetWidth;
+      button.classList.add("is-switching");
+
       try {
         localStorage.setItem("theme", next);
       } catch (e) {
@@ -508,6 +515,12 @@
         // for this page view.
       }
       updateLabel();
+    });
+
+    // Drop the animation class once the spin finishes (the event
+    // bubbles up from the SVG icon).
+    button.addEventListener("animationend", () => {
+      button.classList.remove("is-switching");
     });
 
     // Keep the label accurate if the OS scheme changes mid-session.
