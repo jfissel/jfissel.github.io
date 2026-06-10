@@ -1,4 +1,4 @@
-const CACHE_NAME = "johnfissel-site-cache-v12";
+const CACHE_NAME = "johnfissel-site-cache-v13";
 // Precache only the critical shell. Everything else (images, icons,
 // manifest) is cached at runtime by the fetch handler on first use, so
 // first-time visitors don't download assets their device never displays
@@ -42,6 +42,12 @@ self.addEventListener("activate", (event) => {
 
 // Fetch event - serve from cache, fall back to network
 self.addEventListener("fetch", (event) => {
+  // Only GET requests can be matched against or written to the cache
+  // (cache.put throws on anything else); let the browser handle the rest.
+  if (event.request.method !== "GET") {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) {
@@ -58,13 +64,15 @@ self.addEventListener("fetch", (event) => {
             return response;
           }
 
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME).then((cache) => {
-            if (event.request.url.startsWith(self.location.origin)) {
-              cache.put(event.request, responseToCache);
-            }
-          });
+          if (event.request.url.startsWith(self.location.origin)) {
+            const responseToCache = response.clone();
+            // Keep the worker alive until the background write finishes.
+            event.waitUntil(
+              caches
+                .open(CACHE_NAME)
+                .then((cache) => cache.put(event.request, responseToCache))
+            );
+          }
 
           return response;
         })

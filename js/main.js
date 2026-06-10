@@ -36,7 +36,6 @@
   };
 
   // Performance optimized scroll handler
-  let lastScrollY = window.scrollY;
   let ticking = false;
   let isHeaderSticky = false;
   let isHeaderScrolling = false;
@@ -46,8 +45,6 @@
     if (!DOM.hdr) return;
 
     const currentScrollY = window.scrollY;
-    const scrollDelta = currentScrollY - lastScrollY;
-    const isScrollingDown = scrollDelta > 2;
 
     // At the very top
     if (currentScrollY <= 10) {
@@ -56,7 +53,6 @@
         isHeaderSticky = false;
         isHeaderScrolling = false;
       }
-      lastScrollY = currentScrollY;
       return;
     }
 
@@ -73,8 +69,6 @@
       isHeaderSticky = false;
       isHeaderScrolling = false;
     }
-
-    lastScrollY = currentScrollY;
   };
 
   // Update back to top button visibility
@@ -140,8 +134,8 @@
 
       DOM.toggleButton.classList.toggle("is-clicked", isMenuOpen);
       DOM.toggleButton.setAttribute("aria-expanded", String(isMenuOpen));
+      // body.menu-is-open also locks scrolling via CSS (overflow: hidden)
       DOM.body.classList.toggle("menu-is-open", isMenuOpen);
-      DOM.body.style.overflow = isMenuOpen ? "hidden" : "";
     };
 
     const closeMenu = () => {
@@ -165,7 +159,7 @@
       if (e.key !== "Tab") return;
 
       const focusables = DOM.hdr.querySelectorAll(
-        '.header-nav a, .header-content .btn, .theme-toggle, .header-menu-toggle'
+        '.header-nav a, .theme-toggle, .header-menu-toggle'
       );
       if (!focusables.length) return;
 
@@ -190,15 +184,11 @@
       }
     }, 150);
 
-    // Event listeners with passive option where appropriate
-    DOM.toggleButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      toggleMenu();
-    });
+    DOM.toggleButton.addEventListener("click", toggleMenu);
 
     // Optimized click delegation
     DOM.headerContent.addEventListener("click", (e) => {
-      if (mediaQuery.matches && (e.target.tagName === "A" || e.target.classList.contains("btn"))) {
+      if (mediaQuery.matches && e.target.tagName === "A") {
         closeMenu();
       }
     });
@@ -295,11 +285,18 @@
       return;
     }
 
-    // Get the full text content, preserving line breaks
+    // Get the full text content, preserving line breaks. Trim each line:
+    // the markup's pretty-printed indentation would otherwise be typed
+    // out as a dead pause before each line visibly starts.
     const fullText = heading.innerHTML;
     const lines = fullText
-    .split(/<br\s*\/?>/i)
-    .filter(line => line.replace(/\s+/g, ''));
+      .split(/<br\s*\/?>/i)
+      .map((line) => line.replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+
+    // Expose the complete heading to assistive tech up front; the
+    // animated spans below are purely visual.
+    heading.setAttribute("aria-label", lines.join(" "));
 
     // Clear the heading
     heading.innerHTML = "";
