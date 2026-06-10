@@ -101,10 +101,7 @@ Then open `http://localhost:8000`.
 
 ### Making Changes
 
-- **Content**: Edit `index.html` (update the SEO/social meta tags if content changes)
-- **Styles**: Edit `css/main.css` — use the CSS variables defined in `:root`; don't edit `base.css` (it's a third-party normalize)
-- **Interactivity**: Edit `js/main.js` or `js/particle-cluster.js`
-- **Caching**: Edit `sw.js` — and **increment the `CACHE_NAME` version** whenever cached assets change, so visitors receive fresh content
+Edit `index.html`, `css/main.css`, or the files in `js/` directly — there's nothing to compile. Conventions, gotchas, and the service worker cache-versioning rule are documented in [CLAUDE.md](CLAUDE.md).
 
 ## Deployment
 
