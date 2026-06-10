@@ -1,4 +1,4 @@
-# John Fissel - Professional Portfolio Website
+# John Fissel — Professional Portfolio Website
 
 A modern, high-performance personal portfolio website for John Fissel, a Certified Public Accountant based in Austin, TX, specializing in data analytics, automation, and AI in accounting.
 
@@ -6,197 +6,127 @@ A modern, high-performance personal portfolio website for John Fissel, a Certifi
 
 ## Overview
 
-This is a single-page Progressive Web App (PWA) featuring a responsive design optimized for performance, accessibility, and SEO. The site showcases professional experience, technical skills, and provides multiple channels for contact and professional networking.
+This is a single-page Progressive Web App (PWA) built with vanilla HTML, CSS, and JavaScript — no frameworks, no npm packages, no build step. It is optimized for performance, accessibility, and SEO, and deploys automatically to GitHub Pages.
 
 ## Key Features
 
+### Design & Interactivity
+- **Canvas Particle Animation**: A custom 3D particle cluster in the hero that auto-rotates, follows the cursor on desktop, and pauses when off-screen or in a hidden tab
+- **Typewriter Hero Heading**: Character-by-character reveal of the hero heading
+- **Scroll-Reveal Animations**: Sections fade/slide into view using a native IntersectionObserver (no animation library)
+- **Light/Dark Theme Toggle**: Sun/moon toggle in the header, persisted in `localStorage`, defaulting to the system `prefers-color-scheme`
+- **Sticky Header & Scroll Progress**: Fixed navigation with active-section highlighting and a top-of-page reading progress bar
+- **Copy-Email Button**: One-click email copy in the footer (shown only when the Clipboard API is available)
+- **Reduced-Motion Support**: Every animation honours `prefers-reduced-motion` and degrades to a static equivalent
+
 ### Performance
-- **Optimized Loading**: Deferred JavaScript loading and resource prioritization
-- **Preconnect & DNS Prefetch**: Faster font loading from Google Fonts
-- **Lazy Loading**: Images loaded on-demand for faster initial page load
-- **Service Worker Caching**: Offline-first architecture with intelligent asset caching
-- **WebP Images**: Modern image format with 2x retina support
+- **No Dependencies**: Zero frameworks or libraries; total page weight stays minimal
+- **Optimized Loading**: Deferred JavaScript, resource prioritization (`fetchpriority`), and preconnect for Google Fonts
+- **WebP Images**: Modern image format with 2x retina variants, lazy-loaded below the fold
+- **Service Worker Caching**: Cache-first strategy with a precached critical shell and runtime caching for everything else
 
 ### Progressive Web App (PWA)
-- **Offline Capability**: Full functionality without internet connection via service worker
-- **Installable**: Can be installed on mobile devices and desktop
-- **Web App Manifest**: Custom icons and theme colors for native app-like experience
-- **Mobile Optimization**: Apple-specific meta tags for iOS devices
+- **Offline Capability**: The site works without a connection; offline navigations fall back to the cached homepage
+- **Installable**: Web app manifest with custom icons and theme colors for a native app-like experience
+- **Custom 404 Page**: A self-contained `404.html` that also serves as the service worker's offline fallback
 
-### SEO & Discoverability
+### SEO & Accessibility
 - **Structured Data**: JSON-LD schema markup for rich search results
-- **Open Graph**: Optimized for social media sharing (Facebook, LinkedIn)
-- **Twitter Cards**: Enhanced link previews on X/Twitter
-- **Sitemap**: XML sitemap for search engine crawlers
-- **Semantic HTML**: Proper heading hierarchy and ARIA labels
-- **Meta Tags**: Comprehensive description and keyword optimization
-
-### Accessibility
-- **ARIA Labels**: Comprehensive screen reader support
-- **Semantic Structure**: Proper HTML5 semantic elements
-- **Keyboard Navigation**: Full keyboard accessibility
-- **Color Contrast**: WCAG-compliant color schemes
-- **Focus Indicators**: Clear visual feedback for interactive elements
-
-### User Experience
-- **Smooth Scrolling**: Animated navigation between sections
-- **Responsive Design**: Mobile-first approach, works on all screen sizes
-- **Interactive Navigation**: Sticky header with mobile menu toggle
-- **Scroll Indicators**: Visual cues for navigation
+- **Social Previews**: Open Graph and Twitter Card tags with a dedicated share image
+- **Sitemap & Robots**: XML sitemap and crawler directives
+- **Semantic HTML & ARIA**: Proper heading hierarchy, landmarks, and labels for screen readers
+- **Keyboard Navigation**: Fully keyboard-accessible, including a focus-trapped mobile menu with Escape-to-close
+- **Color Contrast**: WCAG AA–compliant color schemes
 
 ## Project Structure
 
 ```
 jfissel.github.io/
+├── index.html              # Single-page application entry point
+├── 404.html                # Custom 404 / offline fallback page
 ├── css/
-│   ├── base.css          # Base styles and CSS reset
-│   └── main.css          # Custom styles and layout
+│   ├── base.css            # Normalize.css + base element styles
+│   └── main.css            # Custom layout, components, responsive styles
 ├── js/
-│   ├── main.js           # Core JavaScript functionality
-│   └── particle-cluster.js # Particle animation system
+│   ├── main.js             # Core interactivity (scroll, menu, typewriter, theme, etc.)
+│   └── particle-cluster.js # Canvas 3D particle animation
 ├── images/
-│   ├── hero-bg-1920.webp # Hero section background
-│   ├── profile-pic.webp  # Profile image (1x)
-│   └── profile-pic@2x.webp  # Profile image (2x retina)
-├── .well-known/          # Domain verification files
-├── index.html            # Main HTML file
-├── sw.js                 # Service worker for PWA
-├── site.webmanifest      # PWA manifest file
-├── sitemap.xml           # XML sitemap for SEO
-├── robots.txt            # Search engine crawler instructions
-├── favicon.ico           # Browser favicon
-├── favicon-16x16.png     # Favicon 16x16
-├── favicon-32x32.png     # Favicon 32x32
-├── apple-touch-icon.png  # iOS home screen icon
-├── android-chrome-192x192.png  # Android icon
-├── android-chrome-512x512.png  # Android icon (high-res)
-└── CNAME                 # Custom domain configuration
+│   ├── hero-bg-1920.webp   # Hero section background
+│   ├── og-image.png        # Social share image (Open Graph / Twitter)
+│   ├── profile-pic.webp    # Profile photo (1x)
+│   └── profile-pic@2x.webp # Profile photo (2x retina)
+├── sw.js                   # Service worker (offline caching)
+├── site.webmanifest        # PWA manifest
+├── sitemap.xml             # XML sitemap for SEO
+├── robots.txt              # Search engine crawler directives
+├── CNAME                   # Custom domain configuration
+├── .well-known/
+│   └── security.txt        # Security disclosure contact info
+└── favicon / app icons     # favicon.ico, PNG favicons, Apple & Android icons
 ```
 
 ## Technology Stack
 
-### Core Technologies
-- **HTML5**: Semantic markup with accessibility attributes
-- **CSS3**: Modern styling with flexbox and grid layouts
-- **Vanilla JavaScript**: No framework dependencies for optimal performance
-
-### Browser APIs
-- **Service Worker API**: Offline functionality and caching
-- **Intersection Observer**: Efficient scroll-based animations
-- **Web App Manifest**: PWA installation
-
-### Third-Party Resources
-- **Google Fonts**: Custom typography (Source Serif 4 + Inter)
-
-### Standards & Protocols
-- **Schema.org**: Structured data for search engines
-- **Open Graph Protocol**: Social media optimization
-- **Twitter Card**: Enhanced Twitter/X integration
+- **HTML5** — semantic markup with accessibility attributes
+- **CSS3** — custom properties, flexbox/grid layouts, mobile-first media queries
+- **Vanilla JavaScript (ES6+)** — no framework dependencies
+- **Browser APIs** — Service Worker, IntersectionObserver, Canvas, Clipboard, `matchMedia`
+- **Google Fonts** — Source Serif 4 + Inter (variable fonts)
+- **Standards** — Schema.org structured data, Open Graph, Twitter Cards
 
 ## Development
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- A local web server (required for service worker testing)
+- A modern web browser
+- A local web server (required only for testing the service worker / PWA features)
 
 ### Local Development Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/jfissel/jfissel.github.io.git
-   cd jfissel.github.io
-   ```
+There is no build step. Clone and serve:
 
-2. **Start a local server**
+```bash
+git clone https://github.com/jfissel/jfissel.github.io.git
+cd jfissel.github.io
 
-   Using Python:
-   ```bash
-   python -m http.server 8000
-   ```
+# Python
+python3 -m http.server 8000
 
-   Using Node.js:
-   ```bash
-   npx serve
-   ```
+# or Node.js
+npx serve .
+```
 
-   Using PHP:
-   ```bash
-   php -S localhost:8000
-   ```
+Then open `http://localhost:8000`.
 
-3. **Open in browser**
-   ```
-   http://localhost:8000
-   ```
-
-### Testing PWA Features
-
-Service workers require HTTPS or localhost. For local testing:
-- Use `http://localhost` (service worker will work)
-- Or use `ngrok` to create HTTPS tunnel: `ngrok http 8000`
+> Service workers only activate on `localhost` or HTTPS. During development, hard-refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) to bypass the service worker cache.
 
 ### Making Changes
 
-**CSS Modifications:**
-- Edit `css/main.css` for layout and styling changes
-- Edit `css/base.css` for typography and base styles
-
-**Content Updates:**
-- Edit `index.html` for text content
-- Update images in the `images/` directory
-
-**JavaScript Changes:**
-- Edit `js/main.js` for interactive features
-- Edit `sw.js` to modify caching strategy
-
-**Important**: After modifying `sw.js`, increment the cache version to ensure users get the latest version.
+Edit `index.html`, `css/main.css`, or the files in `js/` directly — there's nothing to compile. Conventions, gotchas, and the service worker cache-versioning rule are documented in [CLAUDE.md](CLAUDE.md).
 
 ## Deployment
 
-### GitHub Pages
-The site is deployed automatically via GitHub Pages:
+The site deploys automatically via GitHub Pages:
 
-1. Push changes to the `main` branch
-2. GitHub Pages publishes the static files automatically (no build step)
-3. Live site updates within 1-2 minutes
+1. Push (or merge a PR) to the `main` branch
+2. GitHub Pages publishes the static files — no build commands
+3. The live site at [johnfissel.com](https://johnfissel.com) updates within 1–2 minutes
 
-### Custom Domain
-The site uses a custom domain configured via the `CNAME` file. DNS is configured to point:
-- `johnfissel.com` → GitHub Pages
-- `www.johnfissel.com` → redirects to apex domain
+The custom domain is configured via the `CNAME` file, with DNS pointing `johnfissel.com` to GitHub Pages and `www` redirecting to the apex domain.
 
-### Cache Busting
-When updating the service worker:
-1. Increment the version suffix in the `CACHE_NAME` constant in `sw.js`
-2. Update the files array if new assets were added
-3. Test locally before pushing to production
+## Performance Targets
 
-## Browser Support
+Lighthouse score targets, maintained across changes:
 
-Tested and fully supported on:
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Performance Metrics
-
-Target performance (Lighthouse scores):
-- Performance: 95+
-- Accessibility: 100
-- Best Practices: 100
-- SEO: 100
-
-## Security
-
-- **Content Security Policy**: Headers configured at server level
-- **HTTPS Only**: All resources loaded over secure connections
-- **No External Scripts**: Minimal third-party dependencies
-- **Subresource Integrity**: Could be added for CDN resources
+| Metric | Target |
+|---|---|
+| Performance | 95+ |
+| Accessibility | 100 |
+| Best Practices | 100 |
+| SEO | 100 |
 
 ## License
 
-© 2025 John Fissel. All rights reserved.
+© 2026 John Fissel. All rights reserved.
 
 This is a personal portfolio website. The code structure and techniques may be used as reference, but please do not copy content or design wholesale.
 
@@ -206,7 +136,7 @@ This is a personal portfolio website. The code structure and techniques may be u
 - Website: [johnfissel.com](https://johnfissel.com)
 - Email: contact@johnfissel.com
 - LinkedIn: [linkedin.com/in/johnfissel](https://www.linkedin.com/in/johnfissel/)
-- X/Twitter: [@johnfissel](https://twitter.com/johnfissel)
+- X/Twitter: [@johnfissel](https://x.com/johnfissel)
 - Medium: [@johnfissel](https://medium.com/@johnfissel)
 
 ---

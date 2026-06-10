@@ -1,214 +1,80 @@
 # CLAUDE.md — AI Assistant Guide for jfissel.github.io
 
-This file provides context for AI assistants (Claude Code and others) working on this codebase. Read it fully before making changes.
+Context for AI assistants working on this codebase. Read it fully before making changes.
 
 ---
 
 ## Project Overview
 
-**johnfissel.com** is a personal portfolio website for John Fissel, a Certified Public Accountant (CPA) specializing in data analytics, automation, and AI applications in accounting. It is hosted via **GitHub Pages** at the custom domain `johnfissel.com`.
+**johnfissel.com** is a personal portfolio site for John Fissel, a CPA specializing in data analytics, automation, and AI in accounting. Hosted on **GitHub Pages** at the custom domain `johnfissel.com` (via the `CNAME` file).
 
-This is a **zero-dependency, no-build-step static site** built entirely with vanilla HTML, CSS, and JavaScript. There are no npm packages, bundlers, transpilers, or frameworks.
+It is a **zero-dependency, no-build-step static site**: vanilla HTML5, CSS3, and ES6+ JavaScript. No npm, no bundlers, no frameworks. Fonts are Google Fonts (Source Serif 4 + Inter) via CDN; everything else is first-party.
 
----
+Key files:
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Markup | HTML5 (single page: `index.html`) |
-| Styles | Vanilla CSS3 (`css/` directory, 2 files) |
-| Scripts | Vanilla JavaScript ES6+ (`js/` directory, 2 files) |
-| Fonts | Google Fonts (Source Serif 4 + Inter, variable) via CDN |
-| Animation | Native IntersectionObserver scroll-reveal (no library) |
-| Effects | Custom Canvas particle animation (`particle-cluster.js`) |
-| PWA | Service worker (`sw.js`) + Web App Manifest (`site.webmanifest`) |
-| Hosting | GitHub Pages with custom domain via `CNAME` file |
-
----
-
-## Repository Structure
-
-```
-jfissel.github.io/
-├── index.html              # Single-page application entry point
-├── CNAME                   # Custom domain: johnfissel.com
-├── robots.txt              # Search engine crawler directives
-├── sitemap.xml             # XML sitemap for SEO
-├── site.webmanifest        # PWA manifest (icons, theme, display mode)
-├── sw.js                   # Service worker (offline caching)
-├── README.md               # Human-readable project documentation
-│
-├── css/
-│   ├── base.css            # Normalize.css v8.0.1 + base element styles
-│   └── main.css            # Custom layout, components, responsive styles
-│
-├── js/
-│   ├── main.js             # Core interactivity (scroll, menu, typewriter, scroll-reveal, etc.)
-│   └── particle-cluster.js # Canvas 3D particle animation
-│
-├── images/
-│   ├── hero-bg-1920.webp   # Hero section background
-│   ├── profile-pic.webp    # 1x profile photo
-│   ├── profile-pic@2x.webp # 2x retina profile photo
-│   ├── logo.svg            # Site logo (not currently referenced)
-│   └── icons/
-│       └── icon-quote.svg  # Quote icon (used by the .pull-quote CSS component)
-│
-├── favicon.ico             # Browser tab icon
-├── favicon-16x16.png       # Small favicon
-├── favicon-32x32.png       # Medium favicon
-├── apple-touch-icon.png    # iOS home screen icon
-├── android-chrome-192x192.png
-├── android-chrome-512x512.png
-│
-└── .well-known/
-    └── security.txt        # Security disclosure contact info
-```
+- `index.html` — the entire site (single page); `404.html` is a standalone, self-contained 404 page that doubles as the service worker's offline fallback (`noindex`, not in the sitemap)
+- `css/main.css` — all custom styles; `css/base.css` is a third-party normalize — **never edit it**
+- `js/main.js` — all interactivity; `js/particle-cluster.js` — the hero canvas animation
+- `sw.js` — service worker; `site.webmanifest` — PWA manifest
+- `images/og-image.png` — social share image; `images/logo.svg` is currently unreferenced
 
 ---
 
 ## Development Workflow
 
-### Running Locally
-
-There is **no build step**. Open `index.html` directly in a browser, or serve it with a local HTTP server for accurate service worker behavior:
+No build step. Serve locally (the service worker only activates on `localhost` or HTTPS):
 
 ```bash
-# Python (simplest)
-python3 -m http.server 8000
-
-# Node (if available)
-npx serve .
-
-# Then open: http://localhost:8000
+python3 -m http.server 8000   # or: npx serve .
 ```
 
-> **Important:** The service worker (`sw.js`) only activates on `localhost` or HTTPS. A local server is required to test PWA/offline features.
-
-### Making Changes
-
-1. Edit `index.html`, `css/main.css`, or `js/main.js` directly.
-2. Hard-refresh the browser (`Ctrl+Shift+R` / `Cmd+Shift+R`) to bypass the service worker cache during development.
-3. If you modify cached assets, increment the `CACHE_NAME` version in `sw.js` to force cache invalidation.
-
-### Deployment
-
-Deployment is automatic via **GitHub Pages**:
-- Push changes to the `main` branch.
-- The live site at `johnfissel.com` updates within 1–2 minutes.
-- No build commands required.
+- Hard-refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) during development to bypass the service worker cache.
+- **Verify changes manually in-browser** — there is no CI, no tests, no linters. For anything touching layout, images, or `<head>`, run Lighthouse; targets are Performance 95+, Accessibility / Best Practices / SEO 100.
+- Deployment is automatic: merging to `main` publishes to johnfissel.com within 1–2 minutes.
+- Work on descriptively named feature branches and open a PR — **do not push to `main` directly**.
 
 ---
 
-## Code Conventions
+## Project-Specific Rules
 
-### HTML (`index.html`)
-
-- **Semantic HTML5**: Use `<header>`, `<main>`, `<section>`, `<nav>`, `<article>`, `<footer>` appropriately.
-- **Accessibility**: Include ARIA labels (`aria-label`, `aria-expanded`, `aria-hidden`) on interactive elements and icons.
-- **SEO metadata**: Maintain Open Graph (`og:`), Twitter Card, and JSON-LD schema tags. Update them when content changes.
-- **Script loading**: JavaScript files are loaded at the bottom of `<body>` with `defer` where appropriate. Do not move them to `<head>` without reason.
-- **Image format**: Use `.webp` images. Provide `@2x` retina variants for profile/content images.
-
-### CSS (`css/main.css`)
-
-- **CSS Variables**: Defined in `:root` at the top of `main.css`. Always use variables for colors, spacing, and transitions rather than hardcoded values.
-
-  ```css
-  /* Example variables */
-  --color-1: hsla(276, 33%, 28%, 1);
-  --color-text: #111111;
-  --vspace-1: 4.8rem;
-  ```
-
-- **BEM-like naming**: Component classes use a `block__element` or `block--modifier` pattern (e.g., `services-list__item-header`, `s-header`, `u-fullwidth`).
-- **Section prefixes**: Page sections are prefixed with `s-` (e.g., `.s-about`, `.s-services`, `.s-contact`).
-- **Utility prefixes**: Utility classes use `u-` (e.g., `.u-fullwidth`, `.u-hidden`).
-- **Responsive breakpoints**: Defined with `@media` queries using a consolidated scale: `1800px`, `1200px`, `1000px`, `900px` (tablet), `600px`, `400px` (small mobile), plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape).
-- **Mobile-first**: Write base styles for mobile, then add complexity for larger screens via `min-width` media queries.
-- **Do not edit `base.css`**: This is a CSS normalize/reset. It should not be modified.
-
-### JavaScript (`js/main.js`)
-
-- **IIFE pattern**: All code is wrapped in an immediately invoked function expression (`(function() { ... })()`) with `"use strict"` to avoid global scope pollution.
-- **DOM caching**: Cache frequently accessed DOM elements in module-level variables at the top of the IIFE. Do not call `document.querySelector` repeatedly inside loops or handlers.
-- **Event delegation**: Prefer a single parent-level listener over multiple child listeners where possible.
-- **Scroll performance**: Scroll handlers use `requestAnimationFrame` with a throttle pattern to avoid jank.
-- **Passive listeners**: Always add `{ passive: true }` to scroll and resize event listeners.
-- **No dependencies**: Do not import external libraries. All JavaScript is first-party and vanilla.
+- **No build tools, no npm/package.json, no frameworks or external libraries** — this is intentional. Keep everything vanilla.
+- **Do not edit `css/base.css`** (third-party normalize) and do not remove the PWA files (`sw.js`, `site.webmanifest`) without deliberate intent.
+- **CSS variables**: colors, spacing, and transitions come from custom properties in `:root` at the top of `main.css` — never hardcode values that have a variable.
+- **Naming**: BEM-like classes (`block__element`, `block--modifier`); page sections prefixed `s-` (`.s-about`), utilities prefixed `u-` (`.u-fullwidth`).
+- **Breakpoints**: a consolidated scale — `1800px`, `1200px`, `1000px`, `900px`, `600px`, `400px`, plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape via `max-height: 600px`). Mobile-first: don't invent new breakpoints.
+- **JS structure**: one IIFE in `main.js`; shared elements live in the module-level `DOM` object (populated by `initDOMCache()`); each feature is an `ss`-prefixed function wired up in `ssInit()`. Follow this pattern for new features.
+- **Scroll/resize handlers**: `requestAnimationFrame`-throttled and `{ passive: true }`. Header state, back-to-top, and the scroll progress bar share one combined `onScroll` handler — extend it rather than adding parallel listeners.
+- **Reduced motion**: every animation (typewriter, scroll-reveal, parallax, particles) checks `prefers-reduced-motion` and degrades to a static equivalent. Any new animation must too.
+- **SEO metadata**: keep Open Graph, Twitter Card, and JSON-LD in sync when content changes; keep `sitemap.xml` and `robots.txt` accurate if sections change.
+- **Performance**: preserve `fetchpriority="high"` on the hero/critical CSS `<link>`; no render-blocking scripts in `<head>` (scripts load at the bottom of `<body>`); use `.webp` with `@2x` retina variants for content images.
 
 ### Service Worker (`sw.js`)
 
-- **Cache versioning**: The version suffix in the `CACHE_NAME` constant must be incremented whenever cached assets change, to ensure users receive fresh content.
-- **Offline-first strategy**: The service worker uses a cache-first strategy for static assets. Verify this remains intact after edits.
+- **Increment the `CACHE_NAME` version whenever any cached asset changes** — this is the only cache-busting mechanism.
+- **Precache shell only**: `urlsToCache` deliberately lists just the critical shell (HTML, CSS, JS, hero background). Everything else is cached at runtime on first use — do not add non-critical assets to the precache list.
+- Strategy: cache-first with network fallback; offline misses fall back to cached `index.html` for navigations and cached `404.html` for everything else. Keep this intact after edits.
 
 ---
 
-## SEO & Performance Requirements
+## Site Map
 
-This site targets high Lighthouse scores. When making changes, preserve the following:
+Sections of `index.html`, in order (note the id ↔ class mismatches):
 
-| Metric | Target |
-|---|---|
-| Performance | 95+ |
-| Accessibility | 100 |
-| Best Practices | 100 |
-| SEO | 100 |
-
-### Key practices to maintain:
-- Images must include `alt` attributes.
-- Interactive elements must be keyboard-navigable.
-- Color contrast must meet WCAG AA standards.
-- Do not add render-blocking scripts in `<head>`.
-- Keep total page weight minimal (no unnecessary images or scripts).
-- Preserve `fetchpriority="high"` on the hero/critical CSS `<link>` tag.
-- Keep `sitemap.xml` and `robots.txt` accurate if pages/sections change.
+1. `#home` / `.s-hero` — hero with particle canvas (`.s-header` is the separate fixed nav bar)
+2. `#about` / `.s-about` — bio and profile photo
+3. `#skills` / `.s-services` — skills card grid
+4. `#contact` / `.s-footer` — the footer doubles as the contact section
 
 ---
 
-## What NOT to Do
+## Gotchas & Non-obvious Behaviors
 
-- **Do not introduce build tools** (webpack, vite, rollup, etc.) without explicit instruction. This is intentionally a no-build project.
-- **Do not add npm/package.json** unless explicitly requested.
-- **Do not edit `base.css`**. It is a third-party normalize/reset.
-- **Do not push to `main` directly** when working from a feature branch — open a PR instead.
-- **Do not remove PWA files** (`sw.js`, `site.webmanifest`) without deliberate intent.
-- **Do not use JavaScript frameworks** (React, Vue, etc.) for changes. Keep it vanilla JS.
-
----
-
-## Git Workflow
-
-- **Primary branch**: `main` (deploys to production via GitHub Pages)
-- **Feature branches**: Use descriptive names, e.g., `fix/mobile-nav`, `feat/dark-mode`
-- **Commit messages**: Use imperative present tense (e.g., `Fix mobile toggle alignment`, `Add dark mode toggle`)
-- **No CI/CD**: There are no automated tests or linters. Review changes manually in-browser before merging.
-
----
-
-## Sections of the Site
-
-The single-page `index.html` is divided into these sections (in order):
-
-1. **`#home` / `.s-hero`** — Hero with canvas particle animation, name, and contact links. (`.s-header` is the separate fixed navigation bar.)
-2. **`#about` / `.s-about`** — Professional bio and profile photo
-3. **`#skills` / `.s-services`** — Skills shown as a static, always-visible card grid (the legacy accordion has been retired)
-4. **`#contact` / `.s-footer`** — Contact details, social links, copyright, and back-to-top link (the footer doubles as the contact section)
-
----
-
-## Known Patterns & Non-obvious Behaviors
-
-- **Typewriter effect**: Implemented in `main.js` (the `ssTypewriter` function) via a character-by-character timeout loop on the hero `<h1>` heading. Honours `prefers-reduced-motion` by showing the full heading immediately.
-- **Smooth scrolling**: Anchor navigation uses native CSS `scroll-behavior: smooth` (gated on `prefers-reduced-motion`) with `scroll-margin-top` on `.target-section` for the fixed-header offset — there is no JS scroll animation.
-- **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It auto-rotates and drifts; the render loop is paused via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden, and honours `prefers-reduced-motion` by drawing a single static frame.
-- **Sticky header**: JavaScript adds `.sticky`/`.scrolling` classes to `.s-header` on scroll, which trigger CSS transitions defined in `main.css`.
-- **Mobile menu**: Toggled by the `.header-menu-toggle` button; the open state is tracked via `aria-expanded` on the toggle and a `.menu-is-open` class on `<body>`.
-- **Scroll-reveal**: Elements with `data-aos="..."` attributes fade/slide into view on scroll, driven by a native `IntersectionObserver` in `main.js` (the `ssReveal` function). Respects `prefers-reduced-motion`.
-- **Theme toggle**: The sun/moon button in the header (`ssThemeToggle` in `main.js`) sets `data-theme="light|dark"` on `<html>` and persists it in `localStorage("theme")`; a tiny inline script in `<head>` re-applies it before first paint. Default (no override) follows `prefers-color-scheme`. Only the About section actually changes palette — it is driven by the `--about-*` custom properties in `main.css`.
-- **Copy email button**: The `.copy-email` button in the footer ships with the `hidden` attribute and is revealed by `ssCopyEmail` in `main.js` only when the Clipboard API is available. Feedback is a CSS `::after` bubble plus an `aria-live` status span.
-- **Pointer parallax**: On fine-pointer devices, `particle-cluster.js` eases the cluster's rotation toward the cursor via `targetAngleX/Y` (a passive `pointermove` listener on `window`, since the canvas is `pointer-events: none`). Touch devices and reduced-motion users keep the auto-drift / static frame.
-- **Hero heading fallback**: `html.js .hero-content h1 { opacity: 0 }` hides the heading only when JS runs (the typewriter reveals it via inline style); without JS the heading stays visible.
-- **Mobile menu keyboard support**: While open, Escape closes the menu and returns focus to the toggle, and Tab focus is trapped within the header (`handleMenuKeydown` inside `ssMobileMenu`).
-- **Cache busting**: To force the service worker to re-fetch assets after a deployment, increment the `CACHE_NAME` version in `sw.js`.
+- **Theme toggle only re-skins the About section.** `ssThemeToggle` sets `data-theme` on `<html>` and persists to `localStorage("theme")`; an inline `<head>` script re-applies it before first paint. The palette change is driven entirely by the `--about-*` custom properties in `main.css`.
+- **The copy-email button ships `hidden`.** `ssCopyEmail` reveals it only when the Clipboard API is available (it isn't on insecure origins). Feedback is a CSS `::after` bubble plus an `aria-live` span.
+- **Hero heading no-JS fallback**: `html.js .hero-content h1 { opacity: 0 }` hides the heading only when JS runs (the typewriter reveals it via inline style); without JS it stays visible. Don't "fix" the seemingly-redundant rule.
+- **Particle pointer parallax listens on `window`**, not the canvas — the canvas is `pointer-events: none`. The render loop pauses via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden; reduced-motion gets a single static frame.
+- **Smooth scrolling is pure CSS** (`scroll-behavior: smooth` + `scroll-margin-top` on `.target-section` for the fixed-header offset). There is no JS scroll animation — don't add one.
+- **Profile photo parallax binds/unbinds at 901px**: `ssParallaxProfile` attaches its scroll listener only on desktop viewports via a `matchMedia` change listener, and resets the transform when unbinding.
+- **Active nav highlighting** uses an IntersectionObserver with `rootMargin: "-50% 0px"` to set `.current` + `aria-current` on header links — section detection is midpoint-based, not top-based.
+- **Mobile menu keyboard contract**: while open, Escape closes and refocuses the toggle, and Tab is trapped within the header (`handleMenuKeydown` inside `ssMobileMenu`). State lives in `aria-expanded` on the toggle and `.menu-is-open` on `<body>`.
+- **Scroll-reveal** is driven by `data-aos` attributes + a native IntersectionObserver (`ssReveal`) — there is no AOS library despite the attribute name.
