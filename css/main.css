@@ -60,7 +60,6 @@
   --about-line: #302c59;
   --about-heading: var(--color-text);
   --about-body: var(--color-text);
-  --about-hairline: rgba(17, 16, 20, 0.12);
 
   /* Signature gradient (violet -> amber) */
   --gradient-brand: linear-gradient(
@@ -2702,8 +2701,9 @@ html.ss-loaded .hero-contact li:nth-child(4) { animation-delay: 0.6s; }
   bottom: -2px;
   left: 0;
   width: 100%;
-  height: 1px;
-  background-color: var(--color-accent);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-brand);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease-in-out;
@@ -3158,7 +3158,6 @@ input[type="button"] {
     --about-line: var(--surface-dark-3);
     --about-heading: var(--color-text-light);
     --about-body: rgba(255, 255, 255, 0.82);
-    --about-hairline: var(--hairline-dark);
   }
 }
 html[data-theme="dark"] {
@@ -3167,7 +3166,6 @@ html[data-theme="dark"] {
   --about-line: var(--surface-dark-3);
   --about-heading: var(--color-text-light);
   --about-body: rgba(255, 255, 255, 0.82);
-  --about-hairline: var(--hairline-dark);
 }
 html[data-theme="light"] {
   color-scheme: light;
@@ -3241,7 +3239,9 @@ html[data-theme="dark"] {
   outline-offset: 2px;
 }
 .s-header.sticky .theme-toggle {
-  top: 60%;
+  /* sticky header drops its 2rem padding, so true-centre the icon on
+   * the 8.8rem bar (the nav links sit at exactly 50%) */
+  top: 50%;
 }
 .theme-toggle svg {
   width: 2rem;
@@ -3268,14 +3268,31 @@ html[data-theme="dark"] .theme-toggle__icon--sun {
 html[data-theme="dark"] .theme-toggle__icon--moon {
   display: none;
 }
+/* Mobile: sit beside the hamburger and mirror its geometry exactly —
+ * same 4.8rem box, same padding/negative-margin trick, same top values
+ * — so the two icons share a baseline; heavier strokes match the
+ * hamburger's visual weight. */
 @media screen and (max-width: 900px) {
   .theme-toggle {
+    height: 4.8rem;
+    width: 4.8rem;
+    padding: 1.2rem;
+    margin: -1.2rem;
     right: 12rem;
+    top: 6.4rem;
+  }
+  .s-header.sticky .theme-toggle {
+    top: 60%;
+  }
+  .theme-toggle svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    stroke-width: 2;
   }
 }
 @media screen and (max-width: 600px) {
   .theme-toggle {
-    right: 9.6rem;
+    right: 10rem;
   }
 }
 
@@ -3469,56 +3486,6 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   color: var(--color-text-light);
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-}
-
-/* ===================================================================
- * # about highlights strip
- * ------------------------------------------------------------------- */
-.about-highlights {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 2rem 4rem;
-  list-style: none;
-  margin: 4rem 0 0.8rem;
-  padding: 0;
-}
-.about-highlights__item {
-  display: flex;
-  flex-direction: column;
-  padding-left: 0;
-}
-.about-highlights__item + .about-highlights__item {
-  border-left: 1px solid var(--about-hairline);
-  padding-left: 4rem;
-}
-.about-highlights__value {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-size: 2.6rem;
-  line-height: 1.2;
-  color: var(--about-heading);
-}
-.about-highlights__label {
-  font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: 1.2rem;
-  line-height: 1.4;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--color-accent);
-  margin-top: 0.4rem;
-}
-@media screen and (max-width: 600px) {
-  .about-highlights {
-    gap: 1.6rem 2.8rem;
-  }
-  .about-highlights__item + .about-highlights__item {
-    padding-left: 2.8rem;
-  }
-  .about-highlights__value {
-    font-size: 2.2rem;
-  }
 }
 
 /* ===================================================================
