@@ -16,7 +16,7 @@ This is a **zero-dependency, no-build-step static site** built entirely with van
 
 | Layer | Technology |
 |---|---|
-| Markup | HTML5 (single page: `index.html`) |
+| Markup | HTML5 (single page: `index.html`, plus a standalone `404.html`) |
 | Styles | Vanilla CSS3 (`css/` directory, 2 files) |
 | Scripts | Vanilla JavaScript ES6+ (`js/` directory, 2 files) |
 | Fonts | Google Fonts (Source Serif 4 + Inter, variable) via CDN |
@@ -32,6 +32,7 @@ This is a **zero-dependency, no-build-step static site** built entirely with van
 ```
 jfissel.github.io/
 ├── index.html              # Single-page application entry point
+├── 404.html                # Standalone 404 page (self-contained, also the SW offline fallback)
 ├── CNAME                   # Custom domain: johnfissel.com
 ├── robots.txt              # Search engine crawler directives
 ├── sitemap.xml             # XML sitemap for SEO
@@ -49,6 +50,7 @@ jfissel.github.io/
 │
 ├── images/
 │   ├── hero-bg-1920.webp   # Hero section background
+│   ├── og-image.png        # Social share image (Open Graph / Twitter Card)
 │   ├── profile-pic.webp    # 1x profile photo
 │   ├── profile-pic@2x.webp # 2x retina profile photo
 │   ├── logo.svg            # Site logo (not currently referenced)
@@ -107,7 +109,7 @@ Deployment is automatic via **GitHub Pages**:
 
 - **Semantic HTML5**: Use `<header>`, `<main>`, `<section>`, `<nav>`, `<article>`, `<footer>` appropriately.
 - **Accessibility**: Include ARIA labels (`aria-label`, `aria-expanded`, `aria-hidden`) on interactive elements and icons.
-- **SEO metadata**: Maintain Open Graph (`og:`), Twitter Card, and JSON-LD schema tags. Update them when content changes.
+- **SEO metadata**: Maintain Open Graph (`og:`), Twitter Card, and JSON-LD schema tags. Update them when content changes. Social previews use `images/og-image.png`.
 - **Script loading**: JavaScript files are loaded at the bottom of `<body>` with `defer` where appropriate. Do not move them to `<head>` without reason.
 - **Image format**: Use `.webp` images. Provide `@2x` retina variants for profile/content images.
 
@@ -123,25 +125,29 @@ Deployment is automatic via **GitHub Pages**:
   ```
 
 - **BEM-like naming**: Component classes use a `block__element` or `block--modifier` pattern (e.g., `services-list__item-header`, `s-header`, `u-fullwidth`).
-- **Section prefixes**: Page sections are prefixed with `s-` (e.g., `.s-about`, `.s-services`, `.s-contact`).
+- **Section prefixes**: Page sections are prefixed with `s-` (e.g., `.s-about`, `.s-services`, `.s-footer`).
 - **Utility prefixes**: Utility classes use `u-` (e.g., `.u-fullwidth`, `.u-hidden`).
-- **Responsive breakpoints**: Defined with `@media` queries using a consolidated scale: `1800px`, `1200px`, `1000px`, `900px` (tablet), `600px`, `400px` (small mobile), plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape).
+- **Responsive breakpoints**: Defined with `@media` queries using a consolidated scale: `1800px`, `1200px`, `1000px`, `900px` (tablet), `600px`, `400px` (small mobile), plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape via `max-height: 600px`).
 - **Mobile-first**: Write base styles for mobile, then add complexity for larger screens via `min-width` media queries.
 - **Do not edit `base.css`**: This is a CSS normalize/reset. It should not be modified.
 
 ### JavaScript (`js/main.js`)
 
 - **IIFE pattern**: All code is wrapped in an immediately invoked function expression (`(function() { ... })()`) with `"use strict"` to avoid global scope pollution.
-- **DOM caching**: Cache frequently accessed DOM elements in module-level variables at the top of the IIFE. Do not call `document.querySelector` repeatedly inside loops or handlers.
+- **DOM caching**: Frequently accessed elements live in the module-level `DOM` object, populated once by `initDOMCache()`. Do not call `document.querySelector` repeatedly inside loops or handlers.
+- **Feature naming**: Each feature is a `ss`-prefixed arrow function (e.g., `ssMobileMenu`, `ssTypewriter`) wired up in `ssInit()` at the bottom of the file. Follow this pattern for new features.
 - **Event delegation**: Prefer a single parent-level listener over multiple child listeners where possible.
-- **Scroll performance**: Scroll handlers use `requestAnimationFrame` with a throttle pattern to avoid jank.
+- **Scroll performance**: Scroll handlers use `requestAnimationFrame` with a throttle pattern to avoid jank. Header state, back-to-top visibility, and the scroll progress bar share one combined `onScroll` handler.
 - **Passive listeners**: Always add `{ passive: true }` to scroll and resize event listeners.
+- **Reduced motion**: Every animation (typewriter, scroll-reveal, parallax, particles) checks `prefers-reduced-motion` and degrades to a static equivalent. Preserve this in any new animation.
 - **No dependencies**: Do not import external libraries. All JavaScript is first-party and vanilla.
 
 ### Service Worker (`sw.js`)
 
 - **Cache versioning**: The version suffix in the `CACHE_NAME` constant must be incremented whenever cached assets change, to ensure users receive fresh content.
-- **Offline-first strategy**: The service worker uses a cache-first strategy for static assets. Verify this remains intact after edits.
+- **Precache shell only**: `urlsToCache` intentionally lists just the critical shell (HTML, CSS, JS, hero background). Everything else (images, icons, manifest) is cached at runtime by the fetch handler on first use. Do not add non-critical assets to the precache list.
+- **Cache-first strategy**: Fetches are served from cache, falling back to the network (successful same-origin responses are cached as they arrive). Verify this remains intact after edits.
+- **Offline fallback**: When both cache and network miss, navigations fall back to the cached `index.html` and everything else falls back to the cached `404.html`.
 
 ---
 
@@ -196,6 +202,8 @@ The single-page `index.html` is divided into these sections (in order):
 3. **`#skills` / `.s-services`** — Skills shown as a static, always-visible card grid (the legacy accordion has been retired)
 4. **`#contact` / `.s-footer`** — Contact details, social links, copyright, and back-to-top link (the footer doubles as the contact section)
 
+There is also a standalone **`404.html`** page. It is fully self-contained (inline CSS, its own font loads) so it renders correctly even when the main site assets are unavailable, and it doubles as the service worker's offline fallback for non-navigation requests. It is `noindex` and not listed in `sitemap.xml`.
+
 ---
 
 ## Known Patterns & Non-obvious Behaviors
@@ -204,8 +212,11 @@ The single-page `index.html` is divided into these sections (in order):
 - **Smooth scrolling**: Anchor navigation uses native CSS `scroll-behavior: smooth` (gated on `prefers-reduced-motion`) with `scroll-margin-top` on `.target-section` for the fixed-header offset — there is no JS scroll animation.
 - **Particle animation**: Driven by `particle-cluster.js` using the HTML5 Canvas API. It auto-rotates and drifts; the render loop is paused via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden, and honours `prefers-reduced-motion` by drawing a single static frame.
 - **Sticky header**: JavaScript adds `.sticky`/`.scrolling` classes to `.s-header` on scroll, which trigger CSS transitions defined in `main.css`.
+- **Scroll progress bar**: The `.scroll-progress` element is scaled (`transform: scaleX`) from 0→1 across the document inside the combined scroll handler.
+- **Active nav highlighting**: `ssHighlightActiveLink` observes each `.target-section` with an IntersectionObserver (`rootMargin: "-50% 0px"`) and marks the matching header link with `.current` and `aria-current="true"`.
 - **Mobile menu**: Toggled by the `.header-menu-toggle` button; the open state is tracked via `aria-expanded` on the toggle and a `.menu-is-open` class on `<body>`.
 - **Scroll-reveal**: Elements with `data-aos="..."` attributes fade/slide into view on scroll, driven by a native `IntersectionObserver` in `main.js` (the `ssReveal` function). Respects `prefers-reduced-motion`.
+- **Profile photo parallax**: `ssParallaxProfile` applies a small `translateY` to the About photo as the section scrolls. It only binds on viewports ≥ 901px (via a `matchMedia` listener that unbinds and resets below the breakpoint) and is skipped entirely under `prefers-reduced-motion`.
 - **Theme toggle**: The sun/moon button in the header (`ssThemeToggle` in `main.js`) sets `data-theme="light|dark"` on `<html>` and persists it in `localStorage("theme")`; a tiny inline script in `<head>` re-applies it before first paint. Default (no override) follows `prefers-color-scheme`. Only the About section actually changes palette — it is driven by the `--about-*` custom properties in `main.css`.
 - **Copy email button**: The `.copy-email` button in the footer ships with the `hidden` attribute and is revealed by `ssCopyEmail` in `main.js` only when the Clipboard API is available. Feedback is a CSS `::after` bubble plus an `aria-live` status span.
 - **Pointer parallax**: On fine-pointer devices, `particle-cluster.js` eases the cluster's rotation toward the cursor via `targetAngleX/Y` (a passive `pointermove` listener on `window`, since the canvas is `pointer-events: none`). Touch devices and reduced-motion users keep the auto-drift / static frame.
