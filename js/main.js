@@ -298,6 +298,14 @@
     // animated spans below are purely visual.
     heading.setAttribute("aria-label", lines.join(" "));
 
+    // Keep a trailing space on every line but the last: small viewports
+    // hide the <br>s and let the heading reflow as one paragraph, so the
+    // space is what separates the last word of one line from the first
+    // word of the next.
+    for (let i = 0; i < lines.length - 1; i++) {
+      lines[i] += " ";
+    }
+
     // Clear the heading
     heading.innerHTML = "";
     heading.style.opacity = "1";
