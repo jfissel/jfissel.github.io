@@ -24,7 +24,7 @@
     DOM.progressBar = document.querySelector(".scroll-progress");
     DOM.sections = document.querySelectorAll(".target-section");
     DOM.navLinks = document.querySelectorAll(".header-nav a");
-    DOM.revealEls = document.querySelectorAll("[data-aos]");
+    DOM.revealEls = document.querySelectorAll("[data-reveal]");
   };
 
   DOM.html.classList.remove("no-js");
@@ -35,39 +35,25 @@
     BACK_TO_TOP_THRESHOLD: 800
   };
 
+  // Single source for the desktop/mobile split, shared by the mobile
+  // menu and the profile parallax (mirrors the CSS 900px breakpoint).
+  const desktopMQ = matchMedia("(min-width: 901px)");
+
   // Performance optimized scroll handler
   let ticking = false;
   let isHeaderSticky = false;
-  let isHeaderScrolling = false;
   let isBackToTopVisible = false;
+  // Slot for the profile parallax updater; set/cleared by
+  // ssParallaxProfile as the viewport crosses the desktop breakpoint.
+  let updateParallax = null;
 
   const updateHeaderState = () => {
     if (!DOM.hdr) return;
 
-    const currentScrollY = window.scrollY;
-
-    // At the very top
-    if (currentScrollY <= 10) {
-      if (isHeaderSticky || isHeaderScrolling) {
-        DOM.hdr.classList.remove("sticky", "scrolling");
-        isHeaderSticky = false;
-        isHeaderScrolling = false;
-      }
-      return;
-    }
-
-    // Below hero threshold
-    if (currentScrollY >= cfg.HERO_THRESHOLD) {
-      if (!isHeaderSticky) {
-        // Add both classes simultaneously to prevent jitter
-        DOM.hdr.classList.add("sticky", "scrolling");
-        isHeaderSticky = true;
-        isHeaderScrolling = true;
-      }
-    } else if (isHeaderSticky || isHeaderScrolling) {
-      DOM.hdr.classList.remove("sticky", "scrolling");
-      isHeaderSticky = false;
-      isHeaderScrolling = false;
+    const shouldStick = window.scrollY >= cfg.HERO_THRESHOLD;
+    if (shouldStick !== isHeaderSticky) {
+      DOM.hdr.classList.toggle("sticky", shouldStick);
+      isHeaderSticky = shouldStick;
     }
   };
 
@@ -99,6 +85,7 @@
         updateHeaderState();
         updateBackToTop();
         updateScrollProgress();
+        if (updateParallax) updateParallax();
         ticking = false;
       });
       ticking = true;
@@ -124,9 +111,6 @@
     overlay.className = "menu-overlay";
     DOM.body.appendChild(overlay);
 
-    const mediaQuery = matchMedia("(max-width: 900px)");
-    const mediaQueryLarge = matchMedia("(min-width: 901px)");
-
     let isMenuOpen = false;
 
     const toggleMenu = () => {
@@ -148,7 +132,7 @@
     // focus to the toggle) and Tab is trapped within the header so
     // keyboard users can't wander behind the overlay.
     const handleMenuKeydown = (e) => {
-      if (!isMenuOpen || !mediaQuery.matches) return;
+      if (!isMenuOpen || desktopMQ.matches) return;
 
       if (e.key === "Escape") {
         closeMenu();
@@ -179,7 +163,7 @@
 
     // Optimized resize handler
     const handleResize = debounce(() => {
-      if (mediaQueryLarge.matches && isMenuOpen) {
+      if (desktopMQ.matches && isMenuOpen) {
         closeMenu();
       }
     }, 150);
@@ -188,7 +172,7 @@
 
     // Optimized click delegation
     DOM.headerContent.addEventListener("click", (e) => {
-      if (mediaQuery.matches && e.target.tagName === "A") {
+      if (!desktopMQ.matches && e.target.tagName === "A") {
         closeMenu();
       }
     });
@@ -198,7 +182,7 @@
   };
 
   /* Scroll reveal — native replacement for the AOS library.
-   * Adds `.reveal-in` to [data-aos] elements as they enter the
+   * Adds `.reveal-in` to [data-reveal] elements as they enter the
    * viewport. Honours prefers-reduced-motion by revealing everything
    * immediately (the CSS only hides elements when motion is allowed).
    * ------------------------------------------------------ */
@@ -372,6 +356,9 @@
   };
 
   /* Parallax scroll effect for profile image
+   * Runs inside the shared onScroll handler via the module-level
+   * `updateParallax` slot, set on desktop viewports and cleared
+   * (with the transform reset) below the breakpoint.
    * ------------------------------------------------------ */
   const ssParallaxProfile = () => {
     const profilePic = document.querySelector(".profile-pic img");
@@ -381,15 +368,11 @@
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    let ticking = false;
-    let isBound = false;
+    const profileSection = profilePic.closest(".s-about");
+    if (!profileSection) return;
 
-    const updateParallax = () => {
+    const applyParallax = () => {
       const scrolled = window.scrollY;
-      const profileSection = profilePic.closest(".s-about");
-
-      if (!profileSection) return;
-
       const sectionTop = profileSection.offsetTop;
       const sectionHeight = profileSection.offsetHeight;
       const windowHeight = window.innerHeight;
@@ -402,37 +385,17 @@
       }
     };
 
-    const onParallaxScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateParallax();
-          ticking = false;
-        });
-        ticking = true;
+    const syncParallax = () => {
+      if (desktopMQ.matches) {
+        updateParallax = applyParallax;
+        applyParallax(); // Initial call
+      } else {
+        updateParallax = null;
+        profilePic.style.transform = ""; // Reset any applied offset
       }
     };
 
-    // Only run parallax on larger viewports; bind/unbind as the viewport
-    // crosses the breakpoint so the listener never lingers on mobile.
-    const desktop = window.matchMedia("(min-width: 901px)");
-
-    const bind = () => {
-      if (isBound) return;
-      window.addEventListener("scroll", onParallaxScroll, { passive: true });
-      isBound = true;
-      updateParallax(); // Initial call
-    };
-
-    const unbind = () => {
-      if (!isBound) return;
-      window.removeEventListener("scroll", onParallaxScroll);
-      isBound = false;
-      profilePic.style.transform = ""; // Reset any applied offset
-    };
-
-    const syncParallax = () => (desktop.matches ? bind() : unbind());
-
-    desktop.addEventListener("change", syncParallax);
+    desktopMQ.addEventListener("change", syncParallax);
     syncParallax();
   };
 

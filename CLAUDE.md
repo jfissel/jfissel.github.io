@@ -43,7 +43,8 @@ python3 -m http.server 8000   # or: npx serve .
 - **Naming**: BEM-like classes (`block__element`, `block--modifier`); page sections prefixed `s-` (`.s-about`), utilities prefixed `u-` (`.u-fullwidth`).
 - **Breakpoints**: a consolidated scale — `1800px`, `1200px`, `1000px`, `900px`, `600px`, `400px`, plus feature queries (`prefers-reduced-motion`, `prefers-color-scheme`, `hover`, short-landscape via `max-height: 600px`). Mobile-first: don't invent new breakpoints.
 - **JS structure**: one IIFE in `main.js`; shared elements live in the module-level `DOM` object (populated by `initDOMCache()`); each feature is an `ss`-prefixed function wired up in `ssInit()`. Follow this pattern for new features.
-- **Scroll/resize handlers**: `requestAnimationFrame`-throttled and `{ passive: true }`. Header state, back-to-top, and the scroll progress bar share one combined `onScroll` handler — extend it rather than adding parallel listeners.
+- **Scroll/resize handlers**: `requestAnimationFrame`-throttled and `{ passive: true }`. Header state, back-to-top, the scroll progress bar, and the profile parallax share one combined `onScroll` handler — extend it rather than adding parallel listeners.
+- **Desktop/mobile split in JS**: use the shared module-level `desktopMQ` (`min-width: 901px`) media query — don't create new `matchMedia` queries for the 900px breakpoint.
 - **Reduced motion**: every animation (typewriter, scroll-reveal, parallax, particles) checks `prefers-reduced-motion` and degrades to a static equivalent. Any new animation must too.
 - **SEO metadata**: keep Open Graph, Twitter Card, and JSON-LD in sync when content changes; keep `sitemap.xml` and `robots.txt` accurate if sections change.
 - **Performance**: preserve `fetchpriority="high"` on the hero/critical CSS `<link>`; no render-blocking scripts in `<head>` (scripts load at the bottom of `<body>`); use `.webp` with `@2x` retina variants for content images.
@@ -58,12 +59,12 @@ python3 -m http.server 8000   # or: npx serve .
 
 ## Site Map
 
-Sections of `index.html`, in order (note the id ↔ class mismatches):
+Sections of `index.html`, in order:
 
 1. `#home` / `.s-hero` — hero with particle canvas (`.s-header` is the separate fixed nav bar)
 2. `#about` / `.s-about` — bio and profile photo
-3. `#skills` / `.s-services` — skills card grid
-4. `#contact` / `.s-footer` — the footer doubles as the contact section
+3. `#skills` / `.s-skills` — skills card grid
+4. `#contact` / `.s-footer` — the footer doubles as the contact section (the one id ↔ class mismatch: the element genuinely is the page footer, and the id is the public URL anchor)
 
 ---
 
@@ -74,7 +75,8 @@ Sections of `index.html`, in order (note the id ↔ class mismatches):
 - **Hero heading no-JS fallback**: `html.js .hero-content h1 { opacity: 0 }` hides the heading only when JS runs (the typewriter reveals it via inline style); without JS it stays visible. Don't "fix" the seemingly-redundant rule.
 - **Particle pointer parallax listens on `window`**, not the canvas — the canvas is `pointer-events: none`. The render loop pauses via `IntersectionObserver`/`visibilitychange` when the hero is off-screen or the tab is hidden; reduced-motion gets a single static frame.
 - **Smooth scrolling is pure CSS** (`scroll-behavior: smooth` + `scroll-margin-top` on `.target-section` for the fixed-header offset). There is no JS scroll animation — don't add one.
-- **Profile photo parallax binds/unbinds at 901px**: `ssParallaxProfile` attaches its scroll listener only on desktop viewports via a `matchMedia` change listener, and resets the transform when unbinding.
+- **Profile photo parallax is desktop-only**: `ssParallaxProfile` runs inside the combined `onScroll` handler via the module-level `updateParallax` slot, set/cleared by a `desktopMQ` change listener (the transform is reset when cleared).
 - **Active nav highlighting** uses an IntersectionObserver with `rootMargin: "-50% 0px"` to set `.current` + `aria-current` on header links — section detection is midpoint-based, not top-based.
 - **Mobile menu keyboard contract**: while open, Escape closes and refocuses the toggle, and Tab is trapped within the header (`handleMenuKeydown` inside `ssMobileMenu`). State lives in `aria-expanded` on the toggle and `.menu-is-open` on `<body>`.
-- **Scroll-reveal** is driven by `data-aos` attributes + a native IntersectionObserver (`ssReveal`) — there is no AOS library despite the attribute name.
+- **Scroll-reveal** is driven by bare `data-reveal` attributes + a native IntersectionObserver (`ssReveal`) — no animation library involved.
+- **About dark palette is single-sourced**: the `--about-dark-*` tokens in `:root` hold the values; the two swap blocks near the end of `main.css` (system `prefers-color-scheme` and the `[data-theme]` override) only re-point `--about-*` at them — edit the tokens, not the blocks.
