@@ -1,4 +1,4 @@
-const CACHE_NAME = "johnfissel-site-cache-v13";
+const CACHE_NAME = "johnfissel-site-cache-v14";
 // Precache only the critical shell. Everything else (images, icons,
 // manifest) is cached at runtime by the fetch handler on first use, so
 // first-time visitors don't download assets their device never displays
