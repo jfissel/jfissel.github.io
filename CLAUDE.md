@@ -1,4 +1,4 @@
-# CLAUDE.md — AI Assistant Guide for jfissel.github.io
+# CLAUDE.md — AI Assistant Guide for johnfissel.com
 
 Context for AI assistants working on this codebase. Read it fully before making changes.
 
@@ -6,7 +6,7 @@ Context for AI assistants working on this codebase. Read it fully before making 
 
 ## Project Overview
 
-**johnfissel.com** is a personal portfolio site for John Fissel, a CPA specializing in data analytics, automation, and AI in accounting. Hosted on **GitHub Pages** at the custom domain `johnfissel.com` (via the `CNAME` file).
+**johnfissel.com** is a personal portfolio site for John Fissel, a CPA specializing in data analytics, automation, and AI in accounting. Hosted on **Cloudflare Pages** at the custom domain `johnfissel.com` (the domain is configured in the Cloudflare dashboard, not in the repo).
 
 It is a **zero-dependency, no-build-step static site**: vanilla HTML5, CSS3, and ES6+ JavaScript. No npm, no bundlers, no frameworks. Fonts are Google Fonts (Source Serif 4 + Inter) via CDN; everything else is first-party.
 
