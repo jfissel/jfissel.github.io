@@ -6,7 +6,7 @@ A modern, high-performance personal portfolio website for John Fissel, a Certifi
 
 ## Overview
 
-This is a single-page Progressive Web App (PWA) built with vanilla HTML, CSS, and JavaScript — no frameworks, no npm packages, no build step. It is optimized for performance, accessibility, and SEO, and deploys automatically to GitHub Pages.
+This is a single-page Progressive Web App (PWA) built with vanilla HTML, CSS, and JavaScript — no frameworks, no npm packages, no build step. It is optimized for performance, accessibility, and SEO, and deploys automatically to Cloudflare Pages.
 
 ## Key Features
 
@@ -41,7 +41,7 @@ This is a single-page Progressive Web App (PWA) built with vanilla HTML, CSS, an
 ## Project Structure
 
 ```
-jfissel.github.io/
+johnfissel/
 ├── index.html              # Single-page application entry point
 ├── 404.html                # Custom 404 / offline fallback page
 ├── css/
@@ -59,7 +59,6 @@ jfissel.github.io/
 ├── site.webmanifest        # PWA manifest
 ├── sitemap.xml             # XML sitemap for SEO
 ├── robots.txt              # Search engine crawler directives
-├── CNAME                   # Custom domain configuration
 ├── .well-known/
 │   └── security.txt        # Security disclosure contact info
 └── favicon / app icons     # favicon.ico, PNG favicons, Apple & Android icons
@@ -85,8 +84,8 @@ jfissel.github.io/
 There is no build step. Clone and serve:
 
 ```bash
-git clone https://github.com/jfissel/jfissel.github.io.git
-cd jfissel.github.io
+git clone https://github.com/jfissel/johnfissel.git
+cd johnfissel
 
 # Python
 python3 -m http.server 8000
@@ -105,13 +104,13 @@ Edit `index.html`, `css/main.css`, or the files in `js/` directly — there's no
 
 ## Deployment
 
-The site deploys automatically via GitHub Pages:
+The site deploys automatically via Cloudflare Pages:
 
 1. Push (or merge a PR) to the `main` branch
-2. GitHub Pages publishes the static files — no build commands
+2. Cloudflare Pages publishes the static files — no build commands
 3. The live site at [johnfissel.com](https://johnfissel.com) updates within 1–2 minutes
 
-The custom domain is configured via the `CNAME` file, with DNS pointing `johnfissel.com` to GitHub Pages and `www` redirecting to the apex domain.
+The custom domain (`johnfissel.com`, with `www` redirecting to the apex) is configured in the Cloudflare Pages dashboard, not in the repository.
 
 ## Performance Targets
 
